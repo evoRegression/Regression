@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataProvider
 {
-    class DataProvider : IDataProvider
+    public class DataProvider : IDataProvider
     {
         private int[] data;
         public double Mean()
