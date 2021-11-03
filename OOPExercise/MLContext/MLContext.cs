@@ -13,8 +13,15 @@ namespace MLContext
         {
             this.dataProvider = dataProvider;
             this.model = model;
-            this.data = this.dataProvider.Read("Placeholder text");
-
+            try
+            {
+                this.data = this.dataProvider.Read(@"..\..\..\data.txt");
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                System.Environment.Exit(-1);
+            }
         }
 
         public int Predict(int dataPoint)
@@ -24,6 +31,8 @@ namespace MLContext
 
         public void Train()
         {
+            if (this.data == null || this.model == null)
+                throw new System.Exception("The MLContext is not Initialized");
             this.model.Train(this.data);
         }
     }

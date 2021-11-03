@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DataProvider
@@ -32,7 +33,20 @@ namespace DataProvider
 
         public int[] Read(string filePath)
         {
-            this.data = new int[] { 99, 34, 634, 674, 34, 56, 23, 4 };
+            string[] lines = System.IO.File.ReadAllLines(filePath);
+            List<int> dataList = new List<int>();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                try
+                {
+                    dataList.Add(int.Parse(lines[i]));
+                }
+                catch (FormatException)
+                {
+                    throw new Exception($"Incorrect Data in \"{ filePath}\" file at line: {i+1} : {lines[i]}");
+                }
+            }
+            this.data = dataList.ToArray();
             return data;
         }
 
