@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MLModel
+﻿namespace MLModel
 {
     public interface IMLModel
     {

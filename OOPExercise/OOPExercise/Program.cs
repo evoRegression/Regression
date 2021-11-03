@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MLContext;
+using DataProvider;
+using MLModel;
 
 namespace OOPExercise
 {
@@ -10,6 +8,14 @@ namespace OOPExercise
     {
         static void Main(string[] args)
         {
+            IMLContext context = new MLContext.MLContext();
+            IDataProvider dataProvider = new DataProvider.DataProvider();
+            IMLModel model = new MLModel.MLModel();
+            context.Init(dataProvider, model);
+            context.Train();
+            int prediction = context.Predict(100);
+            System.Console.WriteLine($"Prediction: {prediction}");
+
         }
     }
 }

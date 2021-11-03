@@ -1,5 +1,3 @@
-using System;
-
 namespace DataProvider
 {
     public interface IDataProvider

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataProvider
 {
@@ -35,7 +32,7 @@ namespace DataProvider
 
         public int[] Read(string filePath)
         {
-            this.data = new int[] { 1, 34, 634, 674, 34, 56, 23, 4 };
+            this.data = new int[] { 99, 34, 634, 674, 34, 56, 23, 4 };
             return data;
         }
 
