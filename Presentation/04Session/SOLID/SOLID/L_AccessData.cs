@@ -5,8 +5,8 @@ using System.Text;
 namespace SOLID
 {
     #region Before
-    public class AccessDataFile
-	{
+    public class AccessDataFile : IFileReader, IFileWriter
+    {
         public string FilePath { get; set; }
 
         public virtual void ReadFile()
@@ -22,37 +22,31 @@ namespace SOLID
         }
     }
 
-    public class AdminDataFileUser : AccessDataFile
+    public class AdminDataFileUser : IFileReader, IFileWriter
     {
         public string AdminFilePath { get; set; }
 
-        public override void ReadFile()
+        public void ReadFile()
         {
             // Read File logic  
             Console.WriteLine($"File {AdminFilePath} has been read");
         }
 
-        public override void WriteFile()
+        public void WriteFile()
         {
             //Write File Logic  
             Console.WriteLine($"File {AdminFilePath} has been written");
         }
     }
 
-    public class RegularDataFileUser : AccessDataFile
+    public class RegularDataFileUser : IFileReader
     {
         public string RegularFilePath { get; set; }
 
-        public override void ReadFile()
+        public void ReadFile()
         {
             // Read File logic  
             Console.WriteLine($"File {RegularFilePath} has been read");
-        }
-
-        public override void WriteFile()
-        {
-            //Write File Logic  
-            throw new NotImplementedException();
         }
     }
     #endregion

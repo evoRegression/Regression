@@ -5,9 +5,9 @@ namespace SOLID
     #region Before
     public class StudentRepository
     {
-        private readonly MySqlConnection connection;
+        private readonly IConnection connection;
 
-        public StudentRepository(MySqlConnection connection)
+        public StudentRepository(IConnection connection)
         {
             this.connection = connection;
         }
@@ -25,9 +25,9 @@ namespace SOLID
 
     public class TeacherRepository
     {
-        private readonly PlSqlConnection connection;
+        private readonly IConnection connection;
 
-        public TeacherRepository(PlSqlConnection connection)
+        public TeacherRepository(IConnection connection)
         {
             this.connection = connection;
         }
@@ -43,7 +43,7 @@ namespace SOLID
         }
     }
 
-    public class MySqlConnection
+    public class MySqlConnection : IConnection
     {
         public void Insert() { }
 
@@ -52,7 +52,7 @@ namespace SOLID
         public void Update() { }
     }
 
-    public class PlSqlConnection
+    public class PlSqlConnection : IConnection
     {
         public void Delete() { }
 
@@ -61,7 +61,7 @@ namespace SOLID
         public void Update() { }
     }
 
-    public class EmptyConnectionMock
+    public class EmptyConnectionMock : IConnection
     {
         public void Delete()
         {
@@ -88,6 +88,5 @@ namespace SOLID
         void Delete();
     }
     #endregion
-
 
 }

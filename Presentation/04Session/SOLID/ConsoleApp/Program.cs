@@ -12,20 +12,20 @@ namespace SOLID
             #endregion
 
             #region Liskov Substitution
-            AccessDataFile accessDataFile = new AdminDataFileUser();
-            accessDataFile.FilePath = @"c:\temp\a.txt";
+            AdminDataFileUser accessDataFile = new AdminDataFileUser();
+            //accessDataFile.FilePath = @"c:\temp\a.txt";
             accessDataFile.ReadFile();
             accessDataFile.WriteFile();
 
-            AccessDataFile accessDataFileR = new RegularDataFileUser();
-            accessDataFileR.FilePath = @"c:\temp\a.txt";
+            RegularDataFileUser accessDataFileR = new RegularDataFileUser();
+            //accessDataFileR.FilePath = @"c:\temp\a.txt";
             accessDataFileR.ReadFile();
-            accessDataFileR.WriteFile();
+            //accessDataFileR.WriteFile(); // throw new NotImplementedException
             #endregion
 
             #region Dependency Injection
-            MySqlConnection studentConnection = new MySqlConnection();
-            PlSqlConnection teacherConnection = new PlSqlConnection();
+            IConnection studentConnection = new MySqlConnection();
+            IConnection teacherConnection = new PlSqlConnection();
 
             StudentRepository studentRepository = new StudentRepository(studentConnection);
             studentRepository.Save();
