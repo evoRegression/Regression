@@ -15,8 +15,10 @@ namespace MLContext
             this.model = model;
             try
             {
+                // Hasonló módon, mint Balázsnál, be kell állítani a Copy Always-t. Majd lehet használni a "data.txt".
                 this.data = this.dataProvider.Read(@"..\..\..\data.txt");
             }
+            // Nyugodtan using-old be a System namespace. Ahogy egyik kollégám fogalmazta "Az anyanyelvet nem veszük ki" :D
             catch (System.Exception ex)
             {
                 System.Console.WriteLine(ex.Message);

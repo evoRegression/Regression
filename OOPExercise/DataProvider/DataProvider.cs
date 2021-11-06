@@ -9,8 +9,9 @@ namespace DataProvider
         private int[] data;
         public double Mean()
         {
+            // Nagyon jó korai visszatérés és null érték lekezelés
             if (this.data == null || this.data.Length == 0)
-                throw new Exception("Data array is empty");
+                throw new Exception("Data array is empty"); // Ne dobjunk általános Exception-t helyette ArgumentNullException
 
             return (double)this.data.Sum() / this.data.Length;
         }
@@ -19,7 +20,7 @@ namespace DataProvider
         {
             if (this.data == null || this.data.Length == 0)
                 throw new Exception("Data array is empty");
-            int[] sortedData = (int[])this.data.Clone();
+            int[] sortedData = (int[])this.data.Clone(); // Remek megoldás, amit hiányoltam Balázs megoldásába azt itt benne van. Érdemes mindig megtartani az eredeti adatot. 
             int midIndex = sortedData.Length / 2 + 1;
             if( sortedData.Length % 2 == 0)
             {
@@ -39,7 +40,9 @@ namespace DataProvider
             {
                 try
                 {
-                    dataList.Add(int.Parse(lines[i]));
+                    // Továbbra is nagyon jó, hogy lekezeled az exception-t. Az int.Parse lehet érdemes lehet TryParse metódust használni.
+                    // A TryParse visszatér egy bool-al (true,false) és aszerint lehet tovább dolgozni. Az teljesítmény kritikus rendszereknél az Exception dobás erőforrásigényes.
+                    dataList.Add(int.Parse(lines[i])); 
                 }
                 catch (FormatException)
                 {
@@ -57,10 +60,12 @@ namespace DataProvider
 
         public double Variance()
         {
+            // Üss bátran enter-t nem baj ha több a kódsor. Lényeg, hogy átlátható legyen. A logikailag összetartozó blokkok közé nyugodtan beékkelhetsz egy enter-t.
             if (this.data == null || this.data.Length == 0)
                 throw new Exception("Data array is empty");
             double mean = this.Mean();
             double sum = 0;
+            // this.data nem muszály kiírni a this-t. Az i változó helyett beszédesebb nevet érdemes választani pl. singleDatapoint, aDatapoint.
             foreach (int i in this.data)
             {
                 sum += Math.Pow(i - mean, 2.0);
