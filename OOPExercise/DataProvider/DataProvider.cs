@@ -59,13 +59,8 @@ namespace DataProvider
         {
             if (this.data == null || this.data.Length == 0)
                 throw new Exception("Data array is empty");
-            double mean = this.Mean();
-            double sum = 0;
-            foreach (int i in this.data)
-            {
-                sum += Math.Pow(i - mean, 2.0);
-            }
-            return sum / this.data.Length;
+
+            return data.Select(num => (num - Mean()) * (num - Mean())).Sum() / data.Length;
         }
     }
 }

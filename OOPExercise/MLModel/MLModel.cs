@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MLModel
 {
@@ -10,7 +11,7 @@ namespace MLModel
         }
         public double Evaluation()
         {
-            throw new NotImplementedException();
+            return (double) trainedData - 100;
         }
 
         public int Predict(int dataPoint)
@@ -27,13 +28,8 @@ namespace MLModel
         { 
             if (data == null || data.Length == 0)
                 throw new Exception("Data array is empty");
-            int min = int.MaxValue;
-            foreach( int i in data)
-            {
-                if (min > i)
-                    min = i;
-            }
-            trainedData = min;
+            
+            trainedData = (int) data.Select(dataPoint => Math.Sqrt(dataPoint)).Sum();
         }
         private int? trainedData;
     }
