@@ -1,28 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LinearRegressionWPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    /// </summary> 
+
+    using OxyPlot;
+    using OxyPlot.Series;
+
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+    }
+
+    public class FunctionPlotModel
+    {
+        public PlotModel OxyModel { get; private set; }
+
+        public FunctionPlotModel()
+        {
+            OxyModel = new PlotModel { Title = "Function Graph" };
+            OxyModel.Series.Add(new FunctionSeries((x) => Math.Pow(x, 2), 0, 4, 0.01, "Parabola"));
         }
     }
 }
