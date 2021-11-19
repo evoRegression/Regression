@@ -17,12 +17,11 @@ namespace MLContext
             try
             {
                 data = dataProvider.Import(@"data.txt");
-                
             }
-            catch (Exception ex)
+            catch (Exception ex) // Catch specific exception
             {
                 Console.WriteLine(ex.Message);
-                Environment.Exit(-1);
+                Environment.Exit(-1); // Do not need Environment.Exit, yet https://stackoverflow.com/questions/692323/when-should-one-use-environment-exit-to-terminate-a-console-application
             }
         }
 
@@ -34,7 +33,7 @@ namespace MLContext
         public void Train()
         {
             if (data == null || model == null)
-                throw new System.Exception("The MLContext is not Initialized");
+                throw new System.Exception("The MLContext is not Initialized"); // Throw NullReference Exception
             model.Train(data);
         }
 
