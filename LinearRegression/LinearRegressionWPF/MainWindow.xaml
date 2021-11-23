@@ -11,6 +11,20 @@
         <local:FunctionPlotModel />
     </Window.DataContext>
     <Grid>
-        <oxy:PlotView Model="{Binding OxyModel}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Button Name="OpenDataFile" Background="LightBlue"
+                Click="OpenDataFile_Click"
+                Height="30" Width="100"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Grid.Row="0"
+                Margin="20,0"
+                Content="Open File" />
+
+        <oxy:PlotView Model="{Binding OxyModel}" Grid.Row="1"/>
     </Grid>
 </Window>

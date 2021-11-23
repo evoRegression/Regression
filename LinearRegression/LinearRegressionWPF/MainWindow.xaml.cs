@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Diagnostics;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace LinearRegressionWPF
 {
@@ -15,6 +18,13 @@ namespace LinearRegressionWPF
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void OpenDataFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                Trace.WriteLine(File.ReadAllText(openFileDialog.FileName));
         }
     }
 
