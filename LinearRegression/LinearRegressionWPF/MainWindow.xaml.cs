@@ -26,6 +26,13 @@ namespace LinearRegressionWPF
             if (openFileDialog.ShowDialog() == true)
                 Trace.WriteLine(File.ReadAllText(openFileDialog.FileName));
         }
+
+        private void Train_Click(object sender, RoutedEventArgs e)
+        {
+            PlotModel model = new PlotModel { Title = "Function Graph" };
+            model.Series.Add(new FunctionSeries((x) => x / 2, 0, 4, 0.01, "Line"));
+            MainPlot.Model = model;
+        }
     }
 
     public class FunctionPlotModel

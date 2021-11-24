@@ -14,6 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition />
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <Button Name="OpenDataFile" Background="LightBlue"
@@ -25,6 +26,15 @@
                 Margin="20,0"
                 Content="Open File" />
 
-        <oxy:PlotView Model="{Binding OxyModel}" Grid.Row="1"/>
+        <oxy:PlotView Name="MainPlot" Model="{Binding OxyModel}" Grid.Row="1"/>
+
+        <Button Name="Train" Background="LightGreen"
+                Click="Train_Click"
+                Height="30" Width="100"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Grid.Row="2"
+                Margin="20,0"
+                Content="Train" />
     </Grid>
 </Window>
