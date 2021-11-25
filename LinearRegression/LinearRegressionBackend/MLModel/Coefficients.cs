@@ -3,7 +3,7 @@
 namespace MLModel
 {
     [DataContract]
-    class Coefficients : IExtensibleDataObject
+    class Coefficients
     {
         [DataMember]
         public double Slope { get; set; }
@@ -18,20 +18,6 @@ namespace MLModel
         {
             Slope = m;
             Intercept = b;
-        }
-
-        // Do not need for our scenario
-        private ExtensionDataObject extensionDataObjectValue;
-        public ExtensionDataObject ExtensionData
-        {
-            get
-            {
-                return extensionDataObjectValue;
-            }
-            set
-            {
-                extensionDataObjectValue = value;
-            }
         }
     }
 }

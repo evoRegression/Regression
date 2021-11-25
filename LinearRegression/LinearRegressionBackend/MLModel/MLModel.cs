@@ -9,17 +9,17 @@ namespace MLModel
 
     public class MLModel : IMLModel
     {
-        // Rename to myCoefficient or _coefficient
-        private Coefficients coefficient;
+
+        private Coefficients _coefficient;
 
         public MLModel(double Slope, double Intercept)
         {
-            coefficient = new Coefficients(Slope, Intercept);
+            _coefficient = new Coefficients(Slope, Intercept);
         }
 
         public MLModel()
         {
-            coefficient = new Coefficients(0, 0);
+            _coefficient = new Coefficients(0, 0);
         }
 
         public double Evaluation()
@@ -29,60 +29,86 @@ namespace MLModel
 
         public double Predict(double dataPoint)
         {
-            return coefficient.Slope * dataPoint + coefficient.Intercept;
+            return _coefficient.Slope * dataPoint + _coefficient.Intercept;
         }
 
         public void Train(double[][] data)
         {
-            // Good job! Great algorithm, extract to SimpleOrdinaryLeastSquare method
-            int N = data.Length;
 
             double[] xAxis = data.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = data.Select(array => (double)array.GetValue(1)).ToArray();
+            
+            QuadraticOrdinaryLeastSquare(xAxis, yAxis);
+        }
 
+        internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
+        {
+            int N = yAxis.Length;
             double sumX = xAxis.Sum();
             double sumY = yAxis.Sum();
 
             double numenator = N * xAxis.Zip(yAxis, (x, y) => x * y).Sum() - sumX * sumY;
             double denominator = N * xAxis.Select(x => x * x).Sum() - sumX * sumX;
 
-            coefficient.Slope = numenator / denominator;
-            coefficient.Intercept = sumY / N  - coefficient.Slope * sumX / N;
-        }
-
-
-        internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
-        {
-
+            _coefficient.Slope = numenator / denominator;
+            _coefficient.Intercept = sumY / N - _coefficient.Slope * sumX / N;
+            return _coefficient;
         }
 
         internal Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             // https://en.wikipedia.org/wiki/Simple_linear_regression
+            int N = yAxis.Length;
+            double sumX = xAxis.Sum();
+            double sumY = yAxis.Sum();
+            double avgX = sumX / N;
+            double avgY = sumY / N;
+            double numenator = xAxis.Zip(yAxis, (x, y) => (avgX - x) * (avgY - y)).Sum();
+            double denominator = xAxis.Select(x => (x - avgX) * (x - avgX)).Sum();
+            _coefficient.Slope = numenator / denominator;
+            _coefficient.Intercept = avgY - _coefficient.Slope * avgX;
+            return null;
         }
 
         public void Export(string path)
         {
-            // Wrap the filestream with using keyword
-            FileStream fs = new(path, FileMode.Create);
-            // Wrape the writer with using keyword
-            XmlDictionaryWriter writer = XmlDictionaryWriter.CreateTextWriter(fs);
-            DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
-            dcs.WriteObject(writer, coefficient);
-            writer.Close();
-            fs.Close();
+            using (FileStream fs = new(path, FileMode.Create))
+            {
+                using (XmlDictionaryWriter writer = XmlDictionaryWriter.CreateTextWriter(fs))
+                {
+                    DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
+                    dcs.WriteObject(writer, _coefficient);
+                    writer.Close();
+                }
+                fs.Close();
+            }
         }
 
         public void Import(string path)
         {
-            // Wrap the filestream with using keyword
-            FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
-            XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
-            DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
+            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            {
+                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
+                DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
 
-            coefficient = (Coefficients)dcs.ReadObject(reader);
+                _coefficient = (Coefficients)dcs.ReadObject(reader);
 
-            fs.Close();
+                fs.Close();
+            }
+        }
+
+        public double LeastAbsoluteError(double[] xAxis, double[] yAxis)
+        {
+            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
+                return 0;
+            return xAxis.Zip(yAxis, (x, y) => Math.Abs(y - Predict(x))).Sum() / xAxis.Length;
+        }
+
+        public double LeastSquareError(double[] xAxis, double[] yAxis)
+        {
+            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
+                return 0;
+            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length;
         }
     }
 }

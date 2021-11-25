@@ -13,4 +13,10 @@
     <ProjectReference Include="MLModel\MLModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="data.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
