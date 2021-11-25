@@ -13,6 +13,7 @@ namespace LinearRegressionWPF
     using OxyPlot;
     using OxyPlot.Series;
 
+    // Great for starting. Next step is to use MVVM pattern
     public partial class MainWindow : Window
     {
         public MainWindow()
