@@ -55,18 +55,21 @@ namespace MLModel
             return _coefficient;
         }
 
+        // https://en.wikipedia.org/wiki/Simple_linear_regression
         internal Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
-            // https://en.wikipedia.org/wiki/Simple_linear_regression
             int N = yAxis.Length;
             double sumX = xAxis.Sum();
             double sumY = yAxis.Sum();
             double avgX = sumX / N;
             double avgY = sumY / N;
+            // rework formula
             double numenator = xAxis.Zip(yAxis, (x, y) => (avgX - x) * (avgY - y)).Sum();
             double denominator = xAxis.Select(x => (x - avgX) * (x - avgX)).Sum();
             _coefficient.Slope = numenator / denominator;
             _coefficient.Intercept = avgY - _coefficient.Slope * avgX;
+            
+            // return with coefficinets
             return null;
         }
 
@@ -78,9 +81,7 @@ namespace MLModel
                 {
                     DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
                     dcs.WriteObject(writer, _coefficient);
-                    writer.Close();
                 }
-                fs.Close();
             }
         }
 
@@ -92,8 +93,6 @@ namespace MLModel
                 DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
 
                 _coefficient = (Coefficients)dcs.ReadObject(reader);
-
-                fs.Close();
             }
         }
 
