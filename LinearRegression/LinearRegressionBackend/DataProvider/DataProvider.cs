@@ -8,8 +8,12 @@ namespace DataProvider
 {
     public class DataProvider : IDataProvider
     {
+        // ctor
+        
+        // rename data to _data
         private double[][] data;
 
+        // Create seperate mean method for x datapoints.
         public double Mean()
         {
             if (data == null || data.Length == 0)
@@ -35,6 +39,7 @@ namespace DataProvider
             }
         }
 
+        // Simplify
         public double[][] Import(string filePath)
         {
             string[] lines = System.IO.File.ReadAllLines(filePath);
