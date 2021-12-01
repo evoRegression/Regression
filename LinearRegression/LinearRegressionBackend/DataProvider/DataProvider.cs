@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinearRegressionBackend.DataProvider.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -80,8 +81,7 @@ namespace DataProvider
                 String[] numbers = line.Split(",");
                 if (numbers.Length != 2)
                 {
-                    Console.WriteLine($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
-                    continue;
+                    throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
                 }
                 double[] XandY = new double[2];
                 for (int j = 0; j < numbers.Length; j++)
@@ -90,7 +90,7 @@ namespace DataProvider
                     if (double.TryParse(numbers[j], NumberStyles.Any, CultureInfo.InvariantCulture, out nextData))
                         XandY[j] = nextData;
                     else
-                        Console.WriteLine($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
+                        throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
                 }
                 dataList.Add(XandY);
             }

@@ -15,7 +15,7 @@ namespace MLContext
             this.dataProvider = dataProvider;
             this.model = model;
 
-            data = dataProvider.Import(@"data.txt");
+            data = dataProvider.Import(@"data.txt");       
         }
 
         public double Predict(double dataPoint)
@@ -26,7 +26,7 @@ namespace MLContext
         public void Train()
         {
             if (data == null || model == null)
-                throw new System.NullReferenceException("The MLContext is not Initialized");
+                throw new NullReferenceException("The MLContext is not Initialized");
             model.Train(data);
         }
     }
