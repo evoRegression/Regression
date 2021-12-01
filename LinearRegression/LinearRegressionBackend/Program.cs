@@ -1,6 +1,8 @@
 ﻿using MLContext;
 using DataProvider;
 using MLModel;
+using System;
+
 namespace OOPExercise
 {
     class Program
@@ -19,7 +21,7 @@ namespace OOPExercise
 
             model.Export("Model.xml");
 
-            System.Console.WriteLine($"Result: {prediction}" );
+            System.Console.WriteLine($"Result: {prediction}");   
         }
     }
 }

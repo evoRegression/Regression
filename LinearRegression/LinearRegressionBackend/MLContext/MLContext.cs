@@ -27,7 +27,7 @@ namespace MLContext
         {
             if (data == null || model == null)
                 throw new System.NullReferenceException("The MLContext is not Initialized");
+            model.Train(data);
         }
-
     }
 }

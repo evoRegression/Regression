@@ -63,14 +63,13 @@ namespace MLModel
             double sumY = yAxis.Sum();
             double avgX = sumX / N;
             double avgY = sumY / N;
-            // rework formula
-            double numenator = xAxis.Zip(yAxis, (x, y) => (avgX - x) * (avgY - y)).Sum();
+
+            double numenator = xAxis.Zip(yAxis, (x, y) => (x - avgX) * (y - avgY)).Sum();
             double denominator = xAxis.Select(x => (x - avgX) * (x - avgX)).Sum();
             _coefficient.Slope = numenator / denominator;
             _coefficient.Intercept = avgY - _coefficient.Slope * avgX;
-            
-            // return with coefficinets
-            return null;
+           
+            return _coefficient;
         }
 
         public void Export(string path)
