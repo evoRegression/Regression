@@ -11,10 +11,12 @@ namespace MLModel
     {
 
         private Coefficients _coefficient;
+        private Double LearningRate;
 
-        public MLModel(double Slope, double Intercept)
+        public MLModel(double Slope, double Intercept, double LearningRate)
         {
             _coefficient = new Coefficients(Slope, Intercept);
+            this.LearningRate = LearningRate;
         }
 
         public MLModel()
@@ -37,8 +39,8 @@ namespace MLModel
 
             double[] xAxis = data.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = data.Select(array => (double)array.GetValue(1)).ToArray();
-            
-            QuadraticOrdinaryLeastSquare(xAxis, yAxis);
+
+            GradientDescent(xAxis , yAxis);
         }
 
         internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
@@ -106,7 +108,38 @@ namespace MLModel
         {
             if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
                 return 0;
-            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length;
+            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length ;
+        }
+
+        internal void GradientDescent(double[] xAxis, double[] yAxis)
+        {
+            Coefficients prev = new Coefficients(0,0);
+            double dSlope, dIntercept;
+            double delta = 0.0000000000001;
+            int maxIterations = 1000000;
+            int i = 0;
+            do
+            {
+                dSlope = SlopeDerivate(xAxis, yAxis);
+                dIntercept = InterceptDerivate(xAxis, yAxis);
+                _coefficient.Slope -= LearningRate * dSlope;
+                _coefficient.Intercept -= LearningRate * dIntercept;
+                i++;
+            } while (i < maxIterations && (Math.Abs(dSlope) >= delta && Math.Abs(dIntercept) >= delta));
+        }
+
+        internal double SlopeDerivate(double[] xAxis, double[] yAxis)
+        {
+            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
+                return 0;
+            return xAxis.Zip(yAxis, (x, y) => (_coefficient.Slope * x + _coefficient.Intercept - y) * x).Sum() /  xAxis.Length;
+        }
+
+        internal double InterceptDerivate(double[] xAxis, double[] yAxis)
+        {
+            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
+                return 0;
+            return xAxis.Zip(yAxis, (x, y) => _coefficient.Slope * x + _coefficient.Intercept - y ).Sum() / xAxis.Length;
         }
     }
 }
