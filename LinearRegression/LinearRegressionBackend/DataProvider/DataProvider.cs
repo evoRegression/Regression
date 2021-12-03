@@ -47,6 +47,7 @@ namespace DataProvider
             double[] sortedData = (double[])data.Clone();
             Array.Sort(sortedData);
             int midIndex = sortedData.Length / 2;
+
             if (sortedData.Length % 2 == 0)
             {
                 return (sortedData[midIndex] + sortedData[midIndex - 1]) / 2.0;

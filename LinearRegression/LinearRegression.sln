@@ -7,16 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinearRegressionBackend", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinearRegressionWPF", "LinearRegressionWPF\LinearRegressionWPF.csproj", "{7236584E-CEC6-4D5F-A452-70B45DB07FE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLModel", "LinearRegressionBackend\MLModel\MLModel.csproj", "{DA83F110-FE08-4835-8A70-9B996F3A4558}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLContext", "LinearRegressionBackend\MLContext\MLContext.csproj", "{8C435358-7FDB-4669-B40D-28FFAE707F47}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DA83F110-FE08-4835-8A70-9B996F3A4558} = {DA83F110-FE08-4835-8A70-9B996F3A4558}
-		{689FC97E-939D-4125-87B7-19661ED120C2} = {689FC97E-939D-4125-87B7-19661ED120C2}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProvider", "LinearRegressionBackend\DataProvider\DataProvider.csproj", "{689FC97E-939D-4125-87B7-19661ED120C2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,18 +21,6 @@ Global
 		{7236584E-CEC6-4D5F-A452-70B45DB07FE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7236584E-CEC6-4D5F-A452-70B45DB07FE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7236584E-CEC6-4D5F-A452-70B45DB07FE3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DA83F110-FE08-4835-8A70-9B996F3A4558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DA83F110-FE08-4835-8A70-9B996F3A4558}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DA83F110-FE08-4835-8A70-9B996F3A4558}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DA83F110-FE08-4835-8A70-9B996F3A4558}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C435358-7FDB-4669-B40D-28FFAE707F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C435358-7FDB-4669-B40D-28FFAE707F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C435358-7FDB-4669-B40D-28FFAE707F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C435358-7FDB-4669-B40D-28FFAE707F47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{689FC97E-939D-4125-87B7-19661ED120C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{689FC97E-939D-4125-87B7-19661ED120C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{689FC97E-939D-4125-87B7-19661ED120C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{689FC97E-939D-4125-87B7-19661ED120C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

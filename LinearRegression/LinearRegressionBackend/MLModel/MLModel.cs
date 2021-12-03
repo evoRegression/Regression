@@ -38,7 +38,7 @@ namespace MLModel
             double[] xAxis = data.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = data.Select(array => (double)array.GetValue(1)).ToArray();
             
-            QuadraticOrdinaryLeastSquare(xAxis, yAxis);
+            _coefficient = QuadraticOrdinaryLeastSquare(xAxis, yAxis);
         }
 
         internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
@@ -46,30 +46,32 @@ namespace MLModel
             int N = yAxis.Length;
             double sumX = xAxis.Sum();
             double sumY = yAxis.Sum();
+            double avgX = sumX / N;
+            double avgY = sumY / N;
 
             double numenator = N * xAxis.Zip(yAxis, (x, y) => x * y).Sum() - sumX * sumY;
             double denominator = N * xAxis.Select(x => x * x).Sum() - sumX * sumX;
 
-            _coefficient.Slope = numenator / denominator;
-            _coefficient.Intercept = sumY / N - _coefficient.Slope * sumX / N;
-            return _coefficient;
+            double slope = numenator / denominator;
+            double intercept = avgY - slope * avgX;
+
+            return new Coefficients(slope, intercept);
         }
 
         // https://en.wikipedia.org/wiki/Simple_linear_regression
         internal Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             int N = yAxis.Length;
-            double sumX = xAxis.Sum();
-            double sumY = yAxis.Sum();
-            double avgX = sumX / N;
-            double avgY = sumY / N;
+            double avgX = xAxis.Average();
+            double avgY = yAxis.Average();
 
             double numenator = xAxis.Zip(yAxis, (x, y) => (x - avgX) * (y - avgY)).Sum();
             double denominator = xAxis.Select(x => (x - avgX) * (x - avgX)).Sum();
-            _coefficient.Slope = numenator / denominator;
-            _coefficient.Intercept = avgY - _coefficient.Slope * avgX;
-           
-            return _coefficient;
+
+            double slope = numenator / denominator;
+            double intercept = avgY - slope * avgX;
+
+            return new Coefficients(slope, intercept);
         }
 
         public void Export(string path)
