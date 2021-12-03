@@ -2,7 +2,7 @@
 using MLModel;
 using System;
 
-namespace MLContext 
+namespace MLContext
 {
     public class MLContext : IMLContext
     {
@@ -14,15 +14,8 @@ namespace MLContext
         {
             this.dataProvider = dataProvider;
             this.model = model;
-            try
-            {
-                data = dataProvider.Import(@"data.txt");
-            }
-            catch (Exception ex) // Catch specific exception
-            {
-                Console.WriteLine(ex.Message);
-                Environment.Exit(-1); // Do not need Environment.Exit, yet https://stackoverflow.com/questions/692323/when-should-one-use-environment-exit-to-terminate-a-console-application
-            }
+
+            data = dataProvider.Import(@"data.txt");       
         }
 
         public double Predict(double dataPoint)
@@ -33,9 +26,8 @@ namespace MLContext
         public void Train()
         {
             if (data == null || model == null)
-                throw new System.Exception("The MLContext is not Initialized"); // Throw NullReference Exception
+                throw new NullReferenceException("The MLContext is not Initialized");
             model.Train(data);
         }
-
     }
 }

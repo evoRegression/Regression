@@ -9,6 +9,6 @@ namespace MLContext
         void Init(IDataProvider dataProvider, IMLModel model);
         void Train();
         double Predict(double dataPoint);
-      
+
     }
 }

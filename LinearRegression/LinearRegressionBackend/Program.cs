@@ -1,6 +1,9 @@
 ﻿using MLContext;
 using DataProvider;
 using MLModel;
+using System;
+using LinearRegressionBackend.DataProvider.Exceptions;
+
 namespace OOPExercise
 {
     class Program
@@ -11,15 +14,28 @@ namespace OOPExercise
             IMLModel model = new MLModel.MLModel();
             IDataProvider dataProvider = new DataProvider.DataProvider();
 
-            context.Init(dataProvider, model);
-            context.Train();
-            System.Console.Write("Give me a data point: ");
-            double input = double.Parse(System.Console.ReadLine());
-            double prediction = context.Predict(input);
+            Boolean correctData = false;
+            try
+            {
+                context.Init(dataProvider, model);
+                correctData = true;
+            }
+            catch (InvalidDataException e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
-            model.Export("Model.xml");
+            if (correctData)
+            {
+                context.Train();
+                Console.Write("Give me a data point: ");
+                double input = double.Parse(Console.ReadLine());
+                double prediction = context.Predict(input);
 
-            System.Console.WriteLine($"Result: {prediction}" );
+                model.Export("Model.xml");
+
+                Console.WriteLine($"Result: {prediction}");
+            }
         }
     }
 }
