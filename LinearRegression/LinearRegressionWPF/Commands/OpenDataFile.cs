@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Win32;
 
 using LinearRegressionWPF.Models;
+using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands
 {
     class OpenDataFile : ICommand
     {
-        private RegressionPlot _target;
+        private MainWindowViewModel _viewModel;
 
-        public OpenDataFile(RegressionPlot target)
+        public OpenDataFile(MainWindowViewModel viewModel)
         {
-            _target = target;
+            _viewModel = viewModel;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -31,11 +28,19 @@ namespace LinearRegressionWPF.Commands
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                DataProvider.DataProvider dp = new DataProvider.DataProvider(openFileDialog.FileName);
+                DataProvider.DataProvider dp = new DataProvider.DataProvider();
+                double[][] data = dp.Import(openFileDialog.FileName);
+
+                _viewModel.DataProvider = dp;
+
                 DataSet dataSet = new DataSet();
-                dataSet.addDataPoint(1, 1);
-                dataSet.addDataPoint(2, 2);
-                _target.updateDataSet(dataSet);
+
+                foreach (double[] dataPoint in data)
+                {
+                    dataSet.addDataPoint(dataPoint[0], dataPoint[1]);
+                }
+
+                _viewModel.RegressionPlot.updateDataSet(dataSet);
             }
         }
     }

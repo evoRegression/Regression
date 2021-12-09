@@ -9,7 +9,12 @@ namespace LinearRegressionWPF.Models
 
         public RegressionLine(double slope, double yIntercept, double lowerBound, double upperBound)
         {
-            LineSeries = new FunctionSeries((x) => slope * x + yIntercept, lowerBound, upperBound, STEP, "Regression Line");
+            LineSeries = new FunctionSeries((x) => (slope * x) + yIntercept, lowerBound, upperBound, STEP, "Regression Line");
+        }
+
+        public static RegressionLine NullRegressionLine()
+        {
+            return new RegressionLine(0, 0, 0, 0);
         }
     }
 }

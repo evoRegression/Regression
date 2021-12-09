@@ -12,13 +12,13 @@
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="50" />
             <RowDefinition />
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
         <Button Name="OpenDataFile" Content="Open File"
-				Command="{Binding OpenDataFileCommand}"
+                Command="{Binding OpenDataFileCommand}"
                 Grid.Row="0"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left"
@@ -26,8 +26,7 @@
                 Background="LightBlue"
                 Margin="20,0" />
 
-		<!-- TODO: Update on property change -->
-		<oxy:PlotView Name="MainPlot" Model="{Binding RegressionPlot.OxyModel}" Grid.Row="1"/>
+        <oxy:PlotView Name="MainPlot" Model="{Binding RegressionPlot.OxyModel}" Grid.Row="1" />
 
         <Button Name="Train" Content="Train"
                 Grid.Row="2"
