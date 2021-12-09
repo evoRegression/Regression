@@ -4,13 +4,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace MLModel
+namespace LinearRegressionBackend.MLModel
 {
 
     public class MLModel : IMLModel
     {
-
-        private Coefficients _coefficient;
+        public Coefficients _coefficient;
 
         public MLModel(double Slope, double Intercept)
         {
@@ -41,7 +40,7 @@ namespace MLModel
             QuadraticOrdinaryLeastSquare(xAxis, yAxis);
         }
 
-        internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
+        public Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             int N = yAxis.Length;
             double sumX = xAxis.Sum();
@@ -56,7 +55,7 @@ namespace MLModel
         }
 
         // https://en.wikipedia.org/wiki/Simple_linear_regression
-        internal Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
+        public Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             int N = yAxis.Length;
             double sumX = xAxis.Sum();

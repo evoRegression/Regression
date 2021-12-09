@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MLModel
+namespace LinearRegressionBackend.MLModel
 {
     [DataContract]
-    class Coefficients
+    public class Coefficients
     {
         [DataMember]
         public double Slope { get; set; }

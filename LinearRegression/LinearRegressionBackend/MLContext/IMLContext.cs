@@ -1,6 +1,6 @@
 using System;
 using DataProvider;
-using MLModel;
+using LinearRegressionBackend.MLModel;
 
 namespace MLContext
 {

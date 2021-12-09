@@ -1,5 +1,5 @@
 ﻿using DataProvider;
-using MLModel;
+using LinearRegressionBackend.MLModel;
 using System;
 
 namespace MLContext
