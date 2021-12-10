@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DataProvider
+namespace LinearRegressionBackend.DataProvider
 {
     public class DataProvider : IDataProvider
     {
@@ -18,56 +18,24 @@ namespace DataProvider
         {
             Import(path);
         }
-        
-        private double Mean(double[] data)
-        {
-            if (data == null || data.Length == 0)
-                throw new ArgumentNullException("Data array is empty");
-            return (double)data.Sum() / data.Length;
-        }
 
         public double MeanXAxis()
         {
-            if (_data == null || _data.Length < 2)
-                return 0;
             return Mean(_data.Select(array => (double)array.GetValue(0)).ToArray());
         }
 
         public double MeanYAxis()
         {
-            if (_data == null || _data.Length < 2)
-                return 0;
             return Mean(_data.Select(array => (double)array.GetValue(1)).ToArray());
-        }
-
-        private double Median(double[] data)
-        {
-            if (data == null || data.Length == 0)
-                throw new Exception("Data array is empty");
-            double[] sortedData = (double[])data.Clone();
-            Array.Sort(sortedData);
-            int midIndex = sortedData.Length / 2;
-            if (sortedData.Length % 2 == 0)
-            {
-                return (sortedData[midIndex] + sortedData[midIndex - 1]) / 2.0;
-            }
-            else
-            {
-                return sortedData[midIndex];
-            }
         }
 
         public double MedianXAxis()
         {
-            if (_data == null || _data.Length < 2)
-                return 0;
             return Median(_data.Select(array => (double)array.GetValue(0)).ToArray());
         }
 
         public double MedianYAxis()
         {
-            if (_data == null || _data.Length < 2)
-                return 0;
             return Median(_data.Select(array => (double)array.GetValue(1)).ToArray());
         }
 
@@ -110,6 +78,25 @@ namespace DataProvider
             double[] yAxis = _data.Select(array => (double)array.GetValue(1)).ToArray();
             return yAxis.Select(num => (num - MeanXAxis()) * (num - MeanXAxis())).Sum() / _data.Length;
         }
-      
+
+        private double Mean(double[] data)
+        {
+            return (double)data.Sum() / data.Length;
+        }
+
+        private double Median(double[] data)
+        {
+            double[] sortedData = (double[])data.Clone();
+            Array.Sort(sortedData);
+            int midIndex = sortedData.Length / 2;
+            if (sortedData.Length % 2 == 0)
+            {
+                return (sortedData[midIndex] + sortedData[midIndex - 1]) / 2.0;
+            }
+            else
+            {
+                return sortedData[midIndex];
+            }
+        }
     }
 }

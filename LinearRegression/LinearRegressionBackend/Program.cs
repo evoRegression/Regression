@@ -1,17 +1,17 @@
-﻿using MLContext;
-using DataProvider;
+﻿using LinearRegressionBackend.MLContext;
+using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLModel;
 using System;
 using LinearRegressionBackend.DataProvider.Exceptions;
 
-namespace OOPExercise
+namespace LinearRegressionBackend.OOPExercise
 {
     class Program
     {
         static void Main(string[] args)
         {
             IMLContext context = new MLContext.MLContext();
-            IMLModel model = new MLModel();
+            IMLModel model = new MLModel.MLModel();
             IDataProvider dataProvider = new DataProvider.DataProvider();
 
             Boolean correctData = false;

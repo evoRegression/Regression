@@ -1,8 +1,8 @@
-﻿using DataProvider;
+﻿using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLModel;
 using System;
 
-namespace MLContext
+namespace LinearRegressionBackend.MLContext
 {
     public class MLContext : IMLContext
     {

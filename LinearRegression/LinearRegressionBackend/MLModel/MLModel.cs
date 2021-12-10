@@ -96,15 +96,11 @@ namespace LinearRegressionBackend.MLModel
 
         public double LeastAbsoluteError(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
             return xAxis.Zip(yAxis, (x, y) => Math.Abs(y - Predict(x))).Sum() / xAxis.Length;
         }
 
         public double LeastSquareError(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
             return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length;
         }
     }
