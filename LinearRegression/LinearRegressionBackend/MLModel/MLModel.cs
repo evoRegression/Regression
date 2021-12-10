@@ -36,8 +36,8 @@ namespace LinearRegressionBackend.MLModel
 
             double[] xAxis = data.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = data.Select(array => (double)array.GetValue(1)).ToArray();
-            
-            QuadraticOrdinaryLeastSquare(xAxis, yAxis);
+
+            GradientDescent(xAxis , yAxis);
         }
 
         public Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
@@ -101,7 +101,33 @@ namespace LinearRegressionBackend.MLModel
 
         public double LeastSquareError(double[] xAxis, double[] yAxis)
         {
-            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length;
+            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length ;
+        }
+
+        internal void GradientDescent(double[] xAxis, double[] yAxis)
+        {
+            double dSlope, dIntercept;
+            int maxIterations = 1000;
+            double learningRate = 0.01;
+            int i = 0;
+            do
+            {
+                dSlope = SlopeDerivate(xAxis, yAxis);
+                dIntercept = InterceptDerivate(xAxis, yAxis);
+                _coefficient.Slope -= learningRate * dSlope;
+                _coefficient.Intercept -= learningRate * dIntercept;
+                i++;
+            } while (i < maxIterations );
+        }
+
+        internal double SlopeDerivate(double[] xAxis, double[] yAxis)
+        {
+            return xAxis.Zip(yAxis, (x, y) => (_coefficient.Slope * x + _coefficient.Intercept - y) * x).Sum() /  xAxis.Length;
+        }
+
+        internal double InterceptDerivate(double[] xAxis, double[] yAxis)
+        {
+            return xAxis.Zip(yAxis, (x, y) => _coefficient.Slope * x + _coefficient.Intercept - y).Sum() / xAxis.Length;
         }
     }
 }
