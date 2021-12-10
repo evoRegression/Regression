@@ -11,12 +11,10 @@ namespace MLModel
     {
 
         private Coefficients _coefficient;
-        private Double LearningRate;
 
-        public MLModel(double Slope, double Intercept, double LearningRate)
+        public MLModel(double Slope, double Intercept)
         {
             _coefficient = new Coefficients(Slope, Intercept);
-            this.LearningRate = LearningRate;
         }
 
         public MLModel()
@@ -115,17 +113,17 @@ namespace MLModel
         {
             Coefficients prev = new Coefficients(0,0);
             double dSlope, dIntercept;
-            double delta = 0.0000000000001;
-            int maxIterations = 1000000;
-            int i = 0;
+            int maxIterations = 1000;
+            double learningRate = 0.01;
+        int i = 0;
             do
             {
                 dSlope = SlopeDerivate(xAxis, yAxis);
                 dIntercept = InterceptDerivate(xAxis, yAxis);
-                _coefficient.Slope -= LearningRate * dSlope;
-                _coefficient.Intercept -= LearningRate * dIntercept;
+                _coefficient.Slope -= learningRate * dSlope;
+                _coefficient.Intercept -= learningRate * dIntercept;
                 i++;
-            } while (i < maxIterations && (Math.Abs(dSlope) >= delta && Math.Abs(dIntercept) >= delta));
+            } while (i < maxIterations );
         }
 
         internal double SlopeDerivate(double[] xAxis, double[] yAxis)
