@@ -4,13 +4,12 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace MLModel
+namespace LinearRegressionBackend.MLModel
 {
 
     public class MLModel : IMLModel
     {
-
-        private Coefficients _coefficient;
+        public Coefficients _coefficient;
 
         public MLModel(double Slope, double Intercept)
         {
@@ -41,7 +40,7 @@ namespace MLModel
             GradientDescent(xAxis , yAxis);
         }
 
-        internal Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
+        public Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             int N = yAxis.Length;
             double sumX = xAxis.Sum();
@@ -56,7 +55,7 @@ namespace MLModel
         }
 
         // https://en.wikipedia.org/wiki/Simple_linear_regression
-        internal Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
+        public Coefficients QuadraticOrdinaryLeastSquare(double[] xAxis, double[] yAxis)
         {
             int N = yAxis.Length;
             double sumX = xAxis.Sum();
@@ -97,15 +96,11 @@ namespace MLModel
 
         public double LeastAbsoluteError(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
             return xAxis.Zip(yAxis, (x, y) => Math.Abs(y - Predict(x))).Sum() / xAxis.Length;
         }
 
         public double LeastSquareError(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
             return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length ;
         }
 
@@ -127,16 +122,12 @@ namespace MLModel
 
         internal double SlopeDerivate(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
             return xAxis.Zip(yAxis, (x, y) => (_coefficient.Slope * x + _coefficient.Intercept - y) * x).Sum() /  xAxis.Length;
         }
 
         internal double InterceptDerivate(double[] xAxis, double[] yAxis)
         {
-            if (xAxis == null || xAxis.Length == 0 || yAxis == null || yAxis.Length == 0)
-                return 0;
-            return xAxis.Zip(yAxis, (x, y) => _coefficient.Slope * x + _coefficient.Intercept - y ).Sum() / xAxis.Length;
+            return xAxis.Zip(yAxis, (x, y) => Math.Pow(y - Predict(x), 2)).Sum() / xAxis.Length;
         }
     }
 }

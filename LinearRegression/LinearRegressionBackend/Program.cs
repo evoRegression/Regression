@@ -1,10 +1,10 @@
-﻿using MLContext;
-using DataProvider;
-using MLModel;
+﻿using LinearRegressionBackend.MLContext;
+using LinearRegressionBackend.DataProvider;
+using LinearRegressionBackend.MLModel;
 using System;
 using LinearRegressionBackend.DataProvider.Exceptions;
 
-namespace OOPExercise
+namespace LinearRegressionBackend.OOPExercise
 {
     class Program
     {

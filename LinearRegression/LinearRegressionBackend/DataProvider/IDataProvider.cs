@@ -1,4 +1,4 @@
-namespace DataProvider
+namespace LinearRegressionBackend.DataProvider
 {
     public interface IDataProvider
     {
