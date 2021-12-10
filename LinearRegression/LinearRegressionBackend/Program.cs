@@ -11,7 +11,7 @@ namespace LinearRegressionBackend.OOPExercise
         static void Main(string[] args)
         {
             IMLContext context = new MLContext.MLContext();
-            IMLModel model = new MLModel.MLModel();
+            IMLModel model = new MLModel.MLModel(0,0);
             IDataProvider dataProvider = new DataProvider.DataProvider();
 
             Boolean correctData = false;
