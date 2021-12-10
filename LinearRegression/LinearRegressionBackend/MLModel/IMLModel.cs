@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MLModel
+namespace LinearRegressionBackend.MLModel
 {
     public interface IMLModel
     {
