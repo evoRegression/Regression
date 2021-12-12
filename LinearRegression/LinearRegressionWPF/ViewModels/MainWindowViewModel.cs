@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 
+using LinearRegressionBackend.DataProvider;
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.Commands;
 using LinearRegressionBackend.DataProvider;
