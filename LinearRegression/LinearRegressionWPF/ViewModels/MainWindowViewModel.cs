@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 
+using LinearRegressionBackend.DataProvider;
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.Commands;
 
@@ -7,7 +8,7 @@ namespace LinearRegressionWPF.ViewModels
 {
     class MainWindowViewModel
     {
-        public DataProvider.DataProvider DataProvider { get; set; }
+        public DataProvider DataProvider { get; set; }
         public RegressionPlot RegressionPlot { get; private set; }
         public ICommand OpenDataFileCommand { get; private set; }
         public ICommand TrainCommand { get; private set; }
