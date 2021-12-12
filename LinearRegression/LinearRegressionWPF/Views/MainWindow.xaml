@@ -54,5 +54,40 @@
                     Margin="0,0,20,0" />
 
         </StackPanel>
+
+        <!-- Regression menu -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Left">
+
+            <Button Name="Train" Content="Train"
+                    Height="30" Width="100"
+                    Background="LightGreen"
+                    Margin="20,0,0,0" />
+
+            <Label Content="Step size:" Margin="20,0,0,0" />
+            <TextBox Text="12"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
+            <Button Name="Step" Content="Step"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,0,0" />
+            <Button Name="Show" Content="Show"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,0,0" />
+
+            <Label Content="Data point:" Margin="20,0,0,0" />
+            <TextBox Text="12"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
+            <Button Name="Predict" Content="Predict"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,0,0" />
+
+        </StackPanel>
     </Grid>
 </Window>
