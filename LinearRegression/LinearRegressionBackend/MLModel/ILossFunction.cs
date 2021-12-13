@@ -10,19 +10,19 @@ namespace LinearRegressionBackend.MLModel
         /// <summary>
         /// Calculates the loss for the given input and target data.
         /// </summary>
-        /// <param name="thetas">The coefficients for the given model.</param>
-        /// <param name="inputData">Matrix representation of the input data.</param>
-        /// <param name="targetData">Array representation of the target data.</param>
-        /// <returns>Returns with loss value.</returns>
+        /// <param name="thetas">The parameters of a machine learning model.</param>
+        /// <param name="inputData">The matrix representation of the input data.</param>
+        /// <param name="targetData">The array representation of the target data.</param>
+        /// <returns>Returns with the loss value.</returns>
         double Loss(double[] thetas, double[][] inputData, double[] targetData);
 
         /// <summary>
         /// Calculates the loss function derivates for the given input and target data based on <paramref name="thetas"/>.
         /// </summary>
-        /// <param name="thetas">The coefficients for the given model.</param>
-        /// <param name="inputData">Matrix representation of the input data.</param>
-        /// <param name="targetData">Array representation of the target data.</param>
-        /// <returns>Returns an array of gradient step for <paramref name="thetas"/>.</returns>
+        /// <param name="thetas">The parameters of a machine learning model.</param>
+        /// <param name="inputData">The matrix representation of the input data.</param>
+        /// <param name="targetData">The array representation of the target data.</param>
+        /// <returns>Returns with the gradients on the given <paramref name="thetas"/>.</returns>
         double[] LossDerivates(double[] thetas, double[][] inputData, double[] targetData);
     }
 }

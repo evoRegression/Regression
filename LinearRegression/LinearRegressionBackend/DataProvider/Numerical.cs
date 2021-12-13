@@ -13,7 +13,7 @@ namespace LinearRegressionBackend.DataProvider
         /// <param name="start">Inclusive starting value.</param>
         /// <param name="stop">Exclusive stoping value.</param>
         /// <param name="step">Number of steps go from <paramref name="start"/> to <paramref name="stop"/>.</param>
-        /// <returns></returns>
+        /// <returns>Returns with an array.</returns>
         public static double[] Arange(double start, double stop, double step)
         {
             double[] array = null;

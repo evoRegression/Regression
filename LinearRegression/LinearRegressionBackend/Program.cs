@@ -11,7 +11,7 @@ namespace LinearRegressionBackend.OOPExercise
         static void Main(string[] args)
         {
             IMLContext context = new MLContext.MLContext();
-            IMLModel model = new MLModel.MLModel(0,0);
+            MLModel.MLModel model = new MLModel.MLModel(0,0);
             IDataProvider dataProvider = new DataProvider.DataProvider();
 
             Boolean correctData = false;
@@ -32,7 +32,7 @@ namespace LinearRegressionBackend.OOPExercise
                 double input = double.Parse(Console.ReadLine());
                 double prediction = context.Predict(input);
 
-                model.Export("Model.xml");
+                model.Save("Model.xml");
 
                 Console.WriteLine($"Result: {prediction}");
             }
