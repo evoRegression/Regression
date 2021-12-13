@@ -73,7 +73,7 @@ namespace LinearRegressionBackend.MLModel
             return new Coefficients(slope, intercept);
         }
 
-        public void Export(string path)
+        public void Save(string path)
         {
             using (FileStream fs = new(path, FileMode.Create))
             {
@@ -85,14 +85,16 @@ namespace LinearRegressionBackend.MLModel
             }
         }
 
-        public void Import(string path)
+        public static IMLModel Load(string path)
         {
             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
             {
                 XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
                 DataContractSerializer dcs = new DataContractSerializer(typeof(Coefficients));
 
-                _coefficient = (Coefficients)dcs.ReadObject(reader);
+                Coefficients coefficient = (Coefficients)dcs.ReadObject(reader);
+
+                return new MLModel(coefficient.Slope, coefficient.Intercept);
             }
         }
 
