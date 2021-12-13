@@ -1,6 +1,8 @@
 ﻿using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLModel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LinearRegressionBackend.MLContext
 {
@@ -20,14 +22,15 @@ namespace LinearRegressionBackend.MLContext
 
         public double Predict(double dataPoint)
         {
-            return model.Predict(dataPoint);
+            return model.Predict(new double[] { dataPoint });
         }
 
         public void Train()
         {
             if (data == null || model == null)
                 throw new NullReferenceException("The MLContext is not Initialized");
-            model.Train(data);
+            double[] targetData = data.Select(array => (double)array.GetValue(1)).ToArray();
+            List<History> hist = model.Fit(data, targetData, 100 );
         }
     }
 }

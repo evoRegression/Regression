@@ -4,6 +4,7 @@ using Microsoft.Win32;
 
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.ViewModels;
+using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionWPF.Commands
 {
@@ -28,7 +29,7 @@ namespace LinearRegressionWPF.Commands
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                DataProvider.DataProvider dp = new DataProvider.DataProvider();
+                DataProvider dp = new DataProvider();
                 double[][] data = dp.Import(openFileDialog.FileName);
 
                 _viewModel.DataProvider = dp;

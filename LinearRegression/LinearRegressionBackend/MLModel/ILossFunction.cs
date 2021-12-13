@@ -5,7 +5,7 @@ namespace LinearRegressionBackend.MLModel
     /// <summary>
     /// Computes the quantity that a model should seek to minimize during training.
     /// </summary>
-    interface ILossFunction
+    public interface ILossFunction
     {
         /// <summary>
         /// Calculates the loss for the given input and target data.
