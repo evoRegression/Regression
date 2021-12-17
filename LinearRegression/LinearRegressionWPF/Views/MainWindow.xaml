@@ -51,6 +51,7 @@
                      Margin="0,0,20,0" />
 
             <Button Name="RandomLine" Content="Random"
+                    Command="{Binding AddRandomLineCommand}"
                     Height="30" Width="100"
                     Background="LightGreen"
                     Margin="0,0,20,0" />
