@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinearRegressionBackend.MLCommmons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,7 @@ namespace LinearRegressionBackend.MLModel
                 return 0;
 
             double[] xAxis = inputData.Select(array => (double)array.GetValue(0)).ToArray();
-            double[] yAxis = inputData.Select(array => (double)array.GetValue(1)).ToArray();
-            return xAxis.Zip(yAxis, (x, y) => Math.Abs(y - (x * thetas[0] + thetas[1]) )).Sum() / xAxis.Length;
+            return xAxis.Zip(targetData, (x, target) => Math.Abs(target - (x * thetas[MLCommons.SLOPE_INDEX] + thetas[MLCommons.INTERCEPT_INDEX]) )).Sum() / xAxis.Length;
         }
 
         public double[] LossDerivates(double[] thetas, double[][] inputData, double[] targetData)

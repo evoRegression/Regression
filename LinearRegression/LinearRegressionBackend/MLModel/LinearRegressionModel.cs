@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LinearRegressionBackend.MLCommmons;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,12 +48,10 @@ namespace LinearRegressionBackend.MLModel
             for (int i = 0; i < epochs; i++)
             {
                 double[] newThetas = _optimizer.Minimize(_lossFunction, _coefficient.getThetas(), inputData, targetData);
-                double[] oldThetas = _coefficient.getThetas(); // We need the old values to calculate the loss for the history
-                _coefficient.Slope += newThetas[0];
-                _coefficient.Intercept += newThetas[1];
-
-                if (i % 20 == 0)
-                    history.Add(new History(_lossFunction.Loss(oldThetas, inputData, targetData), new double[] { _coefficient.Slope, _coefficient.Intercept }));
+                _coefficient.Slope += newThetas[MLCommons.SLOPE_INDEX];
+                _coefficient.Intercept += newThetas[MLCommons.INTERCEPT_INDEX];
+           
+                history.Add(new History(_lossFunction.Loss(newThetas, inputData, targetData), new double[] { _coefficient.Slope, _coefficient.Intercept }));
             }
             return history;
         }
@@ -85,6 +84,23 @@ namespace LinearRegressionBackend.MLModel
 
                 return new LinearRegressionModel(coefficient.Slope, coefficient.Intercept, null, null);
             }
+        }
+
+        public void setLearningRate(double learningRate)
+        {
+            if (_optimizer is GradientDescent)
+            {
+                ((GradientDescent)_optimizer)._learningRate = learningRate;
+            }
+        }
+
+        public double getLearningRate()
+        {
+            if (_optimizer is GradientDescent)
+            {
+                return ((GradientDescent)_optimizer)._learningRate;
+            }
+            return 0;
         }
     }
 }
