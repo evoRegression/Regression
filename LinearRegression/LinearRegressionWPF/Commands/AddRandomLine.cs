@@ -38,6 +38,12 @@ namespace LinearRegressionWPF.Commands
             double INTC_RANGE = INTC_MAX - INTC_MIN;
             double yIntercept = INTC_MIN + random.NextDouble() * INTC_RANGE;
 
+            int DECIMAL_PLACES = 2;
+            MidpointRounding MID_ROUND = MidpointRounding.ToEven;
+
+            slope = Math.Round(slope, DECIMAL_PLACES, MID_ROUND);
+            yIntercept = Math.Round(yIntercept, DECIMAL_PLACES, MID_ROUND);
+
             _viewModel.updateRegressionLine(slope, yIntercept);
         }
     }
