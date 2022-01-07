@@ -29,19 +29,7 @@ namespace LinearRegressionWPF.Commands
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                DataProvider dp = new DataProvider();
-                double[][] data = dp.Import(openFileDialog.FileName);
-
-                _viewModel.DataProvider = dp;
-
-                DataSet dataSet = new DataSet();
-
-                foreach (double[] dataPoint in data)
-                {
-                    dataSet.addDataPoint(dataPoint[0], dataPoint[1]);
-                }
-
-                _viewModel.RegressionPlot.updateDataSet(dataSet);
+                _viewModel.importDataSet(openFileDialog.FileName);
             }
         }
     }

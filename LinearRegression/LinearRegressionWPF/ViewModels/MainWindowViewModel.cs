@@ -10,22 +10,14 @@ namespace LinearRegressionWPF.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        public DataProvider DataProvider { get; set; }
         public RegressionPlot RegressionPlot { get; private set; }
         public ICommand OpenDataFileCommand { get; private set; }
         public ICommand TrainCommand { get; private set; }
         public ICommand AddRandomLineCommand { get; private set; }
 
+        private DataProvider _dataProvider;
         private double _slope;
         private double _yIntercept;
-
-        public MainWindowViewModel()
-        {
-            RegressionPlot = new RegressionPlot();
-            OpenDataFileCommand = new OpenDataFile(this);
-            TrainCommand = new Train(this);
-            AddRandomLineCommand = new AddRandomLine(this);
-        }
 
         public double Slope
         {
@@ -57,7 +49,23 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        private void updateRegressionLine(double slope, double yIntercept)
+        public MainWindowViewModel()
+        {
+            RegressionPlot = new RegressionPlot();
+            OpenDataFileCommand = new OpenDataFile(this);
+            TrainCommand = new Train(this);
+            AddRandomLineCommand = new AddRandomLine(this);
+        }
+
+        public void importDataSet(string fileName)
+        {
+            _dataProvider = new DataProvider();
+            double[][] data = _dataProvider.Import(fileName);
+
+            RegressionPlot.updateDataSet(data);
+        }
+
+        public void updateRegressionLine(double slope, double yIntercept)
         {
             RegressionLine line = new RegressionLine(slope, yIntercept, 0, 10);
             RegressionPlot.updateRegressionLine(line);
