@@ -25,11 +25,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // TODO: Update regression line
-            }
+            // TODO: Update regression line
         }
     }
 }
