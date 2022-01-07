@@ -38,8 +38,7 @@ namespace LinearRegressionWPF.Commands
             double INTC_RANGE = INTC_MAX - INTC_MIN;
             double yIntercept = INTC_MIN + random.NextDouble() * INTC_RANGE;
 
-            _viewModel.Slope = slope;
-            _viewModel.YIntercept = yIntercept;
+            _viewModel.updateRegressionLine(slope, yIntercept);
         }
     }
 }

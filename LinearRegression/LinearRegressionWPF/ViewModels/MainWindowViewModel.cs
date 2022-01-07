@@ -27,8 +27,7 @@ namespace LinearRegressionWPF.ViewModels
 
             set {
                 _slope = value;
-                updateRegressionLine(_slope, _yIntercept);
-                NotifyPropertyChanged(nameof(Slope));
+                NotifyPropertyChanged(nameof(TextBoxSlope));
             }
         }
 
@@ -40,8 +39,37 @@ namespace LinearRegressionWPF.ViewModels
 
             set {
                 _yIntercept = value;
-                updateRegressionLine(_slope, _yIntercept);
-                NotifyPropertyChanged(nameof(YIntercept));
+                NotifyPropertyChanged(nameof(TextBoxYIntercept));
+            }
+        }
+
+        public double TextBoxSlope
+        {
+            get
+            {
+                return Slope;
+            }
+
+            set
+            {
+                Slope = value;
+                RegressionPlot.updateRegressionLine(Slope, YIntercept);
+                NotifyPropertyChanged(nameof(TextBoxSlope));
+            }
+        }
+
+        public double TextBoxYIntercept
+        {
+            get
+            {
+                return YIntercept;
+            }
+
+            set
+            {
+                YIntercept = value;
+                RegressionPlot.updateRegressionLine(Slope, YIntercept);
+                NotifyPropertyChanged(nameof(TextBoxYIntercept));
             }
         }
 
@@ -63,8 +91,9 @@ namespace LinearRegressionWPF.ViewModels
 
         public void updateRegressionLine(double slope, double yIntercept)
         {
-            RegressionLine line = new RegressionLine(slope, yIntercept, 0, 10);
-            RegressionPlot.updateRegressionLine(line);
+            RegressionPlot.updateRegressionLine(slope, yIntercept);
+            Slope = slope;
+            YIntercept = yIntercept;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
