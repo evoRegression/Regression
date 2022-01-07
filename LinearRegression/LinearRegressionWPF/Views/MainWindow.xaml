@@ -86,6 +86,11 @@
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Right"
                      Height="30" Width="80" />
+            <Label Content="Prediction:" />
+            <TextBox Text=""
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
             <Button Name="Predict" Content="Predict"
                     Height="30" Width="50"
                     Background="LightGreen"
