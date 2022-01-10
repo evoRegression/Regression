@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LinearRegressionBackend.MLModel
 {
@@ -14,7 +15,7 @@ namespace LinearRegressionBackend.MLModel
         /// <param name="targetData">The array representation of the target data.</param>
         /// <param name="epochs">The number of iterations.</param>
         /// <returns>Returns with the training history.</returns>
-        History Fit(double[][] inputData, double[] targetData, int epochs=1);
+        List<History> Fit(double[][] inputData, double[] targetData, int epochs = 1);
 
         /// <summary>
         /// Generates output predictions for the input data.
@@ -30,5 +31,9 @@ namespace LinearRegressionBackend.MLModel
         /// <param name="targetData">The array representation of the target data.</param>
         /// <returns>Returns with the loss value on the given data.</returns>
         double Evaluation(double[][] inputData, double[] targetData);
+
+        void Save(string path);
+
+        IMLModel Load(string path);
     }
 }

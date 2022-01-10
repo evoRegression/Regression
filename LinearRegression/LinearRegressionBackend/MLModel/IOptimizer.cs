@@ -5,7 +5,7 @@ namespace LinearRegressionBackend.MLModel
     /// <summary>
     /// Responsibles for reducing the losses by changing the parameters of the machine learning model.
     /// </summary>
-    interface IOptimizer
+    public interface IOptimizer
     {
         /// <summary>
         /// Calculates a step of gradient.
