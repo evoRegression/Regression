@@ -53,6 +53,7 @@ namespace LinearRegressionWPF.ViewModels
         public MainWindowViewModel()
         {
             RegressionPlot = new RegressionPlot();
+
             OpenDataFileCommand = new OpenDataFile(this);
             TrainCommand = new Train(this);
             AddRandomLineCommand = new AddRandomLine(this);
