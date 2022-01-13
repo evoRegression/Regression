@@ -21,11 +21,13 @@ namespace LinearRegressionWPF.ViewModels
 
         public double Slope
         {
-            get {
+            get
+            {
                 return _slope;
             }
 
-            set {
+            set
+            {
                 _slope = value;
                 NotifyPropertyChanged(nameof(TextBoxSlope));
             }
@@ -33,11 +35,13 @@ namespace LinearRegressionWPF.ViewModels
 
         public double YIntercept
         {
-            get {
+            get
+            {
                 return _yIntercept;
             }
 
-            set {
+            set
+            {
                 _yIntercept = value;
                 NotifyPropertyChanged(nameof(TextBoxYIntercept));
             }
