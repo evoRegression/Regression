@@ -1,10 +1,11 @@
 ﻿using System.Windows.Input;
-
-using LinearRegressionBackend.DataProvider;
-using LinearRegressionWPF.Models;
-using LinearRegressionWPF.Commands;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
+using LinearRegressionBackend.DataProvider;
+
+using LinearRegressionWPF.Models;
+using LinearRegressionWPF.Commands;
 
 namespace LinearRegressionWPF.ViewModels
 {

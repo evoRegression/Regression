@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Microsoft.Win32;
 
-using LinearRegressionBackend.DataProvider;
-using LinearRegressionWPF.Models;
 using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands

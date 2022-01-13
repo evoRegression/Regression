@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Windows;
-using Microsoft.Win32;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Data;

@@ -2,10 +2,7 @@
 using System.Windows.Input;
 using Microsoft.Win32;
 
-using LinearRegressionBackend.DataProvider;
-using LinearRegressionWPF.Models;
 using LinearRegressionWPF.ViewModels;
-using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionWPF.Commands
 {
