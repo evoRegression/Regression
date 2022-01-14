@@ -38,7 +38,7 @@ namespace LinearRegressionBackend.MLModel
         {
             List<History> history= new List<History>();
 
-            if (_optimizer is QuadraticOrdinaryLeastSquare || _optimizer is SimpleOrdinaryLeastSquare)
+            if (_optimizer is QuadraticOrdinaryLeastSquare || _optimizer is SimpleOrdinaryLeastSquare || _optimizer is NormalEquation)
             {
                 epochs = 1;
                 _coefficient.Slope = 0;
@@ -50,7 +50,6 @@ namespace LinearRegressionBackend.MLModel
                 double[] newThetas = _optimizer.Minimize(_lossFunction, _coefficient.getThetas(), inputData, targetData);
                 _coefficient.Slope += newThetas[MLCommons.SLOPE_INDEX];
                 _coefficient.Intercept += newThetas[MLCommons.INTERCEPT_INDEX];
-           
                 history.Add(new History(_lossFunction.Loss(newThetas, inputData, targetData), new double[] { _coefficient.Slope, _coefficient.Intercept }));
             }
             return history;
