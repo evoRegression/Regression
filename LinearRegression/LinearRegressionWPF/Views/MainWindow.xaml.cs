@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Windows;
-using Microsoft.Win32;
+﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace LinearRegressionWPF.Views
 {
@@ -14,6 +13,26 @@ namespace LinearRegressionWPF.Views
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void TextBoxEnterUpdate(object sender, KeyEventArgs e)
+        {
+            if (sender == null)
+            {
+                return;
+            }
+
+            if (e.Key == Key.Enter || e.Key == Key.Return)
+            {
+                TextBox tBox = (TextBox) sender;
+                BindingExpression binding = BindingOperations.GetBindingExpression(tBox, TextBox.TextProperty);
+
+                if (binding != null)
+                {
+                    binding.UpdateSource();
+                    Keyboard.ClearFocus();
+                }
+            }
         }
     }
 }

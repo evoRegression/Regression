@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Microsoft.Win32;
 
-using LinearRegressionWPF.Models;
 using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands
@@ -25,11 +23,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // TODO: Update regression line
-            }
+            _viewModel.train();
         }
     }
 }

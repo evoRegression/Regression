@@ -1,11 +1,9 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace LinearRegressionWPF.Models
 {
-    class RegressionPlot : INotifyPropertyChanged
+    class RegressionPlot
     {
         private DataSet _dataSet;
         private RegressionLine _regressionLine;
@@ -16,54 +14,57 @@ namespace LinearRegressionWPF.Models
         {
             _dataSet = new DataSet();
             _regressionLine = RegressionLine.NullRegressionLine();
-            OxyModel = createOxyModel(_dataSet, _regressionLine);
-        }
 
-        private PlotModel createOxyModel(DataSet dataSet, RegressionLine regressionLine)
-        {
-            PlotModel model = new PlotModel { Title = "Regression Plot" };
-            model.Series.Add(dataSet.ScatterSeries);
-            model.Series.Add(regressionLine.LineSeries);
-            model.Axes.Add(new LinearAxis {
+            OxyModel = new PlotModel { Title = "Regression Plot" };
+            OxyModel.Series.Add(_dataSet.ScatterSeries);
+            OxyModel.Series.Add(_regressionLine.LineSeries);
+            OxyModel.Axes.Add(new LinearAxis
+            {
                 Position = AxisPosition.Bottom,
                 MinimumPadding = 0.05,
                 MaximumPadding = 0.05
             });
-            model.Axes.Add(new LinearAxis
+            OxyModel.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
                 MinimumPadding = 0.05,
                 MaximumPadding = 0.05
             });
-            return model;
-        }
-
-        private void updateOxyModel(DataSet dataSet, RegressionLine regressionLine)
-        {
-            OxyModel.Series.Remove(_dataSet.ScatterSeries);
-            OxyModel.Series.Remove(_regressionLine.LineSeries);
-            OxyModel = createOxyModel(dataSet, regressionLine);
         }
 
         public void updateDataSet(DataSet dataSet)
         {
-            updateOxyModel(dataSet, _regressionLine);
+            OxyModel.Series.Remove(_dataSet.ScatterSeries);
             _dataSet = dataSet;
-            NotifyPropertyChanged(nameof(OxyModel));
+            OxyModel.Series.Add(_dataSet.ScatterSeries);
+            OxyModel.InvalidatePlot(true);
+        }
+
+        public void updateDataSet(double[][] data)
+        {
+            DataSet dataSet = new DataSet();
+
+            foreach (double[] dataPoint in data)
+            {
+                dataSet.addDataPoint(dataPoint[0], dataPoint[1]);
+            }
+
+            updateDataSet(dataSet);
         }
 
         public void updateRegressionLine(RegressionLine regressionLine)
         {
-            updateOxyModel(_dataSet, regressionLine);
+            OxyModel.Series.Remove(_regressionLine.LineSeries);
             _regressionLine = regressionLine;
-            NotifyPropertyChanged(nameof(OxyModel));
+            OxyModel.Series.Add(regressionLine.LineSeries);
+            OxyModel.InvalidatePlot(true);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        public void updateRegressionLine(double slope, double yIntercept)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            double LOWER_BOUND = 0;
+            double UPPER_BOUND = 10;
+            updateRegressionLine(new RegressionLine(slope, yIntercept, LOWER_BOUND, UPPER_BOUND));
         }
     }
 }
