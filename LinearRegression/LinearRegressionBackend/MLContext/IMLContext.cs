@@ -6,7 +6,7 @@ namespace LinearRegressionBackend.MLContext
 {
     public interface IMLContext
     {
-        void Init(IDataProvider dataProvider, IMLModel model);
+        void Init(IMLModel model);
         void Train();
         double Predict(double dataPoint);
 

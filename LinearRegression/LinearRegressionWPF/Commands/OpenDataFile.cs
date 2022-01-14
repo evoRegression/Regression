@@ -28,10 +28,8 @@ namespace LinearRegressionWPF.Commands
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                DataProvider.DataProvider dp = new DataProvider.DataProvider();
-                double[][] data = dp.Import(openFileDialog.FileName);
+                double[][] data = LinearRegressionBackend.DataProvider.Numerical.LoadText(openFileDialog.FileName,',');
 
-                _viewModel.DataProvider = dp;
 
                 DataSet dataSet = new DataSet();
 
