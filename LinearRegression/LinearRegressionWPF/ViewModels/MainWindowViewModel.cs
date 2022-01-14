@@ -9,7 +9,6 @@ using LinearRegressionBackend.MLModel;
 
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.Commands;
-using System.Diagnostics;
 
 namespace LinearRegressionWPF.ViewModels
 {
