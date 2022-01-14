@@ -34,6 +34,13 @@
                         Height="30" Width="100"
                         Background="LightBlue" />
 
+                <Label Content="Model" DockPanel.Dock="Top" HorizontalAlignment="Left"
+                       Margin="0,20,0,0" Padding="0,0,0,5"/>
+                <ComboBox Name="ModelComboBox" ItemsSource="{Binding AvailableModelsArray}"
+                          DockPanel.Dock="Top" HorizontalAlignment="Left"
+                          Width="200">
+                </ComboBox>
+
                 <Button Name="Train" Content="Train"
                         DockPanel.Dock="Top"
                         HorizontalAlignment="Left"

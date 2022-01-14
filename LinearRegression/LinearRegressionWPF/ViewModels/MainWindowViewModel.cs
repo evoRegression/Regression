@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -12,6 +13,7 @@ namespace LinearRegressionWPF.ViewModels
     class MainWindowViewModel : INotifyPropertyChanged
     {
         public RegressionPlot RegressionPlot { get; private set; }
+        public string[] AvailableModelsArray { get; private set; }
         public ICommand OpenDataFileCommand { get; private set; }
         public ICommand TrainCommand { get; private set; }
         public ICommand AddRandomLineCommand { get; private set; }
@@ -19,6 +21,11 @@ namespace LinearRegressionWPF.ViewModels
         private DataProvider _dataProvider;
         private double _slope;
         private double _yIntercept;
+
+        private enum AvailableModels
+        {
+            LinearRegressionModel
+        }
 
         public double Slope
         {
@@ -53,6 +60,7 @@ namespace LinearRegressionWPF.ViewModels
         public MainWindowViewModel()
         {
             RegressionPlot = new RegressionPlot();
+            AvailableModelsArray = Enum.GetNames(typeof(AvailableModels));
 
             OpenDataFileCommand = new OpenDataFile(this);
             TrainCommand = new Train(this);
