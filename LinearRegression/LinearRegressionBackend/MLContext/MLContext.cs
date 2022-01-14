@@ -20,7 +20,8 @@ namespace LinearRegressionBackend.MLContext
 
         public double Predict(double dataPoint)
         {
-            return model.Predict(dataPoint);
+            double[] dataPointArray= new double[] { dataPoint };
+            return model.Predict(dataPointArray);
         }
 
         public void Train()
