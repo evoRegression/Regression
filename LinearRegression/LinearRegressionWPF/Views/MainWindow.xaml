@@ -36,12 +36,45 @@
 
                 <Label Content="Model" DockPanel.Dock="Top" HorizontalAlignment="Left"
                        Margin="0,20,0,0" Padding="0,0,0,5"/>
-                <ComboBox Name="ModelComboBox" ItemsSource="{Binding AvailableModelsArray}"
+                <ComboBox Name="ModelComboBox"
+                          ItemsSource="{Binding AvailableModelsArray}"
+                          SelectedItem="{Binding SelectedModel}"
                           DockPanel.Dock="Top" HorizontalAlignment="Left"
                           Width="200">
                 </ComboBox>
 
+                <Label Content="Loss Function" DockPanel.Dock="Top" HorizontalAlignment="Left"
+                       Margin="0,20,0,0" Padding="0,0,0,5"/>
+                <ComboBox Name="LossFunctionComboBox"
+                          ItemsSource="{Binding AvailableLossFunctionsArray}"
+                          SelectedItem="{Binding SelectedLossFunction}"
+                          DockPanel.Dock="Top" HorizontalAlignment="Left"
+                          Width="200">
+                </ComboBox>
+
+                <Label Content="Otpimizer" DockPanel.Dock="Top" HorizontalAlignment="Left"
+                       Margin="0,20,0,0" Padding="0,0,0,5"/>
+                <ComboBox Name="OptimizerComboBox"
+                          ItemsSource="{Binding AvailableOptimizersArray}"
+                          SelectedItem="{Binding SelectedOptimizer}"
+                          DockPanel.Dock="Top" HorizontalAlignment="Left"
+                          Width="200">
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" VerticalAlignment="Center">
+                    <Label Content="Learning rate:"
+                           VerticalAlignment="Center"
+                           Margin="0,20,0,0" Padding="0,0,5,5"/>
+                    <TextBox Text="{Binding LearningRate}"
+							 KeyDown="TextBoxEnterUpdate"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Right"
+                             Height="30" Width="80" />
+                </StackPanel>
+
                 <Button Name="Train" Content="Train"
+                        Command="{Binding TrainCommand}"
                         DockPanel.Dock="Top"
                         HorizontalAlignment="Left"
                         Height="30" Width="100"
