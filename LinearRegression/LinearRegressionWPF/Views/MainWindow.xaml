@@ -67,7 +67,7 @@
                            VerticalAlignment="Center"
                            Padding="0,5,5,5"/>
                     <TextBox Text="{Binding LearningRate}"
-							 KeyDown="TextBoxEnterUpdate"
+                             KeyDown="TextBoxEnterUpdate"
                              VerticalAlignment="Center"
                              VerticalContentAlignment="Center"
                              HorizontalContentAlignment="Right"
