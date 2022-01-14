@@ -76,10 +76,10 @@
 
                 <Button Name="Train" Content="Train"
                         Command="{Binding TrainCommand}"
-                        DockPanel.Dock="Top"
+                        DockPanel.Dock="Bottom"
                         HorizontalAlignment="Left"
                         Height="30" Width="100"
-                        Margin="0,20,0,0"
+                        Margin="0,20,0,10"
                         Background="LightGreen" />
 
             </DockPanel>
