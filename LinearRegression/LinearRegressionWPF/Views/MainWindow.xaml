@@ -41,6 +41,11 @@
                           SelectedItem="{Binding SelectedModel}"
                           DockPanel.Dock="Top" HorizontalAlignment="Left"
                           Width="200">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <Label Content="Loss Function" DockPanel.Dock="Top" HorizontalAlignment="Left"
@@ -50,6 +55,11 @@
                           SelectedItem="{Binding SelectedLossFunction}"
                           DockPanel.Dock="Top" HorizontalAlignment="Left"
                           Width="200">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <Label Content="Otpimizer" DockPanel.Dock="Top" HorizontalAlignment="Left"
@@ -59,14 +69,21 @@
                           SelectedItem="{Binding SelectedOptimizer}"
                           DockPanel.Dock="Top" HorizontalAlignment="Left"
                           Width="200">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
 
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top"
                             VerticalAlignment="Center" Margin="0,5,0,0">
                     <Label Content="Learning rate:"
+                           IsEnabled="{Binding LearningRateEnabled}"
                            VerticalAlignment="Center"
                            Padding="0,5,5,5"/>
                     <TextBox Text="{Binding LearningRate}"
+                             IsEnabled="{Binding LearningRateEnabled}"
                              KeyDown="TextBoxEnterUpdate"
                              VerticalAlignment="Center"
                              VerticalContentAlignment="Center"
@@ -74,13 +91,27 @@
                              Height="30" Width="80" />
                 </StackPanel>
 
-                <Button Name="Train" Content="Train"
-                        Command="{Binding TrainCommand}"
-                        DockPanel.Dock="Bottom"
-                        HorizontalAlignment="Left"
-                        Height="30" Width="100"
-                        Margin="0,20,0,10"
-                        Background="LightGreen" />
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom"
+                            VerticalAlignment="Center" Margin="0,0,0,10">
+                    <Label Content="Epochs:"
+                           IsEnabled="{Binding EpochsEnabled}"
+                           VerticalAlignment="Center"
+                           Padding="0,5,5,5"/>
+                    <TextBox Text="{Binding Epochs}"
+                             IsEnabled="{Binding EpochsEnabled}"
+                             KeyDown="TextBoxEnterUpdate"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Right"
+                             Height="30" Width="80" />
+                    <Button Name="Train" Content="Train"
+							IsEnabled="{Binding TrainEnabled}"
+                            Command="{Binding TrainCommand}"
+                            HorizontalAlignment="Left"
+                            Height="30" Width="100"
+                            Margin="5,0,0,0"
+                            Background="LightGreen" />
+                </StackPanel>
 
             </DockPanel>
         </Border>
@@ -120,12 +151,14 @@
         <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal"
                     VerticalAlignment="Center" HorizontalAlignment="Right">
 
-            <Label Content="Step size:" Margin="20,0,0,0" />
+            <Label Content="Step size:" IsEnabled="{Binding StepEnabled}" Margin="20,0,0,0" />
             <TextBox Text="12"
+                     IsEnabled="{Binding StepEnabled}"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Right"
                      Height="30" Width="80" />
             <Button Name="Step" Content="Step"
+                    IsEnabled="{Binding StepEnabled}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />

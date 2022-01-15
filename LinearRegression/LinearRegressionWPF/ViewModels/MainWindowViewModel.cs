@@ -1,94 +1,155 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Reflection;
+using System.Linq;
 
 using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLContext;
 using LinearRegressionBackend.MLModel;
 
+using LinearRegressionWPF.BackendFeatures.Models;
+using LinearRegressionWPF.BackendFeatures.LossFunctions;
+using LinearRegressionWPF.BackendFeatures.Optimizers;
+
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.Commands;
+using System.Diagnostics;
+using System;
 
 namespace LinearRegressionWPF.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
-        public RegressionPlot RegressionPlot { get; private set; }
+        public MainWindowViewModel()
+        {
+            RegressionPlot = new RegressionPlot();
+            InitParameters();
+            InitCommands();
+        }
 
-        public string[] AvailableModelsArray { get; private set; }
-        public string[] AvailableLossFunctionsArray { get; private set; }
-        public string[] AvailableOptimizersArray { get; private set; }
-        public double LearningRate { get; set; }
+        public void InitCommands()
+        {
+            OpenDataFileCommand = new OpenDataFile(this);
+            TrainCommand = new Train(this);
+            AddRandomLineCommand = new AddRandomLine(this);
+        }
+
+        #region Parameters
+
+        private const string MODEL_NAMESPACE = "LinearRegressionWPF.BackendFeatures.Models";
+        private const double DEFAULT_LEARNING_RATE = 0.01;
+        private const int DEFAULT_EPOCHS = 1;
+
+        public void InitParameters()
+        {
+            var q = from type in Assembly.GetExecutingAssembly().GetTypes()
+                    where type.IsClass
+                    && type.Namespace == MODEL_NAMESPACE
+                    && type.GetInterfaces().Contains(typeof(IModelDescriptor))
+                    select type;
+            AvailableModelsArray = q.Select(type => (IModelDescriptor)Activator.CreateInstance(type)).ToArray();
+            SelectedModel = AvailableModelsArray[0];
+
+            LearningRate = DEFAULT_LEARNING_RATE;
+            Epochs = DEFAULT_EPOCHS;
+        }
 
         public ICommand OpenDataFileCommand { get; private set; }
+        public IModelDescriptor[] AvailableModelsArray { get; private set; }
+
+        public IModelDescriptor SelectedModel
+        {
+            get
+            {
+                return _selectedModel;
+            }
+            
+            set
+            {
+                _selectedModel = value;
+
+                AvailableLossFunctionsArray = value.SupportedLossFunctions;
+                NotifyPropertyChanged(nameof(AvailableLossFunctionsArray));
+                SelectedLossFunction = AvailableLossFunctionsArray[0];
+                NotifyPropertyChanged(nameof(SelectedLossFunction));
+
+                AvailableOptimizersArray = value.SupportedOptimizers;
+                NotifyPropertyChanged(nameof(AvailableOptimizersArray));
+                SelectedOptimizer = AvailableOptimizersArray[0];
+                NotifyPropertyChanged(nameof(SelectedOptimizer));
+            }
+        }
+
+        private IModelDescriptor _selectedModel;
+
+        public ILossFunctionDescriptor[] AvailableLossFunctionsArray { get; private set; }
+        public ILossFunctionDescriptor SelectedLossFunction { get; set; }
+        public IOptimizerDescriptor[] AvailableOptimizersArray { get; private set; }
+
+        public IOptimizerDescriptor SelectedOptimizer
+        {
+            get
+            {
+                return _selectedOptimizer;
+            }
+
+            set
+            {
+                _selectedOptimizer = value;
+
+                if (value != null)
+                {
+                    LearningRateEnabled = value.SupportedParameters.Contains(IOptimizerDescriptor.Parameter.LearningRate);
+                    NotifyPropertyChanged(nameof(LearningRateEnabled));
+
+                    EpochsEnabled = StepEnabled = value.IsIterative;
+                    NotifyPropertyChanged(nameof(EpochsEnabled));
+                    NotifyPropertyChanged(nameof(StepEnabled));
+                }
+            }
+        }
+
+        private IOptimizerDescriptor _selectedOptimizer;
+
+        public double LearningRate { get; set; }
+        public bool LearningRateEnabled { get; private set; }
         public ICommand TrainCommand { get; private set; }
-        public ICommand AddRandomLineCommand { get; private set; }
 
-        private IDataProvider _dataProvider;
-        private AvailableModel _selectedModel;
-        private AvailableLossFunction _selectedLossFunction;
-        private AvailableOptimizer _selectedOptimizer;
-
-        private double _slope;
-        private double _yIntercept;
-
-        private enum AvailableModel
-        {
-            LinearRegressionModel
-        }
-
-        private enum AvailableLossFunction
-        {
-            LeastSquareError,
-            LeastAbsoluteError
-        }
-
-        private enum AvailableOptimizer
-        {
-            GradientDescent,
-            SimpleOrdinaryLeastSquare,
-            QuadraticOrdinaryLeastSquare
-        }
-
-        public string SelectedModel
+        public bool TrainEnabled
         {
             get
             {
-                return Enum.GetName(typeof(AvailableModel), _selectedModel);
-            }
-
-            set
-            {
-                _selectedModel = (AvailableModel) Enum.Parse(typeof(AvailableModel), value);
+                return _data != null && _data.Length > 0;
             }
         }
 
-        public string SelectedLossFunction
+        public int Epochs { get; set; }
+        public bool EpochsEnabled { get; private set; }
+
+        private double[][] _data;
+
+        public void importDataSet(string fileName)
         {
-            get
-            {
-                return Enum.GetName(typeof(AvailableLossFunction), _selectedLossFunction);
-            }
-            
-            set
-            {
-                _selectedLossFunction = (AvailableLossFunction) Enum.Parse(typeof(AvailableLossFunction), value);
-            }
+            _data = new DataProvider().Import(fileName);
+            RegressionPlot.updateDataSet(_data);
+            NotifyPropertyChanged(nameof(TrainEnabled));
         }
 
-        public string SelectedOptimizer
+        public void train()
         {
-            get
-            {
-                return Enum.GetName(typeof(AvailableOptimizer), _selectedOptimizer);
-            }
-            
-            set
-            {
-                _selectedOptimizer = (AvailableOptimizer) Enum.Parse(typeof(AvailableOptimizer), value);
-            }
+            IMLModel model = SelectedModel.constructModel(SelectedLossFunction, SelectedOptimizer,
+                LearningRate, Slope, YIntercept);
+            var history = model.Fit(_data, _data.Select(point => point[1]).ToArray(), Epochs);
+            var result = history.Last();
+            updateRegressionLine(result.Thetas[0], result.Thetas[1]);
         }
+
+        #endregion
+
+        #region Graph
+
+        public RegressionPlot RegressionPlot { get; private set; }
 
         public double Slope
         {
@@ -105,6 +166,8 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
+        private double _slope;
+
         public double YIntercept
         {
             get
@@ -120,29 +183,7 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        public MainWindowViewModel()
-        {
-            const double DEFAULT_LEARNING_RATE = 0.01;
-
-            RegressionPlot = new RegressionPlot();
-
-            AvailableModelsArray = Enum.GetNames(typeof(AvailableModel));
-            AvailableLossFunctionsArray = Enum.GetNames(typeof(AvailableLossFunction));
-            AvailableOptimizersArray = Enum.GetNames(typeof(AvailableOptimizer));
-            LearningRate = DEFAULT_LEARNING_RATE;
-
-            OpenDataFileCommand = new OpenDataFile(this);
-            TrainCommand = new Train(this);
-            AddRandomLineCommand = new AddRandomLine(this);
-        }
-
-        public void importDataSet(string fileName)
-        {
-            _dataProvider = new DataProvider();
-            double[][] data = _dataProvider.Import(fileName);
-
-            RegressionPlot.updateDataSet(data);
-        }
+        private double _yIntercept;
 
         public void updateRegressionLine(double slope, double yIntercept)
         {
@@ -153,34 +194,13 @@ namespace LinearRegressionWPF.ViewModels
             NotifyPropertyChanged(nameof(YIntercept));
         }
 
-        public void train()
-        {
-            IMLContext context = new MLContext();
+        public ICommand AddRandomLineCommand { get; private set; }
 
-            ILossFunction lossFunction = _selectedLossFunction switch
-            {
-                AvailableLossFunction.LeastAbsoluteError => new LeastAbsoluteError(),
-                AvailableLossFunction.LeastSquareError => new LeastSquareError(),
-                _ => null
-            };
+        public bool StepEnabled { get; private set; }
 
-            IOptimizer optimizer = _selectedOptimizer switch
-            {
-                AvailableOptimizer.GradientDescent => new GradientDescent(LearningRate),
-                AvailableOptimizer.QuadraticOrdinaryLeastSquare => new QuadraticOrdinaryLeastSquare(),
-                AvailableOptimizer.SimpleOrdinaryLeastSquare => new SimpleOrdinaryLeastSquare(),
-                _ => null
-            };
+        #endregion
 
-            IMLModel model = _selectedModel switch
-            {
-                AvailableModel.LinearRegressionModel
-                    => new LinearRegressionModel(_slope, _yIntercept, optimizer, lossFunction),
-                _ => null
-            };
-
-            /* TODO: implement training */
-        }
+        #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -188,5 +208,7 @@ namespace LinearRegressionWPF.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
