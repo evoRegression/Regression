@@ -3,17 +3,13 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Reflection;
 using System.Linq;
 
 using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLModel;
 using LinearRegressionBackend.MLCommmons;
 
-using LinearRegressionWPF.BackendFeatures.Models;
-using LinearRegressionWPF.BackendFeatures.LossFunctions;
-using LinearRegressionWPF.BackendFeatures.Optimizers;
-
+using LinearRegressionWPF.BackendFeatures;
 using LinearRegressionWPF.Models;
 using LinearRegressionWPF.Commands;
 
@@ -40,19 +36,13 @@ namespace LinearRegressionWPF.ViewModels
 
         #region Parameters
 
-        private const string MODEL_NAMESPACE = "LinearRegressionWPF.BackendFeatures.Models";
         private const double DEFAULT_LEARNING_RATE = 0.001;
         private const int DEFAULT_EPOCHS = 100;
         private const int DEFAULT_STEP_SIZE = 10;
 
         public void InitParameters()
         {
-            var q = from type in Assembly.GetExecutingAssembly().GetTypes()
-                    where type.IsClass
-                    && type.Namespace == MODEL_NAMESPACE
-                    && type.GetInterfaces().Contains(typeof(IModelDescriptor))
-                    select type;
-            AvailableModelsArray = q.Select(type => (IModelDescriptor)Activator.CreateInstance(type)).ToArray();
+            AvailableModelsArray = AvailableModels.AvailableModelsArray;
             SelectedModel = AvailableModelsArray[0];
 
             LearningRate = DEFAULT_LEARNING_RATE;
@@ -65,9 +55,9 @@ namespace LinearRegressionWPF.ViewModels
         }
 
         public ICommand OpenDataFileCommand { get; private set; }
-        public IModelDescriptor[] AvailableModelsArray { get; private set; }
+        public ModelDescriptor[] AvailableModelsArray { get; private set; }
 
-        public IModelDescriptor SelectedModel
+        public ModelDescriptor SelectedModel
         {
             get
             {
@@ -90,13 +80,13 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        private IModelDescriptor _selectedModel;
+        private ModelDescriptor _selectedModel;
 
-        public ILossFunctionDescriptor[] AvailableLossFunctionsArray { get; private set; }
-        public ILossFunctionDescriptor SelectedLossFunction { get; set; }
-        public IOptimizerDescriptor[] AvailableOptimizersArray { get; private set; }
+        public LossFunctionDescriptor[] AvailableLossFunctionsArray { get; private set; }
+        public LossFunctionDescriptor SelectedLossFunction { get; set; }
+        public OptimizerDescriptor[] AvailableOptimizersArray { get; private set; }
 
-        public IOptimizerDescriptor SelectedOptimizer
+        public OptimizerDescriptor SelectedOptimizer
         {
             get
             {
@@ -109,7 +99,7 @@ namespace LinearRegressionWPF.ViewModels
 
                 if (value != null)
                 {
-                    LearningRateEnabled = value.SupportedParameters.Contains(IOptimizerDescriptor.Parameter.LearningRate);
+                    LearningRateEnabled = value.SupportedParameters.Contains(OptimizerBuilderParams.Parameter.LearningRate);
                     NotifyPropertyChanged(nameof(LearningRateEnabled));
 
                     EpochsEnabled = value.IsIterative;
@@ -119,7 +109,7 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        private IOptimizerDescriptor _selectedOptimizer;
+        private OptimizerDescriptor _selectedOptimizer;
 
         public double LearningRate { get; set; }
         public bool LearningRateEnabled { get; private set; }
@@ -149,8 +139,13 @@ namespace LinearRegressionWPF.ViewModels
 
         public void train()
         {
-            IMLModel model = SelectedModel.constructModel(SelectedLossFunction, SelectedOptimizer,
-                LearningRate, Slope, YIntercept);
+            IMLModel model = SelectedModel.BuildModel(new ModelBuilderParams {
+                LossFunctionDesc = SelectedLossFunction,
+                OptimizerDesc = SelectedOptimizer,
+                LearningRate = LearningRate,
+                Slope = Slope,
+                YIntercept = YIntercept
+            });
             _history = model.Fit(_data, _data.Select(point => point[1]).ToArray(), Epochs);
             _historyIndex = 0;
             StepEnabled = _selectedOptimizer.IsIterative;
