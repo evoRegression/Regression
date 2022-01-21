@@ -41,9 +41,9 @@ namespace LinearRegressionWPF.ViewModels
         #region Parameters
 
         private const string MODEL_NAMESPACE = "LinearRegressionWPF.BackendFeatures.Models";
-        private const double DEFAULT_LEARNING_RATE = 0.01;
-        private const int DEFAULT_EPOCHS = 1;
-        private const int DEFAULT_STEP_SIZE = 1;
+        private const double DEFAULT_LEARNING_RATE = 0.001;
+        private const int DEFAULT_EPOCHS = 100;
+        private const int DEFAULT_STEP_SIZE = 10;
 
         public void InitParameters()
         {
