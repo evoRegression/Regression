@@ -35,6 +35,7 @@ namespace LinearRegressionWPF.ViewModels
             AddRandomLineCommand = new AddRandomLine(this);
             StepCommand = new Step(this);
             ShowCommand = new Show(this);
+            PredictCommand = new Predict(this);
         }
 
         #region Parameters
@@ -59,6 +60,7 @@ namespace LinearRegressionWPF.ViewModels
             StepSize = DEFAULT_STEP_SIZE;
 
             StepEnabled = false;
+            ShowEnabled = false;
             PredictEnabled = false;
         }
 
@@ -153,6 +155,11 @@ namespace LinearRegressionWPF.ViewModels
             _historyIndex = 0;
             StepEnabled = _selectedOptimizer.IsIterative;
             NotifyPropertyChanged(nameof(StepEnabled));
+            ShowEnabled = true;
+            NotifyPropertyChanged(nameof(ShowEnabled));
+            PredictEnabled = false;
+            NotifyPropertyChanged(nameof(PredictEnabled));
+            RegressionPlot.updateDataSet(_data);
         }
 
         private List<History> _history;
@@ -160,6 +167,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public int StepSize { get; set; }
         public bool StepEnabled { get; private set; }
+        public bool ShowEnabled { get; private set; }
 
         public ICommand StepCommand { get; private set; }
         public ICommand ShowCommand { get; private set; }
@@ -173,8 +181,11 @@ namespace LinearRegressionWPF.ViewModels
 
             if (_historyIndex >= _history.Count)
             {
-                StepEnabled = false;
+                StepEnabled = ShowEnabled = false;
                 NotifyPropertyChanged(nameof(StepEnabled));
+                NotifyPropertyChanged(nameof(ShowEnabled));
+                PredictEnabled = true;
+                NotifyPropertyChanged(nameof(PredictEnabled));
             }
         }
 
@@ -183,8 +194,11 @@ namespace LinearRegressionWPF.ViewModels
             History current = _history.Last();
             updateRegressionLine(current.Thetas[MLCommons.SLOPE_INDEX], current.Thetas[MLCommons.INTERCEPT_INDEX]);
 
-            StepEnabled = false;
+            StepEnabled = ShowEnabled = false;
             NotifyPropertyChanged(nameof(StepEnabled));
+            NotifyPropertyChanged(nameof(ShowEnabled));
+            PredictEnabled = true;
+            NotifyPropertyChanged(nameof(PredictEnabled));
         }
 
         #endregion
@@ -194,6 +208,15 @@ namespace LinearRegressionWPF.ViewModels
         public bool PredictEnabled { get; private set; }
         public double PredictDataPoint { get; set; }
         public double Prediction { get; set; }
+        public ICommand PredictCommand { get; set; }
+
+        public void predict()
+        {
+            Prediction = Slope * PredictDataPoint + YIntercept;
+            NotifyPropertyChanged(nameof(Prediction));
+
+            RegressionPlot.addDataPoint(new double[] { PredictDataPoint, Prediction });
+        }
 
         #endregion
 

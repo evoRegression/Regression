@@ -161,18 +161,19 @@
                     Margin="20,0,0,0">
 
             <Label Content="Data point:" IsEnabled="{Binding PredictEnabled}" Padding="0,5,5,5" />
-			<TextBox Text="{Binding PredictDataPoint}" IsEnabled="{Binding PredictEnabled}"
+            <TextBox Text="{Binding PredictDataPoint}" IsEnabled="{Binding PredictEnabled}"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Right"
                      Height="30" Width="80" />
-			<Label Content="Prediction:" IsEnabled="{Binding PredictEnabled}" />
-			<TextBox Text="{Binding PredictDataPoint}" IsEnabled="{Binding PredictEnabled}"
-					 IsReadOnly="True"
+            <Label Content="Prediction:" IsEnabled="{Binding PredictEnabled}" />
+            <TextBox Text="{Binding Prediction}" IsEnabled="{Binding PredictEnabled}"
+                     IsReadOnly="True"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Right"
                      Height="30" Width="80" />
             <Button Name="Predict" Content="Predict"
-					IsEnabled="{Binding PredictEnabled}"
+                    Command="{Binding PredictCommand}"
+                    IsEnabled="{Binding PredictEnabled}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,20,0" />
@@ -191,12 +192,13 @@
                      Height="30" Width="80" />
             <Button Name="Step" Content="Step"
                     IsEnabled="{Binding StepEnabled}"
-					Command="{Binding StepCommand}"
+                    Command="{Binding StepCommand}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />
             <Button Name="Show" Content="Show"
-					Command="{Binding ShowCommand}"
+                    Command="{Binding ShowCommand}"
+                    IsEnabled="{Binding ShowEnabled}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />

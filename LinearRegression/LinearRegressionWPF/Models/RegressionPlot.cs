@@ -52,6 +52,12 @@ namespace LinearRegressionWPF.Models
             updateDataSet(dataSet);
         }
 
+        public void addDataPoint(double[] dataPoint)
+        {
+            _dataSet.addDataPoint(dataPoint[0], dataPoint[1]);
+            OxyModel.InvalidatePlot(true);
+        }
+
         public void updateRegressionLine(RegressionLine regressionLine)
         {
             OxyModel.Series.Remove(_regressionLine.LineSeries);
