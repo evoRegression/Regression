@@ -7,19 +7,26 @@ using System.Threading.Tasks;
 
 namespace LinearRegressionBackend.MLModel
 {
-    public class GradientDescent : IOptimizer
+    public class GradientDescent : IOptimizer, IIterable
     {
-        internal double _learningRate { get; set; }
+        public double learningRate { get ; set; }
+
         public GradientDescent(double learningRate)
         {
-            _learningRate = learningRate;
+            this.learningRate = learningRate;
         }
+
+        public GradientDescent()
+        {
+            learningRate = 1;
+        }
+
         public double[] Minimize(ILossFunction lossFunction, double[] thetas, double[][] inputData, double[] targetData)
         {
             double[] derivateThetas = lossFunction.LossDerivates(thetas, inputData, targetData);
             return new double[] { 
-                 - _learningRate * derivateThetas[MLCommons.SLOPE_INDEX], 
-                 - _learningRate * derivateThetas[MLCommons.INTERCEPT_INDEX] };
+                 - learningRate * derivateThetas[MLCommons.SLOPE_INDEX], 
+                 - learningRate * derivateThetas[MLCommons.INTERCEPT_INDEX] };
         }
     }
 }
