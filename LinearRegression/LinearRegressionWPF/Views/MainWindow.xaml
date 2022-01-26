@@ -196,6 +196,12 @@
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />
+            <Button Name="Animate" Content="Animate"
+                    IsEnabled="{Binding StepEnabled}"
+                    Command="{Binding AnimateCommand}"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,0,0" />
             <Button Name="Show" Content="Show"
                     Command="{Binding ShowCommand}"
                     IsEnabled="{Binding ShowEnabled}"
