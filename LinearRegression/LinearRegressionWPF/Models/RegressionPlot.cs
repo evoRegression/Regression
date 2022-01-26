@@ -141,6 +141,8 @@ namespace LinearRegressionWPF.Models
             _xAxis.Maximum = xMax;
             _yAxis.Minimum = yMin;
             _yAxis.Maximum = yMax;
+
+            OxyModel.ResetAllAxes();
         }
 
         private void fitAxisBoundsToData() {
