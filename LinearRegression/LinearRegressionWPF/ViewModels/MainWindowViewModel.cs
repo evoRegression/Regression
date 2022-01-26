@@ -30,6 +30,7 @@ namespace LinearRegressionWPF.ViewModels
             TrainCommand = new Train(this);
             AddRandomLineCommand = new AddRandomLine(this);
             StepCommand = new Step(this);
+            AnimateCommand = new Animate(this);
             ShowCommand = new Show(this);
             PredictCommand = new Predict(this);
         }
@@ -165,6 +166,7 @@ namespace LinearRegressionWPF.ViewModels
         public bool ShowEnabled { get; private set; }
 
         public ICommand StepCommand { get; private set; }
+        public ICommand AnimateCommand { get; private set; }
         public ICommand ShowCommand { get; private set; }
 
         public void step()
