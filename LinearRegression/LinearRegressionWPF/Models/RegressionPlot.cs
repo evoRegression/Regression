@@ -63,6 +63,12 @@ namespace LinearRegressionWPF.Models
             OxyModel.Series.Remove(_regressionLine.LineSeries);
             _regressionLine = regressionLine;
             OxyModel.Series.Add(regressionLine.LineSeries);
+
+            // OxyPlot does not support z-index,
+            // so the datapoints are refreshed to be on top
+            OxyModel.Series.Remove(_dataSet.ScatterSeries);
+            OxyModel.Series.Add(_dataSet.ScatterSeries);
+
             OxyModel.InvalidatePlot(true);
         }
 
