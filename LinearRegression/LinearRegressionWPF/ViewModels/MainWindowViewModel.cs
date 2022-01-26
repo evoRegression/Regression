@@ -33,6 +33,8 @@ namespace LinearRegressionWPF.ViewModels
             AnimateCommand = new Animate(this);
             ShowCommand = new Show(this);
             PredictCommand = new Predict(this);
+            ResetGraphViewCommand = new ResetGraphView(this);
+            LineToViewCommand = new LineToView(this);
         }
 
         #region Parameters
@@ -213,6 +215,11 @@ namespace LinearRegressionWPF.ViewModels
             NotifyPropertyChanged(nameof(Prediction));
 
             RegressionPlot.addPredictedPoint(new double[] { PredictDataPoint, Prediction });
+            fitRegressionLineToView();
+        }
+
+        public void fitRegressionLineToView()
+        {
             RegressionPlot.updateRegressionLine(Slope, YIntercept);
         }
 
@@ -266,6 +273,8 @@ namespace LinearRegressionWPF.ViewModels
         }
 
         public ICommand AddRandomLineCommand { get; private set; }
+        public ICommand ResetGraphViewCommand { get; private set; }
+        public ICommand LineToViewCommand { get; private set; }
 
         #endregion
 

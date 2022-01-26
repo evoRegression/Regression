@@ -101,7 +101,16 @@
 
         <!-- Graph -->
         <oxy:PlotView Name="MainPlot" Model="{Binding RegressionPlot.OxyModel}"
-                      Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
+                      Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+            <oxy:PlotView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Reset View"
+                              Command="{Binding ResetGraphViewCommand}" />
+                    <MenuItem Header="Fit Line to View"
+                              Command="{Binding LineToViewCommand}" />
+                </ContextMenu>
+            </oxy:PlotView.ContextMenu>
+        </oxy:PlotView>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"
                     VerticalAlignment="Center" HorizontalAlignment="Right">
