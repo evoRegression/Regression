@@ -155,7 +155,7 @@ namespace LinearRegressionWPF.ViewModels
             NotifyPropertyChanged(nameof(ShowEnabled));
             PredictEnabled = false;
             NotifyPropertyChanged(nameof(PredictEnabled));
-            RegressionPlot.updateDataSet(_data);
+            RegressionPlot.clearPredictions();
         }
 
         private List<History> _history;
@@ -212,7 +212,8 @@ namespace LinearRegressionWPF.ViewModels
             Prediction = Slope * PredictDataPoint + YIntercept;
             NotifyPropertyChanged(nameof(Prediction));
 
-            RegressionPlot.addDataPoint(new double[] { PredictDataPoint, Prediction });
+            RegressionPlot.addPredictedPoint(new double[] { PredictDataPoint, Prediction });
+            RegressionPlot.updateRegressionLine(Slope, YIntercept);
         }
 
         #endregion

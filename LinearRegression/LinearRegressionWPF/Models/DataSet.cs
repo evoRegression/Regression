@@ -6,9 +6,10 @@ namespace LinearRegressionWPF.Models
     {
         public ScatterSeries ScatterSeries { get; private set; }
 
-        public DataSet()
-        {
-            ScatterSeries = new ScatterSeries { MarkerType = OxyPlot.MarkerType.Circle, MarkerFill = OxyPlot.OxyColor.Parse("#c88d00") };
+        public DataSet() : this(OxyPlot.OxyColor.Parse("#c88d00")) { }
+
+        public DataSet(OxyPlot.OxyColor markerFill) {
+            ScatterSeries = new ScatterSeries { MarkerType = OxyPlot.MarkerType.Circle, MarkerFill = markerFill };
         }
 
         public void addDataPoint(double dataX, double dataY)
