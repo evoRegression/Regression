@@ -20,6 +20,36 @@ namespace LinearRegressionWPF.Models
         private const double Y_MAX_DEFAULT = 1;
         private const double AXIS_PADDING = 0.05;
 
+        public double XMin
+        {
+            get => _xAxis.ClipMinimum;
+        }
+
+        public double XMax
+        {
+            get => _xAxis.ClipMaximum;
+        }
+
+        public double XRange
+        {
+            get => XMax - XMin;
+        }
+
+        public double YMin
+        {
+            get => _yAxis.ClipMinimum;
+        }
+
+        public double YMax
+        {
+            get => _yAxis.ClipMaximum;
+        }
+
+        public double YRange
+        {
+            get => YMax - YMin;
+        }
+
         public PlotModel OxyModel { get; private set; }
 
         public RegressionPlot()

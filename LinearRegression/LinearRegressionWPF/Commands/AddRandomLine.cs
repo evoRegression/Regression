@@ -25,21 +25,46 @@ namespace LinearRegressionWPF.Commands
         {
             Random random = new Random();
 
-            double SLOPE_MIN = 1;
-            double SLOPE_MAX = 10;
-            double SLOPE_RANGE = SLOPE_MAX - SLOPE_MIN;
+            // Generate slope
+
+            const double SLOPE_MIN = -15;
+            const double SLOPE_MAX = 15;
+            const double SLOPE_RANGE = SLOPE_MAX - SLOPE_MIN;
             double slope = SLOPE_MIN + random.NextDouble() * SLOPE_RANGE;
 
-            double INTC_MIN = -5;
-            double INTC_MAX = 10;
-            double INTC_RANGE = INTC_MAX - INTC_MIN;
-            double yIntercept = INTC_MIN + random.NextDouble() * INTC_RANGE;
+            // Calculate legal intercept values
+
+            double xMin = _viewModel.RegressionPlot.XMin;
+            double xRange = _viewModel.RegressionPlot.XRange;
+            double yMin = _viewModel.RegressionPlot.YMin;
+            double yMax = _viewModel.RegressionPlot.YMax;
+            double yRange = _viewModel.RegressionPlot.YRange;
+
+            double rise = slope * xRange;
+            double intc_min = Math.Min(yMin - rise, yMin) - slope * xMin;
+            double intc_max = Math.Max(yMax - rise, yMax) - slope * xMin;
+
+            // Line padding
+
+            const double LINE_PADDING = 0.1;
+
+            intc_min += yRange * LINE_PADDING;
+            intc_max -= yRange * LINE_PADDING;
+            double intc_range = intc_max - intc_min;
+
+            // Generate intercept
+
+            double yIntercept = intc_min + random.NextDouble() * intc_range;
+
+            // Round
 
             int DECIMAL_PLACES = 2;
             MidpointRounding MID_ROUND = MidpointRounding.ToEven;
 
             slope = Math.Round(slope, DECIMAL_PLACES, MID_ROUND);
             yIntercept = Math.Round(yIntercept, DECIMAL_PLACES, MID_ROUND);
+
+            // Update graph
 
             _viewModel.updateRegressionLine(slope, yIntercept);
         }
