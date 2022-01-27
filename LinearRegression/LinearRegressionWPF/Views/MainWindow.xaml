@@ -24,7 +24,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Parameters -->
-        <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Padding="20,10,0,0">
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Padding="20,10,0,0">
             <DockPanel LastChildFill="False">
 
                 <Button Name="OpenDataFile" Content="Import data"
@@ -62,7 +62,7 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-                <Label Content="Otpimizer" DockPanel.Dock="Top" HorizontalAlignment="Left"
+                <Label Content="Optimizer" DockPanel.Dock="Top" HorizontalAlignment="Left"
                        Margin="0,20,0,0" Padding="0,0,0,5"/>
                 <ComboBox Name="OptimizerComboBox"
                           ItemsSource="{Binding AvailableOptimizersArray}"
@@ -93,24 +93,7 @@
 
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom"
                             VerticalAlignment="Center" Margin="0,0,0,10">
-                    <Label Content="Epochs:"
-                           IsEnabled="{Binding EpochsEnabled}"
-                           VerticalAlignment="Center"
-                           Padding="0,5,5,5"/>
-                    <TextBox Text="{Binding Epochs}"
-                             IsEnabled="{Binding EpochsEnabled}"
-                             KeyDown="TextBoxEnterUpdate"
-                             VerticalAlignment="Center"
-                             VerticalContentAlignment="Center"
-                             HorizontalContentAlignment="Right"
-                             Height="30" Width="80" />
-                    <Button Name="Train" Content="Train"
-							IsEnabled="{Binding TrainEnabled}"
-                            Command="{Binding TrainCommand}"
-                            HorizontalAlignment="Left"
-                            Height="30" Width="100"
-                            Margin="5,0,0,0"
-                            Background="LightGreen" />
+                    
                 </StackPanel>
 
             </DockPanel>
@@ -118,7 +101,16 @@
 
         <!-- Graph -->
         <oxy:PlotView Name="MainPlot" Model="{Binding RegressionPlot.OxyModel}"
-                      Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
+                      Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+            <oxy:PlotView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Reset View"
+                              Command="{Binding ResetGraphViewCommand}" />
+                    <MenuItem Header="Fit Line to View"
+                              Command="{Binding LineToViewCommand}" />
+                </ContextMenu>
+            </oxy:PlotView.ContextMenu>
+        </oxy:PlotView>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"
                     VerticalAlignment="Center" HorizontalAlignment="Right">
@@ -148,39 +140,83 @@
         </StackPanel>
 
         <!-- Regression menu -->
-        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal"
-                    VerticalAlignment="Center" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Margin="20,0,0,0">
 
+            <Label Content="Epochs:"
+                   IsEnabled="{Binding EpochsEnabled}"
+                   VerticalAlignment="Center"
+                   Padding="0,5,5,5"/>
+            <TextBox Text="{Binding Epochs}"
+                     IsEnabled="{Binding EpochsEnabled}"
+                     KeyDown="TextBoxEnterUpdate"
+                     VerticalAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
+            <Button Name="Train" Content="Train"
+                    IsEnabled="{Binding TrainEnabled}"
+                    Command="{Binding TrainCommand}"
+                    HorizontalAlignment="Left"
+                    Height="30" Width="100"
+                    Margin="5,0,0,0"
+                    Background="LightGreen" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Left"
+                    Margin="20,0,0,0">
+
+            <Label Content="Data point:" IsEnabled="{Binding PredictEnabled}" Padding="0,5,5,5" />
+            <TextBox Text="{Binding PredictDataPoint}" IsEnabled="{Binding PredictEnabled}"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
+            <Label Content="Prediction:" IsEnabled="{Binding PredictEnabled}" />
+            <TextBox Text="{Binding Prediction}" IsEnabled="{Binding PredictEnabled}"
+                     IsReadOnly="True"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Right"
+                     Height="30" Width="80" />
+            <Button Name="Predict" Content="Predict"
+                    Command="{Binding PredictCommand}"
+                    IsEnabled="{Binding PredictEnabled}"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,20,0" />
+
+        </StackPanel>
+        
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal"
+                    VerticalAlignment="Center" HorizontalAlignment="Right"
+                    Margin="0,0,20,0">
+                
             <Label Content="Step size:" IsEnabled="{Binding StepEnabled}" Margin="20,0,0,0" />
-            <TextBox Text="12"
+            <TextBox Text="{Binding StepSize}"
                      IsEnabled="{Binding StepEnabled}"
                      VerticalContentAlignment="Center"
                      HorizontalContentAlignment="Right"
                      Height="30" Width="80" />
             <Button Name="Step" Content="Step"
                     IsEnabled="{Binding StepEnabled}"
+                    Command="{Binding StepCommand}"
+                    Height="30" Width="50"
+                    Background="LightGreen"
+                    Margin="5,0,0,0" />
+            <Button Name="Animate" Content="Animate"
+                    IsEnabled="{Binding StepEnabled}"
+                    Command="{Binding AnimateCommand}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />
             <Button Name="Show" Content="Show"
+                    Command="{Binding ShowCommand}"
+                    IsEnabled="{Binding ShowEnabled}"
                     Height="30" Width="50"
                     Background="LightGreen"
                     Margin="5,0,0,0" />
-
-            <Label Content="Data point:" Margin="20,0,0,0" />
-            <TextBox Text="12"
-                     VerticalContentAlignment="Center"
-                     HorizontalContentAlignment="Right"
-                     Height="30" Width="80" />
-            <Label Content="Prediction:" />
-            <TextBox Text=""
-                     VerticalContentAlignment="Center"
-                     HorizontalContentAlignment="Right"
-                     Height="30" Width="80" />
-            <Button Name="Predict" Content="Predict"
-                    Height="30" Width="50"
-                    Background="LightGreen"
-                    Margin="5,0,20,0" />
 
         </StackPanel>
     </Grid>

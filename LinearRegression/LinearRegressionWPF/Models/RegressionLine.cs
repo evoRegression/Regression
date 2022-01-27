@@ -9,7 +9,10 @@ namespace LinearRegressionWPF.Models
 
         public RegressionLine(double slope, double yIntercept, double lowerBound, double upperBound)
         {
-            LineSeries = new FunctionSeries((x) => (slope * x) + yIntercept, lowerBound, upperBound, STEP, "Regression Line");
+            LineSeries = new FunctionSeries((x) => (slope * x) + yIntercept, lowerBound, upperBound, STEP, "Regression Line")
+            {
+                MarkerFill = OxyPlot.OxyColor.Parse("#4e9a06")
+            };
         }
 
         public static RegressionLine NullRegressionLine()
