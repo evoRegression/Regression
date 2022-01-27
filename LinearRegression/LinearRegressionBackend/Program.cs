@@ -13,6 +13,7 @@ namespace LinearRegressionBackend.OOPExercise
             IMLContext context = new MLContext.MLContext();
             MLModel.LinearRegressionModel model = new MLModel.LinearRegressionModel(0,0, new GradientDescent(), new LeastSquareError() );
             model.setLearningRate(0.01);
+
             IDataProvider dataProvider = new DataProvider.DataProvider();
 
             Boolean correctData = false;

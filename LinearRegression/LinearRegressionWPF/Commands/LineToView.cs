@@ -3,27 +3,22 @@ using System.Windows.Input;
 
 using LinearRegressionWPF.ViewModels;
 
-namespace LinearRegressionWPF.Commands
-{
-    class Train : ICommand
-    {
+namespace LinearRegressionWPF.Commands {
+    class LineToView : ICommand {
         private MainWindowViewModel _viewModel;
 
-        public Train(MainWindowViewModel viewModel)
-        {
+        public LineToView(MainWindowViewModel viewModel) {
             _viewModel = viewModel;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter)
-        {
+        public bool CanExecute(object parameter) {
             return true;
         }
 
-        public void Execute(object parameter)
-        {
-            _viewModel.train();
+        public void Execute(object parameter) {
+            _viewModel.fitRegressionLineToView();
         }
     }
 }

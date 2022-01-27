@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands
 {
-    class OpenDataFile : ICommand
+    class Step : ICommand
     {
         private MainWindowViewModel _viewModel;
 
-        public OpenDataFile(MainWindowViewModel viewModel)
+        public Step(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -24,11 +23,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
-            {
-                _viewModel.importDataSet(openFileDialog.FileName);
-            }
+            _viewModel.step();
         }
     }
 }
