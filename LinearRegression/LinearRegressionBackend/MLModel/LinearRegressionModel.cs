@@ -38,7 +38,7 @@ namespace LinearRegressionBackend.MLModel
         {
             List<History> history= new List<History>();
 
-            if (_optimizer is QuadraticOrdinaryLeastSquare || _optimizer is SimpleOrdinaryLeastSquare || _optimizer is NormalEquation)
+            if (_optimizer is IIterable == false )
             {
                 epochs = 1;
                 _coefficient.Slope = 0;
@@ -87,17 +87,17 @@ namespace LinearRegressionBackend.MLModel
 
         public void setLearningRate(double learningRate)
         {
-            if (_optimizer is GradientDescent)
+            if (_optimizer is IIterable)
             {
-                ((GradientDescent)_optimizer)._learningRate = learningRate;
+                ((IIterable)_optimizer).learningRate = learningRate;
             }
         }
 
         public double getLearningRate()
         {
-            if (_optimizer is GradientDescent)
+            if (_optimizer is IIterable)
             {
-                return ((GradientDescent)_optimizer)._learningRate;
+                return ((IIterable)_optimizer).learningRate;
             }
             return 0;
         }
