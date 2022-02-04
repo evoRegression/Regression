@@ -27,12 +27,12 @@ namespace LinearRegressionBackend.MLModel
 
         internal double SlopeDerivate(double[] thetas, double[] xAxis, double[] yAxis)
         {
-            return xAxis.Zip(yAxis, (x, y) => (thetas[0] * x + thetas[1] - y) * x).Sum() / xAxis.Length;
+            return xAxis.Zip(yAxis, (x, y) => (thetas[MLCommons.SLOPE_INDEX] * x + thetas[MLCommons.INTERCEPT_INDEX] - y) * x).Sum() / xAxis.Length;
         }
 
         internal double InterceptDerivate(double[] thetas, double[] xAxis, double[] yAxis)
         {
-            return xAxis.Zip(yAxis, (x, y) => thetas[0] * x + thetas[1] - y).Sum() / xAxis.Length;
+            return xAxis.Zip(yAxis, (x, y) => thetas[MLCommons.SLOPE_INDEX] * x + thetas[MLCommons.INTERCEPT_INDEX] - y).Sum() / xAxis.Length;
         }
     }
 }
