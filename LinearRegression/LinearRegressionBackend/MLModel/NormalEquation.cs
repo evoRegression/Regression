@@ -8,7 +8,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace LinearRegressionBackend.MLModel
 {
-    class NormalEquation : IOptimizer
+    public class NormalEquation : IOptimizer
     {
         public double[] Minimize(ILossFunction lossFunction, double[] thetas, double[][] inputData, double[] targetData)
         {
