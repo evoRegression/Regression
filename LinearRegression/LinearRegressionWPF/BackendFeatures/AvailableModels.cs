@@ -62,6 +62,15 @@ namespace LinearRegressionWPF.BackendFeatures
                             return new GradientDescent(learningRate);
                         }
                     }
+                },
+                {
+                    "NormalEquation",
+                    new OptimizerDescriptor {
+                        Name = "Normal Equation",
+                        IsIterative = false,
+                        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
+                        BuildOptimizer = (parameters) => new NormalEquation()
+                    }
                 }
             };
 
@@ -77,7 +86,8 @@ namespace LinearRegressionWPF.BackendFeatures
                     SupportedOptimizers = new OptimizerDescriptor[] {
                         AvailableOptimizers["SimpleOrdinaryLeastSquare"],
                         AvailableOptimizers["QuadraticOrdinaryLeastSquare"],
-                        AvailableOptimizers["GradientDescent"]
+                        AvailableOptimizers["GradientDescent"],
+                        AvailableOptimizers["NormalEquation"]
                     },
 
                     BuildModel = (parameters) => {
