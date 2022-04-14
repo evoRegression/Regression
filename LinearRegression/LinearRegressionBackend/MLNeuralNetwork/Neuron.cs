@@ -4,23 +4,28 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.MLNeuralNetwork {
     public class Neuron {
-        private Vector<double> _Weights;
-        private double _Bias;
-        private IActivationFunction _ActivationFunction;
+        public Vector<double> Weights { get; set; }
+        public double Bias { get; set; }
+        public IActivationFunction ActivationFunction { get; set; }
 
-        public Neuron(Vector<double> weights, IActivationFunction activationFunction) {
-            _Weights = weights;
-            _ActivationFunction = activationFunction;
+        public Neuron(
+            Vector<double> weights,
+            double bias,
+            IActivationFunction activationFunction
+        ) {
+            Weights = weights;
+            Bias = bias;
+            ActivationFunction = activationFunction;
+        }
+
+        public double WeightedSum(Vector<double> previousLayer) {
+            return DataProvider.Numerical.DotProduct(previousLayer, Weights)
+                + Bias;
         }
 
         public double Activation(Vector<double> previousLayer) {
-            Debug.Assert(previousLayer.Count == _Weights.Count);
-
-            double weightedSum = DataProvider.Numerical.DotProduct(
-                previousLayer, _Weights
-            ) + _Bias;
-
-            return _ActivationFunction.Activation(weightedSum);
+            Debug.Assert(previousLayer.Count == Weights.Count);
+            return ActivationFunction.Activation(WeightedSum(previousLayer));
         }
     }
 }
