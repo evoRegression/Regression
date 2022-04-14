@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
 {
@@ -228,6 +229,16 @@ namespace LinearRegressionBackend.DataProvider
             double[] returnArray= array;
             Array.Sort(returnArray);
             return returnArray;
+        }
+
+        /// <summary>
+        /// Computes the dot product of two vectors
+        /// </summary>
+        /// <param name="a">The first vector</param>
+        /// <param name="b">The second vector</param>
+        /// <returns>Returns the dot product of the two vectors</returns>
+        public static double DotProduct(Vector<double> a, Vector<double> b) {
+            return (a.ToRowMatrix() * b.ToColumnMatrix()).Row(0)[0];
         }
     }
 }
