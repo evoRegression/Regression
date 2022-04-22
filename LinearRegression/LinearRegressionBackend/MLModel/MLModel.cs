@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -21,23 +22,25 @@ namespace LinearRegressionBackend.MLModel
             _coefficient = new Coefficients(0, 0);
         }
 
-        public double Evaluation()
-        {
-            return 0;
-        }
-
         public double Predict(double dataPoint)
         {
             return _coefficient.Slope * dataPoint + _coefficient.Intercept;
         }
 
-        public void Train(double[][] data)
+        public List<History> Train(double[][] data, double[] targetData, int epochs = 1)
         {
 
             double[] xAxis = data.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = data.Select(array => (double)array.GetValue(1)).ToArray();
 
             _coefficient = QuadraticOrdinaryLeastSquare(xAxis, yAxis);
+
+            double loss = LeastSquareError(xAxis, yAxis);
+            double[] thetas = new double[] { _coefficient.Slope, _coefficient.Intercept };
+
+            History singleHistory = new(loss, thetas);
+
+            return new List<History>() { singleHistory };
         }
 
         public Coefficients SimpleOrdinaryLeastSquare(double[] xAxis, double[] yAxis)

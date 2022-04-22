@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LinearRegressionBackend.MLModel
 {
@@ -26,6 +27,6 @@ namespace LinearRegressionBackend.MLModel
         /// Trains the model on the given data.
         /// </summary>
         /// <param name="data">The matrix representation of the input data.</param>
-        public void Train(double[][] data);
+        public List<History> Train(double[][] data, double[] targetData, int epochs = 1);
     }
 }
