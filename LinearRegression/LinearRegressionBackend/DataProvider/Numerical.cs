@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.IO;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
 {
@@ -21,17 +22,18 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns with an array.</returns>
         public static double[] Arange(double start, double stop, double step)
         {
+            decimal stepD = (decimal)step;
+            decimal tempD = (decimal)start;
             int j = 0;
             double[] array = new double [(int)((stop-start)/step)];
-            for (double i=start;i<stop;i+=step)
+            for (; j !< array.Length; tempD += stepD)
             {
-                array[j++]=i;
+                array[j++]= (double)tempD;
             }
             return array;
 
             //linq enumarate-range
         }
-
         /// <summary>
         /// Loads a correctly formated string file, into a two dimensional double matrix. The format must be "number,number", 
         /// every line can only contain 1 pair of values, the file must contain at least one full pair.
@@ -41,7 +43,6 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns with a two dimensional double matrix.</returns>
         public static double[][] LoadText(string filePath, char delimeter = ',')
         {
-            double[][] matrix = null;
             string[] lines = System.IO.File.ReadAllLines(filePath);
             List<double[]> dataList = new List<double[]>();
             for (int i = 0; i < lines.Length; i++)
@@ -63,8 +64,7 @@ namespace LinearRegressionBackend.DataProvider
                 }
                 dataList.Add(XandY);
             }
-            matrix = dataList.ToArray();
-            return matrix;
+            return dataList.ToArray();
         }
 
         /// <summary>
@@ -91,12 +91,12 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the mean of all values, of the given axis.</returns>
         public static double Mean(double[][] matrix, int axis)
         {
-         double result = matrix[0][axis];
-             for (int i = 1; i < matrix.GetLength(0); i++)
-             {
-                 result += matrix[i][axis];
-             }
-         return result/ matrix.GetLength(0);            
+            double result = matrix[0][axis];
+            for (int i = 1; i < matrix.GetLength(0); i++)
+            {
+                result += matrix[i][axis];
+            }
+            return result/ matrix.GetLength(0);
         }
 
         /// <summary>
@@ -108,42 +108,19 @@ namespace LinearRegressionBackend.DataProvider
         public static double Median(double[][] matrix, int axis)
         {
             double[] matrix_array = new double[matrix.GetLength(0)];
-            double middle = matrix_array.GetLength(0) / 2;
-            if (axis == 0)
+            int middle = matrix_array.GetLength(0) / 2;
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    matrix_array[i] = matrix[i][axis];
-                }
-                SortArray(matrix_array);
-                if (matrix_array.Length % 2 == 0)
-                {
-                    double egy = matrix_array[(int)middle - 1];
-                    double ketto = matrix_array[(int)middle];
-                    return ((matrix_array[(int)middle - 1] + matrix_array[(int)middle]) / 2);
-                }
-                else
-                {
-                    return (matrix_array[(int)middle]);
-                }
+                matrix_array[i] = matrix[i][axis];
+            }
+            SortArray(matrix_array);
+            if (matrix_array.Length % 2 == 0)
+            {
+                return ((matrix_array[middle - 1] + matrix_array[middle]) / 2);
             }
             else
             {
-                for (int i = 0; i < matrix.GetLength(0); i++)
-                {
-                    matrix_array[i] = matrix[i][axis];
-                }
-                SortArray(matrix_array);
-                if (matrix_array.Length % 2 == 0)
-                {
-                    double egy = matrix_array[(int)middle - 1];
-                    double ketto = matrix_array[(int)middle];
-                    return ((matrix_array[(int)middle - 1] + matrix_array[(int)middle]) / 2);
-                }
-                else
-                {
-                    return (matrix_array[(int)middle]);
-                }
+                return (matrix_array[middle]);
             }
         }
 
@@ -155,14 +132,13 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the Standard deviation of all values, from the given axis.</returns>
         public static double StandardDeviation(double[][] matrix, int axis)
         {
-            double mean = Numerical.Mean(matrix,axis);
-            double result=0;
-            //double[] matrix_array = new double[matrix.GetLength(0)];
+            double mean = Mean(matrix,axis);
+            double result = 0;
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
                 result += Math.Pow((matrix[i][axis]-mean),2);
             }
-            result = result / (matrix.GetLength(0) - 1);
+            result = result / (matrix.Length);
             return Math.Pow(result,0.5);
         }
 
@@ -174,9 +150,7 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the variance of all values, from the given axis.</returns>
         public static double Variance(double[][] matrix, int axis)
         {
-            double result = Max(matrix,axis) - Min(matrix,axis);
-
-            return result;
+            return Max(matrix, axis) - Min(matrix, axis);
         }
 
         /// <summary>
@@ -218,15 +192,25 @@ namespace LinearRegressionBackend.DataProvider
         }
 
         /// <summary>
-        /// Sorts an array, than returns it shorted
+        /// Sorts an array, than returns it sorted
         /// </summary>
-        /// <param name="array">The double array, we want to short.</param>
-        /// <returns>Returns the array value, shorted.</returns>
+        /// <param name="array">The double array that we want to sort.</param>
+        /// <returns>Returns the array value, sorted.</returns>
         public static double[] SortArray(double[] array)
         {
-            double[] returnArray= array;
+            double[] returnArray = array;
             Array.Sort(returnArray);
             return returnArray;
+        }
+
+        /// <summary>
+        /// Computes the dot product of two vectors.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        /// <returns>Returns the dot product of the two vectors.</returns>
+        public static double DotProduct(Vector<double> a, Vector<double> b) {
+            return (a.ToRowMatrix() * b.ToColumnMatrix()).Row(0)[0];
         }
     }
 }
