@@ -66,7 +66,7 @@ namespace LinearRegressionWPF.Commands
 
             // Update graph
 
-            _viewModel.updateRegressionLine(slope, yIntercept);
+            _viewModel.UpdateRegressionLine(slope, yIntercept);
         }
     }
 }
