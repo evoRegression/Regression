@@ -26,7 +26,7 @@ namespace LinearRegressionWPF.Commands
         public async Task ExecuteAsync()
         {
             while (_viewModel.StepEnabled) {
-                _viewModel.step();
+                _viewModel.Step();
                 await Task.Delay(ANIMATION_DELAY);
             }
         }
