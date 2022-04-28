@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-using LinearRegressionWPF.BackendFeatures;
+using LinearRegressionWPF.BackendDescriptors;
 using LinearRegressionWPF.Commands;
 using LinearRegressionWPF.Models;
 using LinearRegressionBackend.DataProvider;

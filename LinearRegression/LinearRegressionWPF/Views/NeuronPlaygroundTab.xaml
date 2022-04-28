@@ -28,8 +28,60 @@
 
         <!-- Activation -->
         <Border Grid.Row="0" Grid.Column="1" Padding="20,10,0,0">
-            <Label Content="Activation" HorizontalAlignment="Left"
-                   Margin="0,20,0,0" Padding="0,0,0,5"/>
+            <DockPanel LastChildFill="False" VerticalAlignment="Center">
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Bias" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding BiasMock}"
+                             KeyDown="TextBoxEnterUpdate"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+                
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Weighted sum" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding WeightedSum}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Activation Function" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <ComboBox Name="ModelComboBox"
+                              ItemsSource="{Binding AvailableActivationFunctionsArray}"
+                              SelectedItem="{Binding SelectedActivationFunction}"
+                              DockPanel.Dock="Top" HorizontalAlignment="Left"
+                              Width="120">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Activation" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding Activation}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+            </DockPanel>
         </Border>
     </Grid>
 </Window>

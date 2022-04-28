@@ -2,7 +2,7 @@
 
 using LinearRegressionBackend.MLModel;
 
-namespace LinearRegressionWPF.BackendFeatures
+namespace LinearRegressionWPF.BackendDescriptors
 {
     class OptimizerDescriptor
     {
