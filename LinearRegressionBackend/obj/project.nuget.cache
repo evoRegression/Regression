@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "a59Hf3Avoo5SCxCSMu4O0yyj0NAPHCTD0OhnQ9PDA+XtDyIy/MkHTzv5HsURygQDOJtFwk3g13YlTCxnEdt9gQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ali\\Desktop\\Coding\\Evo04282022\\LinearRegression\\LinearRegressionBackend\\LinearRegressionBackend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ali\\.nuget\\packages\\mathnet.numerics\\4.15.0\\mathnet.numerics.4.15.0.nupkg.sha512",
+    "C:\\Users\\Ali\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.15\\microsoft.netcore.app.host.win-x64.5.0.15.nupkg.sha512"
+  ],
+  "logs": []
+}
