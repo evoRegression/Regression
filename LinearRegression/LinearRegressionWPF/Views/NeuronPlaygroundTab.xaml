@@ -1,0 +1,35 @@
+﻿<Window x:Class="LinearRegressionWPF.Views.NeuronPlaygroundTab"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:view_models="clr-namespace:LinearRegressionWPF.ViewModels"
+        mc:Ignorable="d"
+        Title="Linear Regression" Height="500" Width="1100">
+    <Window.DataContext>
+        <view_models:NeuronPlaygroundViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" /> <!-- For Weights -->
+            <ColumnDefinition /> <!-- For Activation -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Weights -->
+        <Border Grid.Row="0" Grid.Column="0" Padding="20,10,0,0">
+            <Label Content="Weights" HorizontalAlignment="Left"
+                   Margin="0,20,0,0" Padding="0,0,0,5"/>
+        </Border>
+
+        <!-- Activation -->
+        <Border Grid.Row="0" Grid.Column="1" Padding="20,10,0,0">
+            <Label Content="Activation" HorizontalAlignment="Left"
+                   Margin="0,20,0,0" Padding="0,0,0,5"/>
+        </Border>
+    </Grid>
+</Window>
