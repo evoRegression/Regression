@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

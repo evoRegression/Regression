@@ -1222,7 +1222,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
-          "MathNet.Numerics": "4.15.0"
+          "MathNet.Numerics": "4.15.0",
+          "Microsoft.Windows.Compatibility": "6.0.0"
         },
         "compile": {
           "bin/placeholder/LinearRegressionBackend.dll": {}

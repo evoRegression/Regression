@@ -1014,7 +1014,8 @@
       },
       "LinearRegressionBackend/1.0.0": {
         "dependencies": {
-          "MathNet.Numerics": "4.15.0"
+          "MathNet.Numerics": "4.15.0",
+          "Microsoft.Windows.Compatibility": "6.0.0"
         },
         "runtime": {
           "LinearRegressionBackend.dll": {}

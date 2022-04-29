@@ -141,7 +141,7 @@
                     <views:LinearRegressionTab Margin="0,0,-86,-30" />
                 </TabItem>
                 <TabItem Header="Draw shape" Style="{DynamicResource TabItemStyle}">
-                    <views:ImageToVectorTab Margin="0,0,-60,-27"/>
+                    <views:ImageToVectorTab Margin="-48,0,-60,-54"/>
                 </TabItem>
                 <TabItem Header="Play Ground" Style="{DynamicResource TabItemStyle}">
                     <views:PlayGroundTab/>

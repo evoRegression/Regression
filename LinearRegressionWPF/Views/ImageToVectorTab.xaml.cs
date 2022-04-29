@@ -17,7 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brushes = System.Windows.Media.Brushes;
 using MathNet.Numerics.LinearAlgebra;
-using LinearRegressionWPF.BackendDescriptors;
+using LinearRegressionBackend.DataProvider;
+using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Views
 {
@@ -29,9 +30,12 @@ namespace LinearRegressionWPF.Views
 
         //initialize the dataconverter object 
         DataConverter dataConverter = new DataConverter();
+        ImageToVectorViewModel imageToVectorViewModel = new ImageToVectorViewModel(); 
         public ImageToVectorTab()
         {
             InitializeComponent();
+
+            DataContext = new ImageToVectorViewModel();
             // set drawing color to black 
             MyCanvas.DefaultDrawingAttributes.Color = Colors.Black;
             // activate the ue of customized cursors 
@@ -105,8 +109,8 @@ namespace LinearRegressionWPF.Views
         {
             try
             {
-                Bitmap copy = dataConverter.ImageSourceToBitmap(src);
-                double[,] matrix = dataConverter.ConvertToMatrix(dataConverter.ImageSourceToBitmap(src));
+                Bitmap copy = imageToVectorViewModel.ImageSourceToBitmap(src);
+                double[,] matrix = imageToVectorViewModel.ConvertToMatrix(imageToVectorViewModel.ImageSourceToBitmap(src));
                 DataConverter.imgPixelsMatrix = matrix;
                 for (int i = 0; i < copy.Width; i++)
                 {
@@ -133,8 +137,8 @@ namespace LinearRegressionWPF.Views
         public void GetMatrix(int width, int heigh)
         {
             this.txtMatrix.Text = "";
-            BitmapSource img = dataConverter.ConvertToBitmapSource(MyCanvas);
-            ImageSource img_src = dataConverter.ConvertToImageSource((dataConverter.ConvertToBitmap(img)), width, heigh);
+            BitmapSource img =imageToVectorViewModel.ConvertToBitmapSource(MyCanvas);
+            ImageSource img_src = imageToVectorViewModel.ConvertToImageSource((imageToVectorViewModel.ConvertToBitmap(img)), width, heigh);
             imgCanvas.Source = img_src;
             DrawMatrix(img_src);
         }

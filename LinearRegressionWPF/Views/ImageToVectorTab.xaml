@@ -79,9 +79,9 @@
 
         <Label Content="Draw The shape Below :" Grid.Column="1" Height="29" Width="163" FontSize="14" Grid.ColumnSpan="2" Grid.Row="0"/>
         <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="clear_btn_click"  Grid.Column="3" Grid.Row="1"/>
-        <Button x:Name="_3by3_btn" Content="Get 3X3 Image"   Width="110" Height="42" FontSize="16" Click="_3by3_btn_click"  Grid.Column="3" Grid.Row="2"  />
-        <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="115" Height="42" FontSize="16" Click="_4by4_btn_click"  Grid.Column="3" Grid.Row="3" />
-        <Button x:Name="_5by5_btn" Content="Get 5X5 Image" Width="122" Height="42" FontSize="16" Click="_5by5_btn_click"  Grid.Column="3" Grid.Row="4" Margin="5" />
+        <Button x:Name="_3by3_btn" Content="Get 3X3 Image"   Width="120" Height="42" FontSize="16" Click="_3by3_btn_click"  Grid.Column="3" Grid.Row="2"  />
+        <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="120" Height="42" FontSize="16" Click="_4by4_btn_click"  Grid.Column="3" Grid.Row="3" />
+        <Button x:Name="_5by5_btn" Content="Get 5X5 Image" Width="120" Height="42" FontSize="16" Click="_5by5_btn_click"  Grid.Column="3" Grid.Row="4" Margin="5" />
         <Button x:Name="_12by12_btn_Copy" Content="Get 12X12 Image" Width="134" Height="42" FontSize="16" Click="_12by12_btn_click"  Grid.Column="3" Grid.Row="5" Margin="5"/>
 
         <Border
