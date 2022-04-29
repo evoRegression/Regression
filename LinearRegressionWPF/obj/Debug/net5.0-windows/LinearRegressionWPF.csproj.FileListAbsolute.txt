@@ -148,3 +148,5 @@ C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj
 C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj\Debug\net5.0-windows\LinearRegressionWPF.pdb
 C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj\Debug\net5.0-windows\LinearRegressionWPF.genruntimeconfig.cache
 C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj\Debug\net5.0-windows\Views\PlayGroundTab.g.cs
+C:\Users\Ali\Desktop\Coding\Evo04282022\LinearRegression\LinearRegressionWPF\obj\Debug\net5.0-windows\Views\PlayGroundTab.baml

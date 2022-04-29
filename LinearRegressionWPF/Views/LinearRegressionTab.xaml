@@ -4,11 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:oxy="http://oxyplot.org/wpf"
-             xmlns:view_models="clr-namespace:LinearRegressionWPF.ViewModels" d:DataContext="{d:DesignInstance Type=view_models:LinearRegressionViewModel}"
+            xmlns:viewmodels="clr-namespace:LinearRegressionWPF.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:LinearRegressionViewModel}"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="1100">
-   
-    <Grid >
+             d:DesignHeight="500" d:DesignWidth="1100"
+             FontFamily="Consolas">
+
+    <Border 
+        BorderThickness="3"
+        BorderBrush="Gray"
+        CornerRadius="5"  >
+
+
+        <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition />
@@ -26,7 +33,7 @@
             <DockPanel LastChildFill="False">
 
                 <Button Name="OpenDataFile" Content="Import data"
-                        Command="{Binding OpenDataFileCommand}"
+                        Command="{Binding OpenDataFileCommand ,Mode=TwoWay}"
                         DockPanel.Dock="Top"
                         HorizontalAlignment="Left"
                         Height="30" Width="100"
@@ -35,8 +42,8 @@
                 <Label Content="Model" DockPanel.Dock="Top" HorizontalAlignment="Left"
                        Margin="0,20,0,0" Padding="0,0,0,5"/>
                 <ComboBox Name="ModelComboBox"
-                          ItemsSource="{Binding AvailableModelsArray}"
-                          SelectedItem="{Binding SelectedModel}"
+                          ItemsSource="{Binding AvailableModelsArray ,Mode=TwoWay}"
+                          SelectedItem="{Binding SelectedModel, Mode=TwoWay}"
                           DockPanel.Dock="Top" HorizontalAlignment="Left"
                           Width="200">
                     <ComboBox.ItemTemplate>
@@ -181,7 +188,7 @@
             <Button Name="Predict" Content="Predict"
                     Command="{Binding PredictCommand}"
                     IsEnabled="{Binding PredictEnabled}"
-                    Height="30" Width="50"
+                    Height="30" MinWidth="70"
                     Background="LightGreen"
                     Margin="5,0,20,0" />
 
@@ -212,10 +219,15 @@
             <Button Name="Show" Content="Show"
                     Command="{Binding ShowCommand}"
                     IsEnabled="{Binding ShowEnabled}"
-                    Height="30" Width="50"
+                    Height="30" MinWidth="70"
                     Background="LightGreen"
                     Margin="5,0,0,0" />
 
         </StackPanel>
-    </Grid>
+
+        </Grid>
+    </Border>
+
 </UserControl>
+    
+

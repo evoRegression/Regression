@@ -20,7 +20,7 @@ namespace LinearRegressionWPF.ViewModels
     {
         public LinearRegressionViewModel()
         {
-           
+            
             GridVisibility = Visibility.Collapsed;
             RegressionPlot = new RegressionPlot();
             InitParameters();
@@ -60,8 +60,8 @@ namespace LinearRegressionWPF.ViewModels
             PredictEnabled = false;
         }
 
-        public ICommand OpenDataFileCommand { get; private set; }
-        public ModelDescriptor[] AvailableModelsArray { get; private set; }
+        public ICommand OpenDataFileCommand { get;  set; }
+        public ModelDescriptor[] AvailableModelsArray { get;  set; }
 
         public ModelDescriptor SelectedModel
         {
