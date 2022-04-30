@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="LinearRegressionWPF.Views.ImageToVectorTab"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LinearRegressionWPF.Views"
+        mc:Ignorable="d" d:DesignWidth="980" Height="400" >
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"  />
+            <RowDefinition Height="*"  />
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="200" />
+           
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+        <Border 
+        BorderThickness="3"
+        BorderBrush="Gray"
+        CornerRadius="5"
+        Grid.Row="0" 
+         Grid.Column="0" 
+         Grid.RowSpan="8"
+         >
+
+            <DockPanel  Background="#348EF6" >
+            </DockPanel>
+            
+            
+        </Border>
+        <Label Content="Brush Size" Height="25" Grid.Row="3" Grid.Column="0" Width="82" Foreground="#FFF2FAFF" FontSize="14"/>
+        <Border x:Name="brushbrd"
+        BorderThickness="3"
+        BorderBrush="Gray"
+        Width="60"
+        Height="60"
+        Grid.Row="1"
+        Grid.Column="0">
+            <Image x:Name="brushtbn"   Source="/Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="brush_btn_down"/>
+        </Border>
+        <Border x:Name="erasebrd"
+        BorderThickness="3"
+        BorderBrush="Gray"
+        Width="60"
+        Height="60"
+        Grid.Row="2"
+        Grid.Column="0"
+        >
+            <Image x:Name="erasebtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Resources/eraser.png" MouseDown="erase_btn_down"/>
+        </Border>
+        <Border
+    BorderThickness="5"
+    BorderBrush="Black"
+    Grid.Row="1"
+    Grid.Column="1"
+    Grid.ColumnSpan="2"
+    Grid.RowSpan="5"
+    Margin="10"
+    >
+            <InkCanvas x:Name="MyCanvas" Background="White" ></InkCanvas>
+        </Border>
+
+        <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" Grid.Row="4" VerticalAlignment="Top" Margin="10,0,20,0" ValueChanged="SlideVlaueChange"/>
+
+        <Label Content="Draw The shape Below :" Grid.Column="1" Height="29" Width="163" FontSize="14" Grid.ColumnSpan="2" Grid.Row="0"/>
+        <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="clear_btn_click"  Grid.Column="4" Grid.Row="1" />
+
+        <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="120" Height="42" FontSize="16" Click="_4by4_btn_click"  Grid.Column="4" Grid.Row="2" />
+
+
+        <Border
+    BorderThickness="5"
+    BorderBrush="Black"
+    Grid.Row="3" 
+    Grid.RowSpan="3"
+    Grid.ColumnSpan="3"
+    Grid.Column="5"
+            Margin="10">
+
+            <Image x:Name="imgCanvas"   RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
+
+        </Border>
+
+        <TextBox x:Name="txtMatrix"  TextWrapping="Wrap" Background="#FFC7CBDE" FontSize="10" IsEnabled="False" Grid.Column="5" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="2" />
+
+    </Grid>
+</UserControl>

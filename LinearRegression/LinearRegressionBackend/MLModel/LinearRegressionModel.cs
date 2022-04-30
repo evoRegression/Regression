@@ -34,7 +34,7 @@ namespace LinearRegressionBackend.MLModel
             return _lossFunction.Loss(_coefficient.getThetas(), inputData, targetData);
         }
 
-        public List<History> Train(double[][] inputData, double[] targetData, int epochs = 1)
+        public List<History> Fit(double[][] inputData, double[] targetData, int epochs = 1)
         {
             List<History> history= new List<History>();
 

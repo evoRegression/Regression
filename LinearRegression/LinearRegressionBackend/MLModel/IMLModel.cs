@@ -9,10 +9,19 @@ namespace LinearRegressionBackend.MLModel
     public interface IMLModel
     {
         /// <summary>
+        /// Trains the model for a fixed number of epochs.
+        /// </summary>
+        /// <param name="inputData">The matrix representation of the input data.</param>
+        /// <param name="targetData">The array representation of the target data.</param>
+        /// <param name="epochs">The number of iterations.</param>
+        /// <returns>Returns with the training history.</returns>
+        List<History> Fit(double[][] inputData, double[] targetData, int epochs = 1);
+
+        /// <summary>
         /// Generates output predictions for the input data.
         /// </summary>
         /// <param name="inputData">The matrix representation of the input data.</param>
-        /// <returns>Returns the prediction at a given point.</returns>
+        /// <returns></returns>
         double Predict(double[] inputData);
 
         /// <summary>
@@ -23,10 +32,8 @@ namespace LinearRegressionBackend.MLModel
         /// <returns>Returns with the loss value on the given data.</returns>
         double Evaluation(double[][] inputData, double[] targetData);
 
-        /// <summary>
-        /// Trains the model on the given data.
-        /// </summary>
-        /// <param name="data">The matrix representation of the input data.</param>
-        public List<History> Train(double[][] data, double[] targetData, int epochs = 1);
+        void Save(string path);
+
+        IMLModel Load(string path);
     }
 }
