@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brushes = System.Windows.Media.Brushes;
-using MathNet.Numerics.LinearAlgebra;
 using LinearRegressionBackend.DataProvider;
 using LinearRegressionWPF.ViewModels;
 
@@ -53,7 +42,7 @@ namespace LinearRegressionWPF.Views
       
 
     
-        private void brush_btn_down(object sender, MouseButtonEventArgs e)
+        private void BrushBtnClick(object sender, MouseButtonEventArgs e)
         {
             /* logic for switching between the button and the eraser */
             brushbrd.BorderBrush = Brushes.Blue;
@@ -62,7 +51,7 @@ namespace LinearRegressionWPF.Views
             erasebrd.BorderBrush = Brushes.Gray;
         }
 
-        private void erase_btn_down(object sender, MouseButtonEventArgs e)
+        private void EreaseBtnClick(object sender, MouseButtonEventArgs e)
         {
             /* logic for switching between the button and the eraser */
             erasebrd.BorderBrush = Brushes.Blue;
@@ -71,13 +60,13 @@ namespace LinearRegressionWPF.Views
             brushbrd.BorderBrush = Brushes.Gray;
         }
 
-        private void clear_btn_click(object sender, RoutedEventArgs e)
+        private void ClearBtnClick(object sender, RoutedEventArgs e)
         {
             MyCanvas.Strokes.Clear();
         }
 
     
-        private void _4by4_btn_click(object sender, RoutedEventArgs e)
+        private void FourByFourBtnClick(object sender, RoutedEventArgs e)
         {
             GetMatrix(4, 4);
         }
