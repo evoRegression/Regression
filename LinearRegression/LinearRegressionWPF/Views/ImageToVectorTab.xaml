@@ -48,7 +48,7 @@
         Height="60"
         Grid.Row="1"
         Grid.Column="0">
-            <Image x:Name="brushtbn"   Source="/Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="brush_btn_down"/>
+            <Image x:Name="brushtbn"   Source="/Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="BrushBtnClick"/>
         </Border>
         <Border x:Name="erasebrd"
         BorderThickness="3"
@@ -58,7 +58,7 @@
         Grid.Row="2"
         Grid.Column="0"
         >
-            <Image x:Name="erasebtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Resources/eraser.png" MouseDown="erase_btn_down"/>
+            <Image x:Name="erasebtn" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Resources/eraser.png" MouseDown="EreaseBtnClick"/>
         </Border>
         <Border
     BorderThickness="5"
@@ -75,9 +75,9 @@
         <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" Grid.Row="4" VerticalAlignment="Top" Margin="10,0,20,0" ValueChanged="SlideVlaueChange"/>
 
         <Label Content="Draw The shape Below :" Grid.Column="1" Height="29" Width="163" FontSize="14" Grid.ColumnSpan="2" Grid.Row="0"/>
-        <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="clear_btn_click"  Grid.Column="4" Grid.Row="1" />
+        <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="ClearBtnClick"  Grid.Column="4" Grid.Row="1" />
 
-        <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="120" Height="42" FontSize="16" Click="_4by4_btn_click"  Grid.Column="4" Grid.Row="2" />
+        <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="120" Height="42" FontSize="16" Click="FourByFourBtnClick"  Grid.Column="4" Grid.Row="2" />
 
 
         <Border
