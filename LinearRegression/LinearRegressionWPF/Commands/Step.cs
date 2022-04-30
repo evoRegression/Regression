@@ -7,9 +7,9 @@ namespace LinearRegressionWPF.Commands
 {
     class Step : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private LinearRegressionViewModel _viewModel;
 
-        public Step(MainWindowViewModel viewModel)
+        public Step(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -23,7 +23,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            _viewModel.Step();
+            _viewModel.step();
         }
     }
 }
