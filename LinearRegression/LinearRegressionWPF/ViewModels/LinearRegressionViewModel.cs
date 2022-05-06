@@ -124,7 +124,7 @@ namespace LinearRegressionWPF.ViewModels
 
         private double[][] _data;
 
-        public void importDataSet(string fileName)
+        public void ImportDataSet(string fileName)
         {
             _data = new DataProvider().Import(fileName);
             RegressionPlot.updateDataSet(_data);
@@ -143,7 +143,7 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        public void train()
+        public void Train()
         {
             IMLModel model = SelectedModel.BuildModel(new ModelBuilderParams {
                 LossFunctionDesc = SelectedLossFunction,
@@ -174,7 +174,7 @@ namespace LinearRegressionWPF.ViewModels
         public ICommand AnimateCommand { get; private set; }
         public ICommand ShowCommand { get; private set; }
 
-        public void step()
+        public void Step()
         {
             History current = _history[_historyIndex];
             updateRegressionLine(current.Thetas[MLCommons.SLOPE_INDEX], current.Thetas[MLCommons.INTERCEPT_INDEX]);
@@ -191,7 +191,7 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        public void show()
+        public void Show()
         {
             History current = _history.Last();
             updateRegressionLine(current.Thetas[MLCommons.SLOPE_INDEX], current.Thetas[MLCommons.INTERCEPT_INDEX]);
@@ -212,16 +212,16 @@ namespace LinearRegressionWPF.ViewModels
         public double Prediction { get; set; }
         public ICommand PredictCommand { get; set; }
 
-        public void predict()
+        public void Predict()
         {
             Prediction = Slope * PredictDataPoint + YIntercept;
             NotifyPropertyChanged(nameof(Prediction));
 
             RegressionPlot.addPredictedPoint(new double[] { PredictDataPoint, Prediction });
-            fitRegressionLineToView();
+            FitRegressionLineToView();
         }
 
-        public void fitRegressionLineToView()
+        public void FitRegressionLineToView()
         {
             RegressionPlot.updateRegressionLine(Slope, YIntercept);
         }

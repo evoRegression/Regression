@@ -23,7 +23,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            _viewModel.step();
+            _viewModel.Step();
         }
     }
 }

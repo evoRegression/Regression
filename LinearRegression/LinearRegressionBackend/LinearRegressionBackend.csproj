@@ -15,7 +15,7 @@
     <EmbeddedResource Remove="MLContext\obj\**" />
     <EmbeddedResource Remove="MLModel\obj\**" />
     <None Remove="DataProvider\obj\**" />
-    <None Remove="MLContext\obj\**" />
+
     <None Remove="MLModel\obj\**" />
   </ItemGroup>
 

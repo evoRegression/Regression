@@ -27,7 +27,7 @@ namespace LinearRegressionWPF.Commands
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                _viewModel.importDataSet(openFileDialog.FileName);
+                _viewModel.ImportDataSet(openFileDialog.FileName);
             }
         }
     }
