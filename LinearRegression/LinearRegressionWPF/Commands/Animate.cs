@@ -8,10 +8,10 @@ namespace LinearRegressionWPF.Commands
 {
     class Animate : ICommand 
     {
-        private MainWindowViewModel _viewModel;
+        private LinearRegressionViewModel _viewModel;
         private const int ANIMATION_DELAY = 250;
 
-        public Animate(MainWindowViewModel viewModel)
+        public Animate(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }

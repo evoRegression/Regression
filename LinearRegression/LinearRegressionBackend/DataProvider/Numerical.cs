@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.IO;
-
-using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
 {
@@ -21,21 +21,17 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns with an array.</returns>
         public static double[] Arange(double start, double stop, double step)
         {
-            decimal stepD = (decimal)step;
-            decimal currentValue = (decimal)start;
-
-            int arrayLength = (int)((stop - start) / step);
-            double[] array = new double[arrayLength];
-
-            // TODO: Replace with linq enumarate-range
-            for (int j = 0; j < arrayLength; j++)
+            int j = 0;
+            double[] array = new double [(int)((stop-start)/step)];
+            for (double i=start;i<stop;i+=step)
             {
-                array[j] = (double)currentValue;
-                currentValue += stepD;
+                array[j++]=i;
             }
-
             return array;
+
+            //linq enumarate-range
         }
+
         /// <summary>
         /// Loads a correctly formated string file, into a two dimensional double matrix. The format must be "number,number", 
         /// every line can only contain 1 pair of values, the file must contain at least one full pair.
@@ -45,29 +41,30 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns with a two dimensional double matrix.</returns>
         public static double[][] LoadText(string filePath, char delimeter = ',')
         {
-            string[] lines = File.ReadAllLines(filePath);
+            double[][] matrix = null;
+            string[] lines = System.IO.File.ReadAllLines(filePath);
             List<double[]> dataList = new List<double[]>();
             for (int i = 0; i < lines.Length; i++)
             {
-                string line = lines[i];
-                string[] numbers = line.Split(delimeter);
+                String line = lines[i];
+                String[] numbers = line.Split(delimeter);
                 if (numbers.Length != 2)
                 {
                     throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
                 }
-
                 double[] XandY = new double[2];
                 for (int j = 0; j < numbers.Length; j++)
                 {
-                    if (double.TryParse(numbers[j], NumberStyles.Any, CultureInfo.InvariantCulture, out double nextData))
+                    double nextData;
+                    if (double.TryParse(numbers[j], NumberStyles.Any, CultureInfo.InvariantCulture, out nextData))
                         XandY[j] = nextData;
                     else
                         throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
                 }
-
                 dataList.Add(XandY);
             }
-            return dataList.ToArray();
+            matrix = dataList.ToArray();
+            return matrix;
         }
 
         /// <summary>
@@ -78,12 +75,11 @@ namespace LinearRegressionBackend.DataProvider
         /// <param name="delimeter">The symbol in the txt that will be used to separate the value pairs.</param>
         public static void SaveText(string filePath, double[][] matrix, char delimeter = ',')
         {
-            string outputstring = matrix[0][0].ToString() + delimeter.ToString() + matrix[0][1].ToString() + Environment.NewLine;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            string outputstring= matrix[0][0].ToString() + delimeter.ToString() + matrix[0][1].ToString() + Environment.NewLine;
+            for (int i = 1; i < matrix.GetLength(0); i++)
             {
                 outputstring += matrix[i][0].ToString() + delimeter.ToString() + matrix[i][1].ToString() + Environment.NewLine;
             }
-
             File.WriteAllText(filePath, outputstring);
         }
 
@@ -95,13 +91,12 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the mean of all values, of the given axis.</returns>
         public static double Mean(double[][] matrix, int axis)
         {
-            double result = 0;
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                result += matrix[i][axis];
-            }
-
-            return result / matrix.GetLength(0);
+         double result = matrix[0][axis];
+             for (int i = 1; i < matrix.GetLength(0); i++)
+             {
+                 result += matrix[i][axis];
+             }
+         return result/ matrix.GetLength(0);            
         }
 
         /// <summary>
@@ -113,20 +108,43 @@ namespace LinearRegressionBackend.DataProvider
         public static double Median(double[][] matrix, int axis)
         {
             double[] matrix_array = new double[matrix.GetLength(0)];
-            int middle = matrix_array.GetLength(0) / 2;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            double middle = matrix_array.GetLength(0) / 2;
+            if (axis == 0)
             {
-                matrix_array[i] = matrix[i][axis];
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    matrix_array[i] = matrix[i][axis];
+                }
+                SortArray(matrix_array);
+                if (matrix_array.Length % 2 == 0)
+                {
+                    double egy = matrix_array[(int)middle - 1];
+                    double ketto = matrix_array[(int)middle];
+                    return ((matrix_array[(int)middle - 1] + matrix_array[(int)middle]) / 2);
+                }
+                else
+                {
+                    return (matrix_array[(int)middle]);
+                }
             }
-
-            Array.Sort(matrix_array);
-
-            if (matrix_array.Length % 2 == 0)
+            else
             {
-                return ((matrix_array[middle - 1] + matrix_array[middle]) / 2);
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    matrix_array[i] = matrix[i][axis];
+                }
+                SortArray(matrix_array);
+                if (matrix_array.Length % 2 == 0)
+                {
+                    double egy = matrix_array[(int)middle - 1];
+                    double ketto = matrix_array[(int)middle];
+                    return ((matrix_array[(int)middle - 1] + matrix_array[(int)middle]) / 2);
+                }
+                else
+                {
+                    return (matrix_array[(int)middle]);
+                }
             }
-
-            return (matrix_array[middle]);
         }
 
         /// <summary>
@@ -137,16 +155,15 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the Standard deviation of all values, from the given axis.</returns>
         public static double StandardDeviation(double[][] matrix, int axis)
         {
-            double mean = Mean(matrix, axis);
-            double result = 0;
+            double mean = Numerical.Mean(matrix,axis);
+            double result=0;
+            //double[] matrix_array = new double[matrix.GetLength(0)];
             for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                result += Math.Pow(matrix[i][axis] - mean, 2);
+                result += Math.Pow((matrix[i][axis]-mean),2);
             }
-
-            result /= matrix.Length;
-
-            return Math.Pow(result, 0.5);
+            result = result / (matrix.GetLength(0) - 1);
+            return Math.Pow(result,0.5);
         }
 
         /// <summary>
@@ -157,7 +174,9 @@ namespace LinearRegressionBackend.DataProvider
         /// <returns>Returns the variance of all values, from the given axis.</returns>
         public static double Variance(double[][] matrix, int axis)
         {
-            return Max(matrix, axis) - Min(matrix, axis);
+            double result = Max(matrix,axis) - Min(matrix,axis);
+
+            return result;
         }
 
         /// <summary>
@@ -176,7 +195,6 @@ namespace LinearRegressionBackend.DataProvider
                     result = matrix[i][axis];
                 }
             }
-
             return result;
         }
 
@@ -191,24 +209,24 @@ namespace LinearRegressionBackend.DataProvider
             double result = matrix[0][axis];
             for (int i = 1; i < matrix.GetLength(0); i++)
             {
-                if (matrix[i][axis] > result)
+                if(matrix[i][axis]>result)
                 {
                     result = matrix[i][axis];
                 }
             }
-
             return result;
         }
 
         /// <summary>
-        /// Computes the dot product of two vectors.
+        /// Sorts an array, than returns it shorted
         /// </summary>
-        /// <param name="a">The first vector.</param>
-        /// <param name="b">The second vector.</param>
-        /// <returns>Returns the dot product of the two vectors.</returns>
-        public static double DotProduct(Vector<double> a, Vector<double> b)
+        /// <param name="array">The double array, we want to short.</param>
+        /// <returns>Returns the array value, shorted.</returns>
+        public static double[] SortArray(double[] array)
         {
-            return (a.ToRowMatrix() * b.ToColumnMatrix()).Row(0)[0];
+            double[] returnArray= array;
+            Array.Sort(returnArray);
+            return returnArray;
         }
     }
 }
