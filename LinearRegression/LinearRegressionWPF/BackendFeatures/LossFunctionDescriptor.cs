@@ -2,7 +2,7 @@
 
 using LinearRegressionBackend.MLModel;
 
-namespace LinearRegressionWPF.BackendDescriptors
+namespace LinearRegressionWPF.BackendFeatures
 {
     class LossFunctionDescriptor
     {

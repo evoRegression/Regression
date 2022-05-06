@@ -5,9 +5,9 @@ using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands {
     class LineToView : ICommand {
-        private LinearRegressionViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
 
-        public LineToView(LinearRegressionViewModel viewModel) {
+        public LineToView(MainWindowViewModel viewModel) {
             _viewModel = viewModel;
         }
 
