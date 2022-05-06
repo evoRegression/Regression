@@ -227,7 +227,7 @@
         <TabItem Header="Single Neuron">
 
             <Grid>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="20 "/>
@@ -263,7 +263,7 @@
                     <RowDefinition Height="20" />
                     <RowDefinition Height="20" />
                     <RowDefinition Height="20" />
-                    
+
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -385,23 +385,63 @@
             <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight16" Width="100"  />
                 </TextBlock>
 
-                <Label Content="sums goes here later" 
-                       Grid.Column="4"
-                        Grid.Row="5"
-                        Grid.RowSpan="6" 
-                       
-                        
-                        ></Label>
 
-                <Label Content="math stuff goes here" 
-                       Grid.Column="6"
-                        Grid.Row="7"
-                            Grid.RowSpan="4" ></Label>
+                <Border Grid.Row="6" Grid.Column="4" Padding="20,10,0,0" Grid.ColumnSpan="6" Margin="0,10,108,0" Grid.RowSpan="4" >
+                    <DockPanel LastChildFill="False" VerticalAlignment="Center" Height="60">
+                        <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                            <Label Content="Bias" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                            <TextBox Text="{Binding BiasMock}"
+                             KeyDown="TextBoxEnterUpdate"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                        </DockPanel>
 
-                    <Label Content="result goes here" 
-                           Grid.Column="8"
-                        Grid.Row="5"
-                            Grid.RowSpan="6" ></Label>
+                        <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                            <Label Content="Weighted sum" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                            <TextBox Text="{Binding WeightedSum}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                        </DockPanel>
+
+                        <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                            <Label Content="Activation Function" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                            <ComboBox Name="SingleNeuronComboBox"
+                              ItemsSource="{Binding AvailableActivationFunctionsArray}"
+                              SelectedItem="{Binding SelectedActivationFunction}"
+                              DockPanel.Dock="Top" HorizontalAlignment="Left"
+                              Width="120">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DockPanel>
+
+                        <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                            <Label Content="Activation" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                            <TextBox Text="{Binding Activation}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                        </DockPanel>
+                    </DockPanel>
+                </Border>
 
 
             </Grid>
