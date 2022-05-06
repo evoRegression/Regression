@@ -7,9 +7,9 @@ namespace LinearRegressionWPF.Commands
 {
     class AddRandomLine : ICommand
     {
-        private LinearRegressionViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
 
-        public AddRandomLine(LinearRegressionViewModel viewModel)
+        public AddRandomLine(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -66,7 +66,7 @@ namespace LinearRegressionWPF.Commands
 
             // Update graph
 
-            _viewModel.updateRegressionLine(slope, yIntercept);
+            _viewModel.UpdateRegressionLine(slope, yIntercept);
         }
     }
 }

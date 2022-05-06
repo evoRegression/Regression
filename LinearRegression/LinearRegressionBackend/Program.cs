@@ -1,8 +1,6 @@
-﻿using LinearRegressionBackend.MLContext;
+﻿using System;
+
 using LinearRegressionBackend.DataProvider;
-using LinearRegressionBackend.MLModel;
-using System;
-using LinearRegressionBackend.DataProvider.Exceptions;
 
 namespace LinearRegressionBackend.OOPExercise
 {
@@ -10,34 +8,29 @@ namespace LinearRegressionBackend.OOPExercise
     {
         static void Main(string[] args)
         {
-            IMLContext context = new MLContext.MLContext();
-            MLModel.LinearRegressionModel model = new MLModel.LinearRegressionModel(0,0, new GradientDescent(), new LeastSquareError() );
-            model.setLearningRate(0.01);
+            double[] arrayUnsorted = { 1, 5, 3, 9, 5, 6 };
 
-            IDataProvider dataProvider = new DataProvider.DataProvider();
+            Array.Sort(arrayUnsorted);
 
-            Boolean correctData = false;
-            try
-            {
-                context.Init(dataProvider, model);
-                correctData = true;
-            }
-            catch (InvalidDataException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            double[][] myArray4 = new double[5][];
+            myArray4[0] = new double[2];
+            myArray4[1] = new double[2];
+            myArray4[2] = new double[2];
+            myArray4[3] = new double[2];
+            myArray4[4] = new double[2];
 
-            if (correctData)
-            {
-                context.Train();
-                Console.Write("Give me a data point: ");
-                double input = double.Parse(Console.ReadLine());
-                double prediction = context.Predict(input);
+            myArray4[0][0] = 1; myArray4[0][1] = 82;
+            myArray4[1][0] = 3; myArray4[1][1] = 93;
+            myArray4[2][0] = 5; myArray4[2][1] = 98;
+            myArray4[3][0] = 7; myArray4[3][1] = 89;
+            myArray4[4][0] = 9; myArray4[4][1] = 88;
 
-                model.Save("Model.xml");
+            double testDongle = Numerical.StandardDeviation(myArray4, 1);
+            Console.WriteLine(testDongle);
 
-                Console.WriteLine($"Result: {prediction}");
-            }
+            Numerical.SaveText("C:/Users/cnsor/Desktop/test/test.txt", myArray4);
+
+            Console.ReadLine();
         }
     }
 }

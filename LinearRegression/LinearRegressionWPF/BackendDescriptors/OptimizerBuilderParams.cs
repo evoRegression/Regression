@@ -1,4 +1,4 @@
-﻿namespace LinearRegressionWPF.BackendDescriptors
+﻿namespace LinearRegressionWPF.BackendFeatures
 {
     class OptimizerBuilderParams
     {

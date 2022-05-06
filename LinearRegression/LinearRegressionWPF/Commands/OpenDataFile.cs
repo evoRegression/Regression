@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+
 using Microsoft.Win32;
 
 using LinearRegressionWPF.ViewModels;
@@ -8,9 +9,9 @@ namespace LinearRegressionWPF.Commands
 {
     class OpenDataFile : ICommand
     {
-        private LinearRegressionViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
 
-        public OpenDataFile(LinearRegressionViewModel viewModel)
+        public OpenDataFile(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }

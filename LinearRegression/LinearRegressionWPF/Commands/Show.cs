@@ -7,9 +7,9 @@ namespace LinearRegressionWPF.Commands
 {
     class Show : ICommand
     {
-        private LinearRegressionViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
 
-        public Show(LinearRegressionViewModel viewModel)
+        public Show(MainWindowViewModel viewModel)
         {
             _viewModel = viewModel;
         }
