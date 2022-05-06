@@ -14,14 +14,10 @@ namespace LinearRegressionWPF.ViewModels
 {
     class ImageToVectorViewModel
     {
-      
-       
-
       public ImageToVectorViewModel()
         {
            
         }
-
         /// <summary>
         /// Get A matrix from a bitmap image .
         /// </summary>
@@ -38,38 +34,11 @@ namespace LinearRegressionWPF.ViewModels
                     int rl = cl.R;
                     int gl = cl.G;
                     int b1 = cl.B;
-                    // get the grayshade of a pixel 
                     float gray = (float)(.299 * rl + .587 * gl + .114 * b1);
-                    //if the pixel is white get 0 else get a value between 0 excluded and 1 
-                    pixels[j, i] = (gray == 255) ? 0 : 1-(gray / 256);
-
+                    pixels[i, j] = (gray == 255) ? 0 : 1-(gray / 256);
                 }
             return pixels;
         }
-
-        /// <summary>
-        /// convert an Image to bitmap image 
-        /// </summary>
-        /// <param name="img"> the Image to be converted </param>
-        /// <returns> a bitmapImage type </returns>
-
-        public BitmapImage ConvertToBitmapImage(Image img)
-        {
-            using (var memory = new MemoryStream())
-            {
-                img.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-
-                return bitmapImage;
-            }
-        }
-
         /// <summary>
         /// convert A inkcanvas control element to BitmapSource 
         /// </summary>
@@ -79,18 +48,12 @@ namespace LinearRegressionWPF.ViewModels
         {
             var target = new RenderTargetBitmap((int)inkCanvasElement.RenderSize.Width, (int)inkCanvasElement.RenderSize.Width, 96, 96, PixelFormats.Pbgra32);
             var brush = new VisualBrush(inkCanvasElement);
-
             var visual = new DrawingVisual();
             var drawingContext = visual.RenderOpen();
-
-
             drawingContext.DrawRectangle(brush, null, new Rect(new Point(0, 0),
                 new Point((int)inkCanvasElement.RenderSize.Width, (int)inkCanvasElement.RenderSize.Width)));
-
             drawingContext.Close();
-
             target.Render(visual);
-
             return target;
         }
         /// <summary>
@@ -104,6 +67,7 @@ namespace LinearRegressionWPF.ViewModels
               bitmapSource.PixelWidth,
               bitmapSource.PixelHeight,
               PixelFormat.Format32bppPArgb);
+            //lock the bits so we can change the bitmap programmaticlly 
             BitmapData data = bmp.LockBits(
               new Rectangle(new System.Drawing.Point(0, 0), bmp.Size),
               ImageLockMode.WriteOnly,
@@ -113,10 +77,10 @@ namespace LinearRegressionWPF.ViewModels
               data.Scan0,
               data.Height * data.Stride,
               data.Stride);
+            // unlock the bits 
             bmp.UnlockBits(data);
             return bmp;
         }
-
         /// <summary>
         /// convert a bitmap to ImageSource with specific widthPixel and specific heighpixel
         /// </summary>
@@ -127,12 +91,8 @@ namespace LinearRegressionWPF.ViewModels
         public ImageSource ConvertToImageSource(Bitmap bmp, int width, int heigh)
         {
             var handle = bmp.GetHbitmap();
-
             return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromWidthAndHeight(width, heigh));
-
-
         }
-
         /// <summary>
         /// Convert ImageSource to bitmap
         /// </summary>
@@ -142,16 +102,7 @@ namespace LinearRegressionWPF.ViewModels
         {
             var d = new DataObject(DataFormats.Bitmap, img, true);
             var bmp = d.GetData("System.Drawing.Bitmap") as System.Drawing.Bitmap;
-            bmp.Save("res.bmp");
             return bmp;
         }
-
-
-
-
-
-
-
-
     }
 }

@@ -18,7 +18,7 @@ namespace LinearRegressionWPF.Commands {
         }
 
         public void Execute(object parameter) {
-            _viewModel.fitRegressionLineToView();
+            _viewModel.FitRegressionLineToView();
         }
     }
 }

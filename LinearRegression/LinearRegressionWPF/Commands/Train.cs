@@ -23,7 +23,7 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            _viewModel.train();
+            _viewModel.Train();
         }
     }
 }
