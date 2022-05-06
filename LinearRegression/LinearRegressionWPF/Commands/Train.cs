@@ -7,9 +7,9 @@ namespace LinearRegressionWPF.Commands
 {
     class Train : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private LinearRegressionViewModel _viewModel;
 
-        public Train(MainWindowViewModel viewModel)
+        public Train(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }

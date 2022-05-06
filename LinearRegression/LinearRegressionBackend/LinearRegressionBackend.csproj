@@ -9,19 +9,26 @@
 
   <ItemGroup>
     <Compile Remove="DataProvider\obj\**" />
+    <Compile Remove="MLContext\obj\**" />
     <Compile Remove="MLModel\obj\**" />
     <EmbeddedResource Remove="DataProvider\obj\**" />
+    <EmbeddedResource Remove="MLContext\obj\**" />
     <EmbeddedResource Remove="MLModel\obj\**" />
     <None Remove="DataProvider\obj\**" />
+
     <None Remove="MLModel\obj\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\LinearRegressionInputData\data.txt">
+    <None Update="data2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
