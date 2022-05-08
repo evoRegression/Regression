@@ -4,12 +4,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
+using LinearRegressionBackend;
+using LinearRegressionBackend.MLCommmons;
+
 using LinearRegressionWPF.BackendFeatures;
 using LinearRegressionWPF.Commands;
 using LinearRegressionWPF.Models;
-using LinearRegressionBackend.DataProvider;
-using LinearRegressionBackend.MLCommmons;
-using LinearRegressionBackend.MLModel;
 
 namespace LinearRegressionWPF.ViewModels
 {
@@ -60,10 +60,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public ModelDescriptor SelectedModel
         {
-            get
-            {
-                return _selectedModel;
-            }
+            get => _selectedModel;
 
             set
             {
@@ -89,10 +86,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public OptimizerDescriptor SelectedOptimizer
         {
-            get
-            {
-                return _selectedOptimizer;
-            }
+            get => _selectedOptimizer;
 
             set
             {
@@ -116,28 +110,13 @@ namespace LinearRegressionWPF.ViewModels
         public bool LearningRateEnabled { get; private set; }
         public int Epochs { get; set; }
         public bool EpochsEnabled { get; private set; }
-
-        private double[][] _data;
-
-        public void ImportDataSet(string fileName)
-        {
-            _data = Numerical.LoadText(fileName);
-            RegressionPlot.updateDataSet(_data);
-            NotifyPropertyChanged(nameof(TrainEnabled));
-            PredictEnabled = false;
-            NotifyPropertyChanged(nameof(PredictEnabled));
-        }
+        public double[][] Data;
 
         public ICommand TrainCommand { get; private set; }
 
-        public bool TrainEnabled
-        {
-            get
-            {
-                return _data != null && _data.Length > 0;
-            }
-        }
+        public bool TrainEnabled => Data != null && Data.Length > 0;
 
+        // TODO: Move logic to the Train command
         public void Train()
         {
             IMLModel model = SelectedModel.BuildModel(new ModelBuilderParams
@@ -148,7 +127,7 @@ namespace LinearRegressionWPF.ViewModels
                 Slope = Slope,
                 YIntercept = YIntercept
             });
-            _history = model.Train(_data, _data.Select(point => point[1]).ToArray(), Epochs);
+            _history = model.Train(Data, Data.Select(point => point[1]).ToArray(), Epochs);
             _historyIndex = 0;
             StepEnabled = _selectedOptimizer.IsIterative;
             NotifyPropertyChanged(nameof(StepEnabled));
@@ -156,24 +135,25 @@ namespace LinearRegressionWPF.ViewModels
             NotifyPropertyChanged(nameof(ShowEnabled));
             PredictEnabled = false;
             NotifyPropertyChanged(nameof(PredictEnabled));
-            RegressionPlot.clearPredictions();
+            RegressionPlot.ClearPredictions();
         }
 
         private List<History> _history;
         private int _historyIndex;
 
         public int StepSize { get; set; }
-        public bool StepEnabled { get; private set; }
-        public bool ShowEnabled { get; private set; }
+        public bool StepEnabled { get; set; }
+        public bool ShowEnabled { get; set; }
 
         public ICommand StepCommand { get; private set; }
         public ICommand AnimateCommand { get; private set; }
         public ICommand ShowCommand { get; private set; }
 
+        // TODO: Move logic to the Step command
         public void Step()
         {
             History current = _history[_historyIndex];
-            UpdateRegressionLine(current.Thetas[MLCommons.SLOPE_INDEX], current.Thetas[MLCommons.INTERCEPT_INDEX]);
+            UpdateRegressionLine(current.Parameters[MLCommons.SLOPE_INDEX], current.Parameters[MLCommons.INTERCEPT_INDEX]);
 
             _historyIndex += StepSize;
 
@@ -187,10 +167,11 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
+        // TODO: Move logic to the Show command
         public void Show()
         {
             History current = _history.Last();
-            UpdateRegressionLine(current.Thetas[MLCommons.SLOPE_INDEX], current.Thetas[MLCommons.INTERCEPT_INDEX]);
+            UpdateRegressionLine(current.Parameters[MLCommons.SLOPE_INDEX], current.Parameters[MLCommons.INTERCEPT_INDEX]);
 
             StepEnabled = ShowEnabled = false;
             NotifyPropertyChanged(nameof(StepEnabled));
@@ -203,23 +184,25 @@ namespace LinearRegressionWPF.ViewModels
 
         #region Predict
 
-        public bool PredictEnabled { get; private set; }
+        public bool PredictEnabled { get; set; }
         public double PredictDataPoint { get; set; }
         public double Prediction { get; set; }
         public ICommand PredictCommand { get; set; }
 
+        // TODO: Move logic to the Predict command
         public void Predict()
         {
             Prediction = Slope * PredictDataPoint + YIntercept;
             NotifyPropertyChanged(nameof(Prediction));
 
-            RegressionPlot.addPredictedPoint(new double[] { PredictDataPoint, Prediction });
+            RegressionPlot.AddPredictedPoint(new double[] { PredictDataPoint, Prediction });
             FitRegressionLineToView();
         }
 
+        // TODO: Move logic to the LineToView command
         public void FitRegressionLineToView()
         {
-            RegressionPlot.updateRegressionLine(Slope, YIntercept);
+            RegressionPlot.UpdateRegressionLine(Slope, YIntercept);
         }
 
         #endregion
@@ -238,7 +221,7 @@ namespace LinearRegressionWPF.ViewModels
             set
             {
                 _slope = value;
-                RegressionPlot.updateRegressionLine(_slope, _yIntercept);
+                RegressionPlot.UpdateRegressionLine(_slope, _yIntercept);
                 NotifyPropertyChanged(nameof(Slope));
             }
         }
@@ -247,15 +230,12 @@ namespace LinearRegressionWPF.ViewModels
 
         public double YIntercept
         {
-            get
-            {
-                return _yIntercept;
-            }
+            get => _yIntercept;
 
             set
             {
                 _yIntercept = value;
-                RegressionPlot.updateRegressionLine(_slope, _yIntercept);
+                RegressionPlot.UpdateRegressionLine(_slope, _yIntercept);
                 NotifyPropertyChanged(nameof(YIntercept));
             }
         }
@@ -264,7 +244,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public void UpdateRegressionLine(double slope, double yIntercept)
         {
-            RegressionPlot.updateRegressionLine(slope, yIntercept);
+            RegressionPlot.UpdateRegressionLine(slope, yIntercept);
             _slope = slope;
             NotifyPropertyChanged(nameof(Slope));
             _yIntercept = yIntercept;
@@ -281,7 +261,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        internal void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

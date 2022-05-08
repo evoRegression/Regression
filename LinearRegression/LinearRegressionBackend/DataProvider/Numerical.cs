@@ -51,10 +51,6 @@ namespace LinearRegressionBackend.DataProvider
             {
                 string line = lines[i];
                 string[] numbers = line.Split(delimeter);
-                if (numbers.Length != 2)
-                {
-                    throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
-                }
 
                 double[] XandY = new double[2];
                 for (int j = 0; j < numbers.Length; j++)
@@ -62,12 +58,18 @@ namespace LinearRegressionBackend.DataProvider
                     if (double.TryParse(numbers[j], NumberStyles.Any, CultureInfo.InvariantCulture, out double nextData))
                         XandY[j] = nextData;
                     else
-                        throw new InvalidDataException($"Incorrect Data in \"{ filePath}\" file at line: {i + 1} : {line}");
+                        throw new InvalidDataException($"Incorrect Data in \"{filePath}\" file at line: {i + 1} : {line}");
                 }
 
                 dataList.Add(XandY);
             }
             return dataList.ToArray();
+        }
+
+        // TODO: Replace the old method with this.
+        public static Matrix<double> LoadText1(string filePath, char delimeter = ',')
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -87,6 +89,11 @@ namespace LinearRegressionBackend.DataProvider
             File.WriteAllText(filePath, outputstring);
         }
 
+        public static void SaveText(string filePath, Matrix<double> matrix, char delimeter = ',')
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Calculates the mean of all values on an axis.
         /// </summary>
@@ -102,6 +109,11 @@ namespace LinearRegressionBackend.DataProvider
             }
 
             return result / matrix.GetLength(0);
+        }
+
+        public static double Mean(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -129,6 +141,11 @@ namespace LinearRegressionBackend.DataProvider
             return (matrix_array[middle]);
         }
 
+        public static double Median(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Calculates the standard deviation of all values on an axis.
         /// </summary>
@@ -149,6 +166,11 @@ namespace LinearRegressionBackend.DataProvider
             return Math.Pow(result, 0.5);
         }
 
+        public static double StandardDeviation(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Calculates the variance of all values on an axis.
         /// </summary>
@@ -158,6 +180,11 @@ namespace LinearRegressionBackend.DataProvider
         public static double Variance(double[][] matrix, int axis)
         {
             return Max(matrix, axis) - Min(matrix, axis);
+        }
+
+        public static double Variance(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -180,6 +207,11 @@ namespace LinearRegressionBackend.DataProvider
             return result;
         }
 
+        public static double Min(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Calculates the maximum value on an axis.
         /// </summary>
@@ -198,6 +230,11 @@ namespace LinearRegressionBackend.DataProvider
             }
 
             return result;
+        }
+
+        public static double Max(Matrix<double> matrix, int axis)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
-﻿using LinearRegressionBackend.MLCommmons;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using MathNet.Numerics.LinearAlgebra;
+
+using LinearRegressionBackend.MLCommmons;
 
 namespace LinearRegressionBackend.MLModel
 {
@@ -15,8 +15,9 @@ namespace LinearRegressionBackend.MLModel
                 return 0;
 
             double[] xAxis = inputData.Select(array => (double)array.GetValue(0)).ToArray();
-            return xAxis.Zip(targetData, (x, target) => Math.Pow(target - (x*thetas[MLCommons.SLOPE_INDEX] + thetas[MLCommons.INTERCEPT_INDEX]), 2)).Sum() / xAxis.Length;
+            return xAxis.Zip(targetData, (x, target) => Math.Pow(target - (x * thetas[MLCommons.SLOPE_INDEX] + thetas[MLCommons.INTERCEPT_INDEX]), 2)).Sum() / xAxis.Length;
         }
+
         public double[] LossDerivates(double[] thetas, double[][] inputData, double[] targetData)
         {
             double[] xAxis = inputData.Select(array => (double)array.GetValue(0)).ToArray();
@@ -33,6 +34,18 @@ namespace LinearRegressionBackend.MLModel
         internal double InterceptDerivate(double[] thetas, double[] xAxis, double[] yAxis)
         {
             return xAxis.Zip(yAxis, (x, y) => thetas[MLCommons.SLOPE_INDEX] * x + thetas[MLCommons.INTERCEPT_INDEX] - y).Sum() / xAxis.Length;
+        }
+
+        // TODO: Replace the old implementation with this.
+        public double Loss(Vector<double> actualValue, Vector<double> expectedValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        // TODO: Replace the old implementation with this.
+        public (Matrix<double>, double) LossDerivates(Vector<double> actualValue, Vector<double> expectedValue)
+        {
+            throw new NotImplementedException();
         }
     }
 }
