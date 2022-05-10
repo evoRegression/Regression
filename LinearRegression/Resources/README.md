@@ -1,1 +1,0 @@
-# Images for training the Neural Network.

@@ -1,18 +1,15 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace LinearRegressionBackend.MLModel
 {
-    public class NormalEquation : IOptimizer
+    public class NormalEquation : IEstimator
     {
-        public double[] Minimize(ILossFunction lossFunction, double[] thetas, double[][] inputData, double[] targetData)
+        public double[] Minimize(double[][] inputData, double[] targetData)
         {
-           
             Vector<double> y = Vector.Build.DenseOfArray(targetData);
 
             Matrix<double> matrix = Matrix.Build.Dense(targetData.Length, 2, 1);
@@ -23,5 +20,10 @@ namespace LinearRegressionBackend.MLModel
             return matrix.TransposeThisAndMultiply(matrix).Inverse().Multiply(transpose).Multiply(y).Reverse().ToArray();
         }
 
+        // TODO: Replace the old implementation with this.
+        public (Matrix<double>, double) Estimate(Matrix<double> inputData, Vector<double> outputData)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

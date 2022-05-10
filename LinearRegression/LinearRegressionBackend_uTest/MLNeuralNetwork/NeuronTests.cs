@@ -1,10 +1,13 @@
 ﻿using NUnit.Framework;
 
-using LinearRegressionBackend.MLNeuralNetwork;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
-    class NeuronTests {
+using LinearRegressionBackend.MLNeuralNetwork;
+
+namespace LinearRegressionBackend_uTest.MLNeuralNetwork
+{
+    internal class NeuronTests
+    {
         const double ACCURACY_DELTA = 0.00001d;
 
         [OneTimeSetUp]
@@ -20,7 +23,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         public void OneTimeTearDown() { }
 
         [Test]
-        public void Neuron_ZeroWeights_CorrectWeightedSum() {
+        public void Neuron_ZeroWeights_CorrectWeightedSum()
+        {
             // Arrange
             Vector<double> previousLayer = Vector<double>.Build.Dense(
                 new double[] { 0.1, 0.1, 0.1, 0.1, 0.1 }
@@ -41,7 +45,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Neuron_PositiveWeights_CorrectWeightedSum() {
+        public void Neuron_PositiveWeights_CorrectWeightedSum()
+        {
             // Arrange
             Vector<double> previousLayer = Vector<double>.Build.Dense(
                 new double[] { 0.1, 0.1, 0.1, 0.1, 0.1 }
@@ -62,7 +67,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Neuron_NegativeWeights_CorrectWeightedSum() {
+        public void Neuron_NegativeWeights_CorrectWeightedSum()
+        {
             // Arrange
             Vector<double> previousLayer = Vector<double>.Build.Dense(
                 new double[] { 0.1, 0.1, 0.1, 0.1, 0.1 }
@@ -83,7 +89,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Sigmoid_ZeroSum_CorrectActivation() {
+        public void Sigmoid_ZeroSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 0;
             Sigmoid sigmoid = new();
@@ -97,7 +104,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Sigmoid_PositiveSum_CorrectActivation() {
+        public void Sigmoid_PositiveSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 1;
             Sigmoid sigmoid = new();
@@ -112,7 +120,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Sigmoid_NegativeSum_CorrectActivation() {
+        public void Sigmoid_NegativeSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = -1;
             Sigmoid sigmoid = new();
@@ -127,7 +136,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Tanh_ZeroSum_CorrectActivation() {
+        public void Tanh_ZeroSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 0;
             Tanh tanh = new();
@@ -141,7 +151,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Tanh_PositiveSum_CorrectActivation() {
+        public void Tanh_PositiveSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 1;
             Tanh tanh = new();
@@ -156,7 +167,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Tanh_NegativeSum_CorrectActivation() {
+        public void Tanh_NegativeSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = -1;
             Tanh tanh = new();
@@ -171,7 +183,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void ReLU_ZeroSum_CorrectActivation() {
+        public void ReLU_ZeroSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 0;
             ReLU relu = new();
@@ -185,7 +198,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void ReLU_PositiveSum_CorrectActivation() {
+        public void ReLU_PositiveSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = 1;
             ReLU relu = new();
@@ -199,7 +213,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void ReLU_NegativeSum_CorrectActivation() {
+        public void ReLU_NegativeSum_CorrectActivation()
+        {
             // Arrange
             double weightedSum = -1;
             ReLU relu = new();
@@ -213,7 +228,8 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
         }
 
         [Test]
-        public void Neuron_PositiveWeights_CorrectActivation() {
+        public void Neuron_PositiveWeights_CorrectActivation()
+        {
             // Arrange
             Vector<double> previousLayer = Vector<double>.Build.Dense(
                 new double[] { 0.1, 0.1, 0.1, 0.1, 0.1 }
@@ -224,9 +240,10 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork {
             );
             double bias = 0;
             Neuron neuron = new(weights, bias, new ReLU());
+            double weightedSum = neuron.WeightedSum(previousLayer);
 
             // Act
-            double activation = neuron.Activation(previousLayer);
+            double activation = neuron.Activation(weightedSum);
 
             // Assert
             Assert.That(activation, Is.EqualTo(0.5).Within(ACCURACY_DELTA),

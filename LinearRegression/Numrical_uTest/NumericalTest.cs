@@ -1,9 +1,9 @@
 using LinearRegressionBackend.DataProvider;
 using NUnit.Framework;
 
-namespace LinearRegressionBackend_uTest.DataProvider
+namespace LinearRegressionBackend_uTest.MLModel
 {
-    public class NumericalTests
+    public class MLModelTests
     {
         [OneTimeSetUp]
         public void OneTimeSetUp() { }
