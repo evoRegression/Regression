@@ -1,5 +1,10 @@
 ﻿
-using System.Collections.ObjectModel;
+using LinearRegressionWPF.BackendDescriptors;
+using LinearRegressionWPF.Commands;
+using LinearRegressionWPF.Models;
+using LinearRegressionBackend.DataProvider;
+using LinearRegressionBackend.MLCommmons;
+using LinearRegressionBackend.MLModel;
 
 namespace LinearRegressionWPF.ViewModels
 {
