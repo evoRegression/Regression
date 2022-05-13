@@ -8,5 +8,10 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         {
             return Math.Max(0, weightedSum);
         }
+
+        public double Derivative(double weightedSum)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

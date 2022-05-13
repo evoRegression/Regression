@@ -8,5 +8,10 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         {
             return Math.Tanh(weightedSum);
         }
+
+        public double Derivative(double weightedSum)
+        {
+            return 1 - Math.Pow(Math.Tanh(weightedSum), 2);
+        }
     }
 }
