@@ -5,9 +5,9 @@ using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands {
     class ResetGraphView : ICommand {
-        private LinearRegressionViewModel _viewModel;
+        private MainWindowViewModel _viewModel;
 
-        public ResetGraphView(LinearRegressionViewModel viewModel) {
+        public ResetGraphView(MainWindowViewModel viewModel) {
             _viewModel = viewModel;
         }
 
