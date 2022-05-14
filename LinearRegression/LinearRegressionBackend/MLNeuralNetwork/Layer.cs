@@ -7,8 +7,13 @@ namespace LinearRegressionBackend.MLNeuralNetwork
     public class Layer
     {
         public Matrix<double> Weights { get; set; }
+        public Matrix<double> WeightsGradient { get; set; }
 
         public Vector<double> Biases { get; set; }
+        public Vector<double> BiasesGradient { get; set; }
+
+        public Vector<double> WeightedSums { get; set; }
+        public Vector<double> Activations { get; set; }
 
         public IActivationFunction ActivationFunction { get; set; }
 
@@ -25,18 +30,29 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             ActivationFunction = activationFunction;
         }
 
-        public Vector<double> WeightedSums(Vector<double> previousLayer)
+        public void PropagateForward(Vector<double> inputData)
         {
-            Debug.Assert(previousLayer.Count == Weights.ColumnCount);
-            return Weights * previousLayer + Biases;
+            WeightedSums = CalculateWeightedSums(inputData);
+            Activations = CalculateActivations(WeightedSums);
         }
 
-        public Vector<double> Activations(Vector<double> weightedSums)
+        private Vector<double> CalculateWeightedSums(Vector<double> inputData)
+        {
+            Debug.Assert(inputData.Count == Weights.ColumnCount);
+            return Weights * inputData + Biases;
+        }
+
+        private Vector<double> CalculateActivations(Vector<double> weightedSums)
         {
             return Vector<double>.Build.Dense(
                 weightedSums.Count,
                 i => ActivationFunction.Activation(weightedSums[i])
             );
+        }
+
+        public void Update(double rateOfChange, double learningRate)
+        {
+            Weights += learningRate * rateOfChange * WeightsGradient;
         }
     }
 }
