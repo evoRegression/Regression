@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.MLModel
 {
-    public class QuadraticOrdinaryLeastSquare : IOptimizer
+    public class QuadraticOrdinaryLeastSquare : IEstimator
     {
-        public double[] Minimize(ILossFunction lossFunction, double[] thetas, double[][] inputData, double[] targetData)
+        public double[] Minimize(double[][] inputData, double[] targetData)
         {
             double[] xAxis = inputData.Select(array => (double)array.GetValue(0)).ToArray();
             double[] yAxis = targetData;
@@ -22,7 +21,14 @@ namespace LinearRegressionBackend.MLModel
 
             double slope = numenator / denominator;
             double intercept = avgY - slope * avgX;
+
             return new double[] { slope, intercept };
+        }
+
+        // TODO: Replace the old implementation with this.
+        public (Matrix<double>, double) Estimate(Matrix<double> inputData, Vector<double> outputData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,12 +4,13 @@ using System.Windows.Input;
 using Microsoft.Win32;
 
 using LinearRegressionWPF.ViewModels;
+using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionWPF.Commands
 {
-    class OpenDataFile : ICommand
+    internal class OpenDataFile : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private readonly MainWindowViewModel _viewModel;
 
         public OpenDataFile(MainWindowViewModel viewModel)
         {
@@ -25,10 +26,15 @@ namespace LinearRegressionWPF.Commands
 
         public void Execute(object parameter)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog openFileDialog = new();
             if (openFileDialog.ShowDialog() == true)
             {
-                _viewModel.ImportDataSet(openFileDialog.FileName);
+                _viewModel.Data = Numerical.LoadText(openFileDialog.FileName);
+                _viewModel.RegressionPlot.UpdateDataSet(_viewModel.Data);
+                _viewModel.PredictEnabled = false;
+
+                _viewModel.NotifyPropertyChanged(nameof(_viewModel.TrainEnabled));
+                _viewModel.NotifyPropertyChanged(nameof(_viewModel.PredictEnabled));
             }
         }
     }

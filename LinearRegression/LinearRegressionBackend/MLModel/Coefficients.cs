@@ -20,17 +20,9 @@ namespace LinearRegressionBackend.MLModel
             Intercept = b;
         }
 
-        public double[] getThetas()
+        public double[] GetThetas()
         {
             return new double[] { Slope, Intercept };
-        }
-
-        public void setThetas(double[] newThetas)
-        {
-            if (newThetas.Length == 2) {
-                Slope = newThetas[0];
-                Intercept = newThetas[1];
-            }
         }
     }
 }

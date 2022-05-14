@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using OxyPlot;
 using OxyPlot.Axes;
 
@@ -7,55 +8,39 @@ using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionWPF.Models
 {
-    class RegressionPlot
+    internal class RegressionPlot
     {
         private DataSet _dataSet;
         private DataSet _predictedDataSet;
         private RegressionLine _regressionLine;
-        private LinearAxis _xAxis;
+
+        private readonly LinearAxis _xAxis;
         private const double X_MIN_DEFAULT = 0;
         private const double X_MAX_DEFAULT = 1;
-        private LinearAxis _yAxis;
+
+        private readonly LinearAxis _yAxis;
         private const double Y_MIN_DEFAULT = 0;
         private const double Y_MAX_DEFAULT = 1;
         private const double AXIS_PADDING = 0.05;
 
-        public double XMin
-        {
-            get => _xAxis.ClipMinimum;
-        }
+        public double XMin => _xAxis.ClipMinimum;
 
-        public double XMax
-        {
-            get => _xAxis.ClipMaximum;
-        }
+        public double XMax => _xAxis.ClipMaximum;
 
-        public double XRange
-        {
-            get => XMax - XMin;
-        }
+        public double XRange => XMax - XMin;
 
-        public double YMin
-        {
-            get => _yAxis.ClipMinimum;
-        }
+        public double YMin => _yAxis.ClipMinimum;
 
-        public double YMax
-        {
-            get => _yAxis.ClipMaximum;
-        }
+        public double YMax => _yAxis.ClipMaximum;
 
-        public double YRange
-        {
-            get => YMax - YMin;
-        }
+        public double YRange => YMax - YMin;
 
         public PlotModel OxyModel { get; private set; }
 
         public RegressionPlot()
         {
             _dataSet = new DataSet();
-            _predictedDataSet = new DataSet(OxyPlot.OxyColor.Parse("#cc0000"));
+            _predictedDataSet = new DataSet(OxyColor.Parse("#cc0000"));
             _regressionLine = RegressionLine.NullRegressionLine();
 
             OxyModel = new PlotModel { Title = "Regression Plot" };
@@ -64,12 +49,14 @@ namespace LinearRegressionWPF.Models
             OxyModel.Series.Add(_predictedDataSet.ScatterSeries);
             OxyModel.Series.Add(_regressionLine.LineSeries);
 
-            _xAxis = new LinearAxis {
+            _xAxis = new LinearAxis
+            {
                 Position = AxisPosition.Bottom,
                 Minimum = X_MIN_DEFAULT,
                 Maximum = X_MAX_DEFAULT
             };
-            _yAxis = new LinearAxis {
+            _yAxis = new LinearAxis
+            {
                 Position = AxisPosition.Left,
                 Minimum = Y_MIN_DEFAULT,
                 Maximum = Y_MAX_DEFAULT
@@ -78,43 +65,43 @@ namespace LinearRegressionWPF.Models
             OxyModel.Axes.Add(_yAxis);
         }
 
-        public void updateDataSet(DataSet dataSet)
+        public void UpdateDataSet(DataSet dataSet)
         {
             OxyModel.Series.Remove(_dataSet.ScatterSeries);
             _dataSet = dataSet;
             OxyModel.Series.Add(dataSet.ScatterSeries);
-            clearPredictions();
+            ClearPredictions();
         }
 
-        public void updateDataSet(double[][] data)
+        public void UpdateDataSet(double[][] data)
         {
-            DataSet dataSet = new DataSet();
+            DataSet dataSet = new();
 
             foreach (double[] dataPoint in data)
             {
                 dataSet.addDataPoint(dataPoint[0], dataPoint[1]);
             }
 
-            updateDataSet(dataSet);
+            UpdateDataSet(dataSet);
         }
 
-        public void addPredictedPoint(double[] dataPoint)
+        public void AddPredictedPoint(double[] dataPoint)
         {
             _predictedDataSet.addDataPoint(dataPoint[0], dataPoint[1]);
-            fitAxisBoundsToData();
+            FitAxisBoundsToData();
             OxyModel.InvalidatePlot(true);
         }
 
-        public void clearPredictions()
+        public void ClearPredictions()
         {
             OxyModel.Series.Remove(_predictedDataSet.ScatterSeries);
-            _predictedDataSet = new DataSet(OxyPlot.OxyColor.Parse("#cc0000"));
+            _predictedDataSet = new DataSet(OxyColor.Parse("#cc0000"));
             OxyModel.Series.Add(_predictedDataSet.ScatterSeries);
-            fitAxisBoundsToData();
+            FitAxisBoundsToData();
             OxyModel.InvalidatePlot(true);
         }
 
-        public void updateRegressionLine(RegressionLine regressionLine)
+        public void UpdateRegressionLine(RegressionLine regressionLine)
         {
             OxyModel.Series.Remove(_regressionLine.LineSeries);
             _regressionLine = regressionLine;
@@ -130,12 +117,12 @@ namespace LinearRegressionWPF.Models
             OxyModel.InvalidatePlot(true);
         }
 
-        public void updateRegressionLine(double slope, double yIntercept)
+        public void UpdateRegressionLine(double slope, double yIntercept)
         {
-            updateRegressionLine(new RegressionLine(slope, yIntercept, _xAxis.ClipMinimum, _xAxis.ClipMaximum));
+            UpdateRegressionLine(new RegressionLine(slope, yIntercept, _xAxis.ClipMinimum, _xAxis.ClipMaximum));
         }
 
-        private void updateAxisBounds(double xMin, double xMax, double yMin, double yMax)
+        private void UpdateAxisBounds(double xMin, double xMax, double yMin, double yMax)
         {
             _xAxis.Minimum = xMin;
             _xAxis.Maximum = xMax;
@@ -145,7 +132,8 @@ namespace LinearRegressionWPF.Models
             OxyModel.ResetAllAxes();
         }
 
-        private void fitAxisBoundsToData() {
+        private void FitAxisBoundsToData()
+        {
             List<double[]> dataPoints = _dataSet.ScatterSeries.Points.ConvertAll(point => new double[] { point.X, point.Y });
             List<double[]> predictedPoints = _predictedDataSet.ScatterSeries.Points.ConvertAll(point => new double[] { point.X, point.Y });
 
@@ -164,7 +152,7 @@ namespace LinearRegressionWPF.Models
             yMin -= yRange * AXIS_PADDING;
             yMax += yRange * AXIS_PADDING;
 
-            updateAxisBounds(xMin, xMax, yMin, yMax);
+            UpdateAxisBounds(xMin, xMax, yMin, yMax);
         }
     }
 }
