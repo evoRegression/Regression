@@ -3,21 +3,26 @@ using System.Windows.Input;
 
 using LinearRegressionWPF.ViewModels;
 
-namespace LinearRegressionWPF.Commands {
-    class LineToView : ICommand {
-        private MainWindowViewModel _viewModel;
+namespace LinearRegressionWPF.Commands
+{
+    internal class LineToView : ICommand
+    {
+        private LinearRegressionViewModel _viewModel;
 
-        public LineToView(MainWindowViewModel viewModel) {
+        public LineToView(LinearRegressionViewModel viewModel)
+        {
             _viewModel = viewModel;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter) {
+        public bool CanExecute(object parameter)
+        {
             return true;
         }
 
-        public void Execute(object parameter) {
+        public void Execute(object parameter)
+        {
             _viewModel.FitRegressionLineToView();
         }
     }
