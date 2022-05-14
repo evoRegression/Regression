@@ -5,11 +5,11 @@ using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands
 {
-    class Show : ICommand
+    internal class Show : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private LinearRegressionViewModel _viewModel;
 
-        public Show(MainWindowViewModel viewModel)
+        public Show(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }

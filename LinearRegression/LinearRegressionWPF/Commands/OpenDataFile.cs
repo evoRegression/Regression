@@ -10,9 +10,9 @@ namespace LinearRegressionWPF.Commands
 {
     internal class OpenDataFile : ICommand
     {
-        private readonly MainWindowViewModel _viewModel;
+        private readonly LinearRegressionViewModel _viewModel;
 
-        public OpenDataFile(MainWindowViewModel viewModel)
+        public OpenDataFile(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }

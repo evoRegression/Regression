@@ -14,25 +14,5 @@ namespace LinearRegressionWPF.Views
         {
             InitializeComponent();
         }
-
-        private void TextBoxEnterUpdate(object sender, KeyEventArgs e)
-        {
-            if (sender == null)
-            {
-                return;
-            }
-
-            if (e.Key == Key.Enter || e.Key == Key.Return)
-            {
-                TextBox tBox = (TextBox) sender;
-                BindingExpression binding = BindingOperations.GetBindingExpression(tBox, TextBox.TextProperty);
-
-                if (binding != null)
-                {
-                    binding.UpdateSource();
-                    Keyboard.ClearFocus();
-                }
-            }
-        }
     }
 }

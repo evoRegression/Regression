@@ -3,21 +3,26 @@ using System.Windows.Input;
 
 using LinearRegressionWPF.ViewModels;
 
-namespace LinearRegressionWPF.Commands {
-    class ResetGraphView : ICommand {
-        private MainWindowViewModel _viewModel;
+namespace LinearRegressionWPF.Commands
+{
+    internal class ResetGraphView : ICommand
+    {
+        private LinearRegressionViewModel _viewModel;
 
-        public ResetGraphView(MainWindowViewModel viewModel) {
+        public ResetGraphView(LinearRegressionViewModel viewModel)
+        {
             _viewModel = viewModel;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter) {
+        public bool CanExecute(object parameter)
+        {
             return true;
         }
 
-        public void Execute(object parameter) {
+        public void Execute(object parameter)
+        {
             _viewModel.RegressionPlot.OxyModel.ResetAllAxes();
             _viewModel.RegressionPlot.OxyModel.InvalidatePlot(true);
         }

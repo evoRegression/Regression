@@ -5,11 +5,11 @@ using LinearRegressionWPF.ViewModels;
 
 namespace LinearRegressionWPF.Commands
 {
-    class AddRandomLine : ICommand
+    internal class AddRandomLine : ICommand
     {
-        private MainWindowViewModel _viewModel;
+        private LinearRegressionViewModel _viewModel;
 
-        public AddRandomLine(MainWindowViewModel viewModel)
+        public AddRandomLine(LinearRegressionViewModel viewModel)
         {
             _viewModel = viewModel;
         }
@@ -26,14 +26,12 @@ namespace LinearRegressionWPF.Commands
             Random random = new Random();
 
             // Generate slope
-
             const double SLOPE_MIN = -15;
             const double SLOPE_MAX = 15;
             const double SLOPE_RANGE = SLOPE_MAX - SLOPE_MIN;
             double slope = SLOPE_MIN + random.NextDouble() * SLOPE_RANGE;
 
             // Calculate legal intercept values
-
             double xMin = _viewModel.RegressionPlot.XMin;
             double xRange = _viewModel.RegressionPlot.XRange;
             double yMin = _viewModel.RegressionPlot.YMin;
@@ -45,7 +43,6 @@ namespace LinearRegressionWPF.Commands
             double intc_max = Math.Max(yMax - rise, yMax) - slope * xMin;
 
             // Line padding
-
             const double LINE_PADDING = 0.1;
 
             intc_min += yRange * LINE_PADDING;
@@ -53,11 +50,9 @@ namespace LinearRegressionWPF.Commands
             double intc_range = intc_max - intc_min;
 
             // Generate intercept
-
             double yIntercept = intc_min + random.NextDouble() * intc_range;
 
             // Round
-
             int DECIMAL_PLACES = 2;
             MidpointRounding MID_ROUND = MidpointRounding.ToEven;
 
@@ -65,7 +60,6 @@ namespace LinearRegressionWPF.Commands
             yIntercept = Math.Round(yIntercept, DECIMAL_PLACES, MID_ROUND);
 
             // Update graph
-
             _viewModel.UpdateRegressionLine(slope, yIntercept);
         }
     }
