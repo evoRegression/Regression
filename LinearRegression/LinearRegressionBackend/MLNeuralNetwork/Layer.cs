@@ -52,7 +52,8 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
         public void Update(double rateOfChange, double learningRate)
         {
-            Weights += learningRate * rateOfChange * WeightsGradient;
+            Weights -= learningRate * rateOfChange * WeightsGradient;
+            Biases -= learningRate * rateOfChange * BiasesGradient;
         }
     }
 }
