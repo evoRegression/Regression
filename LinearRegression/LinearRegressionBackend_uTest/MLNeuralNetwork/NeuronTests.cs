@@ -1,7 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System;
 
 using MathNet.Numerics.LinearAlgebra;
+using Moq;
+using NUnit.Framework;
 
+using LinearRegressionBackend;
 using LinearRegressionBackend.MLNeuralNetwork;
 
 namespace LinearRegressionBackend_uTest.MLNeuralNetwork
@@ -248,6 +251,47 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             // Assert
             Assert.That(activation, Is.EqualTo(0.5).Within(ACCURACY_DELTA),
                 "Incorrect activation");
+        }
+
+        /// <summary>
+        /// Linear function f = w_1*x_1 + w_2*x_2 + b
+        /// Approximate the f = 2x_1 + 3x_2 + 1, where w_1=2, w_2=3, b=1
+        /// </summary>
+        [Test]
+        public void BackwardPropagation_LinearFunction_CorrectBackwardPass()
+        {
+            // Arrange
+            Matrix<double> inputs = Matrix<double>.Build.DenseOfArray(
+                new double[,] { { 1, 1 }, { 0, 1 }, { -1, 0 }, { -1, -1 }, { 0, 0 } });
+            Vector<double> expectedOutputs = Vector<double>.Build.Dense(
+                new double[] { 6, 3, -2, -4, 1 });
+            Vector<double> weights = Vector<double>.Build.Random(2);
+
+            Mock<IActivationFunction> linearActivationMock = new();
+            linearActivationMock.Setup(a => a.Activation(It.IsAny<double>())).Returns<double>(weightedSum => weightedSum);
+            linearActivationMock.Setup(a => a.Derivative(It.IsAny<double>())).Returns<double>(weightedSum => weightedSum);
+
+            int epochs = 1000;
+            Neuron neuron = new(weights, 0, linearActivationMock.Object);
+            
+            // Act
+            for (int i = 0; i < epochs; i++)
+            {
+                // It is called Stochastic Gradient Descent. SGD algorithm updates the weights one input at a time
+                for (int j = 0; j < inputs.RowCount; j++)
+                {
+                    (double actionPotential, double weightedSum) = neuron.ForwardPropagation(inputs.Row(j));
+                    neuron.BackwardPropagation(actionPotential, expectedOutputs[j], weightedSum, inputs.Row(j));
+                }
+            }
+
+            // Assert
+            Assert.That(neuron.Weights[0], Is.EqualTo(2).Within(ACCURACY_DELTA),
+                "Incorrect first weight");
+            Assert.That(neuron.Weights[1], Is.EqualTo(3).Within(ACCURACY_DELTA),
+                "Incorrect second weight");
+            Assert.That(neuron.Bias, Is.EqualTo(1).Within(ACCURACY_DELTA),
+                "Incorrect bias");
         }
     }
 }
