@@ -6,10 +6,17 @@
     public interface IActivationFunction
     {
         /// <summary>
-        /// Activation to get the output of the current neuron.
+        /// Calculates the activation of a neuron.
         /// </summary>
-        /// <param name="weightedSum">The weighted of the neuron inputs.</param>
-        /// <returns>Returns with a scalar value. The output of the current neuron.</returns>
+        /// <param name="weightedSum">The weighted sum of the neuron inputs.</param>
+        /// <returns>Returns a scalar value. The output of the current neuron.</returns>
         double Activation(double weightedSum);
+
+        /// <summary>
+        /// Calculates the derivative of the activation function.
+        /// </summary>
+        /// <param name="weightedSum">The weighted sum of the neuron inputs.</param>
+        /// <returns>Returns a scalar value. The derivative of the activation function.</returns>
+        double Derivative(double weightedSum);
     }
 }

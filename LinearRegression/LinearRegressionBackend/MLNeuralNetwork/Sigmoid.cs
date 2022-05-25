@@ -8,5 +8,10 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         {
             return 1.0 / (1.0 + Math.Pow(Math.E, -weightedSum));
         }
+
+        public double Derivative(double weightedSum)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

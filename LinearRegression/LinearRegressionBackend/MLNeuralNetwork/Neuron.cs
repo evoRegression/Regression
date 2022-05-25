@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -9,7 +8,6 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Neuron
     {
-        // TODO: Change the Vector to Matrix
         public Vector<double> Weights { get; set; }
 
         public double Bias { get; set; }
@@ -21,18 +19,6 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             Weights = weights;
             Bias = bias;
             ActivationFunction = activationFunction;
-        }
-
-        public double ForwardPropagation(Vector<double> inputData)
-        {
-            double actionPotential = Activation(WeightedSum(inputData));
-
-            return actionPotential;
-        }
-
-        public Vector<double> BackwardPropagation(Vector<double> actualValue, Vector<double> expectedValue)
-        {
-            throw new NotImplementedException();
         }
 
         public double WeightedSum(Vector<double> previousLayer)
