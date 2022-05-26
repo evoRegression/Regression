@@ -36,6 +36,7 @@ namespace LinearRegressionBackend.DataProvider
 
             return array;
         }
+
         /// <summary>
         /// Loads a correctly formated string file, into a two dimensional double matrix. The format must be "number,number", 
         /// every line can only contain 1 pair of values, the file must contain at least one full pair.

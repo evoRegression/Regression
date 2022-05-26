@@ -1,4 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using System;
+using System.IO;
 
 namespace LinearRegressionBackend.DataProvider
 {
@@ -20,6 +22,11 @@ namespace LinearRegressionBackend.DataProvider
             Vector<double> pixelVector = Vector<double>.Build.DenseOfArray(arrayOfPixels);
 
             return pixelVector;
+        }
+
+        public static Matrix<double> ProcessInputImages(DirectoryInfo directory, IImageConverter converter)
+        {
+            throw new NotImplementedException();
         }
     }
 }
