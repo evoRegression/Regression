@@ -68,7 +68,7 @@ namespace LinearRegressionWPF.Views
                     txtMatrix.Text += Environment.NewLine;
                     for (int j = 0; j < copy.Height; j++)
                     {
-                        txtMatrix.Text = txtMatrix.Text + matrix[i, j].ToString("0.00") + "|  ";
+                        txtMatrix.Text = txtMatrix.Text + matrix[j, i].ToString("0.00") + "|  ";
                     }
 
                     txtMatrix.Text = txtMatrix.Text + Environment.NewLine + "_________________________________";
