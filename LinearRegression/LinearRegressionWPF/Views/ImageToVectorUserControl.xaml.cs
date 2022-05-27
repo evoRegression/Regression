@@ -62,7 +62,6 @@ namespace LinearRegressionWPF.Views
             {
                 Bitmap copy = imageToVectorViewModel.ImageSourceToBitmap(src);
                 double[,] matrix = imageToVectorViewModel.ConvertToMatrix(imageToVectorViewModel.ImageSourceToBitmap(src));
-
                 for (int i = 0; i < copy.Width; i++)
                 {
                     txtMatrix.Text += Environment.NewLine;
@@ -73,6 +72,26 @@ namespace LinearRegressionWPF.Views
 
                     txtMatrix.Text = txtMatrix.Text + Environment.NewLine + "_________________________________";
                 }
+
+                value1.Text = matrix[0, 0].ToString("0.00");
+                value2.Text = matrix[1, 0].ToString("0.00");
+                value3.Text = matrix[2, 0].ToString("0.00");
+                value4.Text = matrix[3, 0].ToString("0.00");
+
+                value5.Text = matrix[0, 1].ToString("0.00");
+                value6.Text = matrix[1, 1].ToString("0.00");
+                value7.Text = matrix[2, 1].ToString("0.00");
+                value8.Text = matrix[3, 1].ToString("0.00");
+
+                value9.Text = matrix[0, 2].ToString("0.00");
+                value10.Text = matrix[1, 2].ToString("0.00");
+                value11.Text = matrix[2, 2].ToString("0.00");
+                value12.Text = matrix[3, 2].ToString("0.00");
+
+                value13.Text = matrix[0, 3].ToString("0.00");
+                value14.Text = matrix[1, 3].ToString("0.00");
+                value15.Text = matrix[2, 3].ToString("0.00");
+                value16.Text = matrix[3, 3].ToString("0.00");
             }
             catch (Exception ex)
             {
@@ -94,5 +113,11 @@ namespace LinearRegressionWPF.Views
             MyCanvas.DefaultDrawingAttributes.Width = sizeSlide.Value;
             MyCanvas.DefaultDrawingAttributes.Height = sizeSlide.Value;
         }
+
+        /*public void updateWeight(ImageSource src)
+        {
+            weighted
+        }*/
+
     }
 }

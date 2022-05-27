@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="950" d:DesignWidth="800">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -12,6 +12,32 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto"  />
+            <RowDefinition Height="auto"  />
+            
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+
+
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="20" />
+
             <RowDefinition Height="*"  />
 
         </Grid.RowDefinitions>
@@ -63,12 +89,188 @@
 
         <Border BorderThickness="5" BorderBrush="Black"
                 Grid.Row="3" Grid.RowSpan="3"
-                Grid.ColumnSpan="3" Grid.Column="5"
+                Grid.ColumnSpan="1" Grid.Column="5"
                 Margin="10">
             <Image x:Name="imgCanvas"   RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
         </Border>
 
         <TextBox x:Name="txtMatrix"  TextWrapping="Wrap" Background="#FFC7CBDE" FontSize="10" IsEnabled="False" Grid.Column="5" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="2" />
+
+        <TextBlock x:Name="value1" Grid.Column="1" Grid.Row="8" TextAlignment="Right" >
+            ?
+        </TextBlock>
+
+        <TextBlock Grid.Column="2" Grid.Row="8" >
+                
+                    <TextBox Text="{Binding ElementName=weight1, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" ValueChanged="updateWeight" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight1" Width="100"/>
+
+
+        </TextBlock>
+
+        <TextBlock x:Name="value2" Grid.Column="1" Grid.Row="9" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="9" >
+            <TextBox Text="{Binding ElementName=weight2, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight2" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value3" Grid.Column="1" Grid.Row="10" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="10" >
+            <TextBox Text="{Binding ElementName=weight3, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight3" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value4" Grid.Column="1" Grid.Row="11" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="11" >
+            <TextBox Text="{Binding ElementName=weight4, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight4" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value5" Grid.Column="1" Grid.Row="12" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="12" >
+            <TextBox Text="{Binding ElementName=weight5, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight5" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value6" Grid.Column="1" Grid.Row="13" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="13" >
+            <TextBox Text="{Binding ElementName=weight6, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight6" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value7" Grid.Column="1" Grid.Row="14" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="14" >
+            <TextBox Text="{Binding ElementName=weight7, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight7" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value8" Grid.Column="1" Grid.Row="15" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="15" >
+            <TextBox Text="{Binding ElementName=weight8, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight8" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value9" Grid.Column="1" Grid.Row="16" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="16" >
+            <TextBox Text="{Binding ElementName=weight9, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight9" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value10" Grid.Column="1" Grid.Row="17" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="17" >
+            <TextBox Text="{Binding ElementName=weight10, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight10" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value11"  Grid.Column="1" Grid.Row="18" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="18" >
+            <TextBox Text="{Binding ElementName=weight11, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight11" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value12"  Grid.Column="1" Grid.Row="19" TextAlignment="Right">
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="19" >
+            <TextBox Text="{Binding ElementName=weight12, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight12" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value13" Grid.Column="1" Grid.Row="20" TextAlignment="Right" >
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="20" >
+            <TextBox Text="{Binding ElementName=weight13, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight13" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value14" Grid.Column="1" Grid.Row="21" TextAlignment="Right" >
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="21" >
+            <TextBox Text="{Binding ElementName=weight14, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight14" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value15" Grid.Column="1" Grid.Row="22" TextAlignment="Right" >
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="22" >
+            <TextBox Text="{Binding ElementName=weight15, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight15" Width="100"  />
+        </TextBlock>
+        <TextBlock x:Name="value16" Grid.Column="1" Grid.Row="23" TextAlignment="Right" >
+            ?
+        </TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="23" >
+            <TextBox Text="{Binding ElementName=weight16, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
+            <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight16" Width="100"  />
+        </TextBlock>
+
+        <Border Grid.Row="13" Grid.Column="4" Padding="20,10,0,0" Grid.ColumnSpan="6" Margin="0,10,108,0" Grid.RowSpan="4" >
+            <DockPanel LastChildFill="False" VerticalAlignment="Center" Height="60">
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Bias" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding BiasMock}"
+                             
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Weighted sum" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding WeightedSum}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Activation Function" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <ComboBox Name="SingleNeuronComboBox"
+                              ItemsSource="{Binding AvailableActivationFunctionsArray}"
+                              SelectedItem="{Binding SelectedActivationFunction}"
+                              DockPanel.Dock="Top" HorizontalAlignment="Left"
+                              Width="120">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel LastChildFill="False" DockPanel.Dock="Left"
+                           Margin="0 0 20 0">
+                    <Label Content="Activation" DockPanel.Dock="Top"
+                           HorizontalAlignment="Left" Padding="0,0,0,5" />
+                    <TextBox Text="{Binding Activation}"
+                             IsReadOnly="True"
+                             VerticalAlignment="Center"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             Height="23" Width="80" />
+                </DockPanel>
+            </DockPanel>
+        </Border>
+        
 
     </Grid>
 </UserControl>
