@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
 
 using LinearRegressionBackend.NeuralNetworkPlayground;
@@ -36,10 +37,36 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
         public void Network_Propagation()
         {
             // Arrange
+            Matrix<double> weight1 = Matrix<double>.Build.DenseOfRowArrays(
+                new[] { 1.0, 1.0 },
+                new[] { 1.0, 1.0 }
+            );
+
+            Vector<double> bias1 = Vector<double>.Build.Dense(new[] {
+                1.0, 
+                1.0,
+            });
+
+            Matrix<double> weight2 = Matrix<double>.Build.DenseOfRowArrays(
+                new[] { 1.0, 1.0 },
+                new[] { 1.0, 1.0 }
+            );
+
+            Vector<double> bias2 = Vector<double>.Build.Dense(new[] {
+                1.0,
+                1.0,
+            });
+
             List<Layer> layers = new()
             {
-                new Layer(weight: 1, bias: 1, activationFunction: ReLU),
-                new Layer(weight: 1, bias: 1, activationFunction: ReLU),
+                new Layer(
+                    weight: weight1,
+                    bias: bias1,
+                    activationFunction: ReLU),
+                new Layer(
+                    weight: weight2,
+                    bias: bias2,
+                    activationFunction: ReLU),
             };
 
             Network network = new(layers);
