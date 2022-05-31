@@ -71,14 +71,23 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
 
             Network network = new(layers);
 
-            double input = 1;
+            Vector<double> input = Vector<double>.Build.Dense(
+                new[] { 1.0, 1.0 });
 
             // Act
-            double output = network.Propagate(input).Output();
+            Vector<double> output = network.Propagate(input).Output();
 
             // Assert
-            Assert.That(output, Is.EqualTo(3).Within(ACCURACY_DELTA),
-                "Incorrect output");
+            Assert.Multiple(() => {
+                Assert.That(
+                    output[0],
+                    Is.EqualTo(3).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[1],
+                    Is.EqualTo(3).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+            });
         }
 
         [Test]
