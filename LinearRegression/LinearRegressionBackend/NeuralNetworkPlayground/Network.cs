@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -34,26 +35,31 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
 
         public void Backpropagate(
             Propagation prop,
-            double expected,
+            Vector<double> expected,
             double learningRate)
         {
-            double delta = prop.Output() - expected;
+            Debug.Assert(prop.Output().Count == expected.Count);
+            Vector<double> delta = prop.Output() - expected;
 
             for (int i = Layers.Count; i > 0; i--)
             {
                 Layer layer = Layers[i - 1];
-                double z = prop.WeightedSums[i];
-                double a = prop.Activations[i - 1];
+                Vector<double> z = prop.WeightedSums[i];
+                Vector<double> a = prop.Activations[i - 1];
 
-                delta *= layer.ActivationFunction.Derivative(z);
+                Vector<double> delz = layer.ActivationFunction.Derivative(z);
+                delta = delta.MapIndexed((i, d) => d * delz[i]);
 
-                double weightDelta = -learningRate * delta * a;
-                double biasDelta = -learningRate * delta;
+                Matrix<double> weightDelta = Matrix<double>.Build.Dense(
+                    layer.Weight.RowCount,
+                    layer.Weight.ColumnCount,
+                    (i, j) => -learningRate * delta[i] * a[j]);
+                Vector<double> biasDelta = delta.Map(d => -learningRate * d);
 
                 layer.Weight += weightDelta;
                 layer.Bias += biasDelta;
 
-                delta *= layer.Weight;
+                delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
             }
         }
 
