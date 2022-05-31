@@ -269,7 +269,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
 
             Mock<IActivationFunction> linearActivationMock = new();
             linearActivationMock.Setup(a => a.Activation(It.IsAny<double>())).Returns<double>(weightedSum => weightedSum);
-            linearActivationMock.Setup(a => a.Derivative(It.IsAny<double>())).Returns<double>(1);
+            linearActivationMock.Setup(a => a.Derivative(It.IsAny<double>())).Returns<double>(x => 1);
 
             int epochs = 1000;
             Neuron neuron = new(weights, 0, linearActivationMock.Object);

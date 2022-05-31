@@ -81,11 +81,11 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
             Assert.Multiple(() => {
                 Assert.That(
                     output[0],
-                    Is.EqualTo(3).Within(ACCURACY_DELTA),
+                    Is.EqualTo(7).Within(ACCURACY_DELTA),
                     "Incorrect output");
                 Assert.That(
                     output[1],
-                    Is.EqualTo(3).Within(ACCURACY_DELTA),
+                    Is.EqualTo(7).Within(ACCURACY_DELTA),
                     "Incorrect output");
             });
         }
@@ -97,12 +97,12 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
             List<Layer> layers = new()
             {
                 new Layer(
-                    weight: Random.NextDouble(),
-                    bias: Random.NextDouble(),
+                    weight: Matrix<double>.Build.Random(2, 2, 1),
+                    bias: Vector<double>.Build.Random(2, 2),
                     activationFunction: Sigmoid),
                 new Layer(
-                    weight: Random.NextDouble(),
-                    bias: Random.NextDouble(),
+                    weight: Matrix<double>.Build.Random(2, 2, 3),
+                    bias: Vector<double>.Build.Random(2, 4),
                     activationFunction: Sigmoid),
             };
 
@@ -111,8 +111,10 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
             int epochs = 1000;
             double learningRate = 0.2;
 
-            double input = 1;
-            double expectedOutput = 0.6393012717748393;
+            Vector<double> input = Vector<double>.Build.Dense(
+                new[] { 1.0, 1.0 });
+            Vector<double> expectedOutput = Vector<double>.Build.Dense(
+                new[] { 0.6695031929, 0.7171364979 });
 
             // Act
             for (int i = 0; i < epochs; i++)
@@ -121,13 +123,19 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
                 network.Backpropagate(prop, expectedOutput, learningRate);
             }
 
-            double output = network.Propagate(input).Output();
+            Vector<double> output = network.Propagate(input).Output();
 
             // Assert
-            Assert.That(
-                output,
-                Is.EqualTo(expectedOutput).Within(ACCURACY_DELTA),
-                "Incorrect output");
+            Assert.Multiple(() => {
+                Assert.That(
+                    output[0],
+                    Is.EqualTo(expectedOutput[0]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[1],
+                    Is.EqualTo(expectedOutput[1]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+            });
         }
 
     }
