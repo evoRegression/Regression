@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using MathNet.Numerics.LinearAlgebra;
+
 namespace LinearRegressionBackend.NeuralNetworkPlayground
 {
     public class Network
@@ -35,6 +37,13 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             double expected,
             double learningRate)
         {
+            Vector<double> weightGradient =
+                Vector<double>.Build.Dense(Layers.Count);
+            Vector<double> biasGradient =
+                Vector<double>.Build.Dense(Layers.Count);
+            Vector<double> gradient =
+                Vector<double>.Build.Dense(2 * Layers.Count);
+
             double delta = prop.Output() - expected;
 
             for (int i = Layers.Count; i > 0; i--)
@@ -45,13 +54,26 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
 
                 delta *= layer.ActivationFunction.Derivative(z);
 
-                double weightDelta = -learningRate * delta * a;
-                double biasDelta = -learningRate * delta;
+                weightGradient[i - 1] = delta * a;
+                gradient[2 * i - 2] = delta * a;
+                biasGradient[i - 1] = delta;
+                gradient[2 * i - 1] = delta;
+
+                delta *= layer.Weight;
+            }
+
+            double rateOfChange = gradient.L2Norm();
+
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                Layer layer = Layers[i];
+                double weightDelta =
+                    -learningRate * rateOfChange * weightGradient[i];
+                double biasDelta =
+                    -learningRate * rateOfChange * biasGradient[i];
 
                 layer.Weight += weightDelta;
                 layer.Bias += biasDelta;
-
-                delta *= layer.Weight;
             }
         }
 
