@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 
+using MathNet.Numerics.LinearAlgebra;
+
 namespace LinearRegressionBackend.NeuralNetworkPlayground
 {
     public class Propagation
     {
 
-        public List<double> WeightedSums;
-        public List<double> Activations;
+        public List<Vector<double>> WeightedSums;
+        public List<Vector<double>> Activations;
 
         public Propagation()
         {
@@ -14,7 +16,7 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             Activations = new();
         }
 
-        public double Output()
+        public Vector<double> Output()
         {
             return Activations[Activations.Count - 1];
         }

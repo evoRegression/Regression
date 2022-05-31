@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using MathNet.Numerics.LinearAlgebra;
+
 namespace LinearRegressionBackend.NeuralNetworkPlayground
 {
     public class Network
@@ -12,16 +14,16 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             Layers = layers;
         }
 
-        public Propagation Propagate(double input)
+        public Propagation Propagate(Vector<double> input)
         {
             Propagation result = new();
 
-            result.WeightedSums.Add(0);
+            result.WeightedSums.Add(null);
             result.Activations.Add(input);
 
             foreach (Layer layer in Layers)
             {
-                (double sum, double activation) = layer.Propagate(input);
+                (Vector<double> sum, Vector<double> activation) = layer.Propagate(input);
                 result.WeightedSums.Add(sum);
                 result.Activations.Add(activation);
                 input = activation;
