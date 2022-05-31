@@ -1,15 +1,17 @@
-﻿namespace LinearRegressionBackend.NeuralNetworkPlayground
+﻿using MathNet.Numerics.LinearAlgebra;
+
+namespace LinearRegressionBackend.NeuralNetworkPlayground
 {
     public class Layer
     {
 
-        public double Weight;
-        public double Bias;
+        public Matrix<double> Weight;
+        public Vector<double> Bias;
         public IActivationFunction ActivationFunction;
 
         public Layer(
-            double weight, 
-            double bias, 
+            Matrix<double> weight,
+            Vector<double> bias, 
             IActivationFunction activationFunction)
         {
             Weight = weight;
@@ -17,10 +19,11 @@
             ActivationFunction = activationFunction;
         }
 
-        public (double sum, double activation) Propagate(double input)
+        public (Vector<double> sum, Vector<double> activation)
+        Propagate(Vector<double> input)
         {
-            double sum = Weight * input + Bias;
-            double activation = ActivationFunction.Activation(sum);
+            Vector<double> sum = Weight * input + Bias;
+            Vector<double> activation = ActivationFunction.Activation(sum);
             return (sum, activation);
         }
 
