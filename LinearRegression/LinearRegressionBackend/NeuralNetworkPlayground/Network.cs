@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -33,10 +34,8 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             return result;
         }
 
-        public void Backpropagate(
-            Propagation prop,
-            Vector<double> expected,
-            double learningRate)
+        public (Matrix<double>[] weightGrad, Vector<double>[] biasGrad)
+        Backpropagate(Propagation prop, Vector<double> expected)
         {
             Debug.Assert(prop.Output().Count == expected.Count);
 
@@ -77,9 +76,54 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
                 biasGradient[i - 1] = delta;
             }
 
+            return (weightGradient, biasGradient);
+        }
+
+        public (Matrix<double>[] weightGrad, Vector<double>[] biasGrad)
+        Backpropagate(Matrix<double> input, Matrix<double> expected)
+        {
+            Debug.Assert(input.RowCount == expected.RowCount);
+
+            int exampleCount = input.RowCount;
+
+            Matrix<double>[] weightGradient = null;
+            Vector<double>[] biasGradient = null;
+
+            Propagation prop = Propagate(input.Row(0));
+            (weightGradient, biasGradient) =
+                Backpropagate(prop, expected.Row(0));
+            weightGradient =
+                weightGradient.Select(m => m / exampleCount).ToArray();
+            biasGradient =
+                biasGradient.Select(m => m / exampleCount).ToArray();
+
+            for (int i = 1; i < exampleCount; i++)
+            {
+                Matrix<double>[] currentWeightGradient = null;
+                Vector<double>[] currentBiasGradient = null;
+
+                prop = Propagate(input.Row(i));
+                (currentWeightGradient, currentBiasGradient) =
+                    Backpropagate(prop, expected.Row(i));
+                weightGradient = weightGradient.Select(
+                    (m, i) => m + currentWeightGradient[i] / exampleCount)
+                    .ToArray();
+                biasGradient = biasGradient.Select(
+                    (m, i) => m + currentBiasGradient[i] / exampleCount)
+                    .ToArray();
+            }
+
+            return (weightGradient, biasGradient);
+        }
+
+        public void Update(
+            Matrix<double>[] weightGradient,
+            Vector<double>[] biasGradient,
+            double learningRate)
+        {
             for (int i = 0; i < Layers.Count; i++)
             {
-                layer = Layers[i];
+                Layer layer = Layers[i];
 
                 Matrix<double> weightDelta =
                     weightGradient[i].Map(g => -learningRate * g);
@@ -88,6 +132,22 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
 
                 layer.Weight += weightDelta;
                 layer.Bias += biasDelta;
+            }
+        }
+
+        public void Train(
+            Matrix<double> input,
+            Matrix<double> expected,
+            int epochs,
+            double learningRate)
+        {
+            for (int i = 0; i < epochs; i++)
+            {
+                Matrix<double>[] weightGradient = null;
+                Vector<double>[] biasGradient = null;
+                (weightGradient, biasGradient) =
+                    Backpropagate(input, expected);
+                Update(weightGradient, biasGradient, learningRate);
             }
         }
 

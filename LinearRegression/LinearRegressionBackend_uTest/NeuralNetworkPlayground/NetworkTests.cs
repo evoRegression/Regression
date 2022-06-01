@@ -117,11 +117,11 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
                 new[] { 0.6695031929, 0.7171364979 });
 
             // Act
-            for (int i = 0; i < epochs; i++)
-            {
-                Propagation prop = network.Propagate(input);
-                network.Backpropagate(prop, expectedOutput, learningRate);
-            }
+            network.Train(
+                input.ToRowMatrix(),
+                expectedOutput.ToRowMatrix(),
+                epochs,
+                learningRate);
 
             Vector<double> output = network.Propagate(input).Output();
 
