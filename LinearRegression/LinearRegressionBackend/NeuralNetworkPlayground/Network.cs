@@ -45,29 +45,41 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             Vector<double>[] biasGradient =
                 new Vector<double>[Layers.Count];
 
-            Vector<double> delta = prop.Output() - expected;
+            Layer layer = Layers[Layers.Count - 1];
+            Vector<double> z = prop.WeightedSums[Layers.Count];
+            Vector<double> a = prop.Activations[Layers.Count - 1];
 
-            for (int i = Layers.Count; i > 0; i--)
+            Vector<double> dz = layer.ActivationFunction.Derivative(z);
+            Vector<double> delta =
+                (prop.Output() - expected).MapIndexed((i, d) => d * dz[i]);
+
+            weightGradient[Layers.Count - 1] = Matrix<double>.Build.Dense(
+                    layer.Weight.RowCount,
+                    layer.Weight.ColumnCount,
+                    (i, j) => delta[i] * a[j]);
+            biasGradient[Layers.Count - 1] = delta;
+
+            for (int i = Layers.Count - 1; i > 0; i--)
             {
-                Layer layer = Layers[i - 1];
-                Vector<double> z = prop.WeightedSums[i];
-                Vector<double> a = prop.Activations[i - 1];
+                delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
 
-                Vector<double> delz = layer.ActivationFunction.Derivative(z);
-                delta = delta.MapIndexed((i, d) => d * delz[i]);
+                layer = Layers[i - 1];
+                z = prop.WeightedSums[i];
+                a = prop.Activations[i - 1];
+
+                dz = layer.ActivationFunction.Derivative(z);
+                delta = delta.MapIndexed((i, d) => d * dz[i]);
 
                 weightGradient[i - 1] = Matrix<double>.Build.Dense(
                     layer.Weight.RowCount,
                     layer.Weight.ColumnCount,
                     (i, j) => delta[i] * a[j]);
                 biasGradient[i - 1] = delta;
-
-                delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
             }
 
             for (int i = 0; i < Layers.Count; i++)
             {
-                Layer layer = Layers[i];
+                layer = Layers[i];
 
                 Matrix<double> weightDelta =
                     weightGradient[i].Map(g => -learningRate * g);
