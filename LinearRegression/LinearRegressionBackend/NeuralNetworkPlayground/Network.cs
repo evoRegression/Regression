@@ -39,6 +39,12 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             double learningRate)
         {
             Debug.Assert(prop.Output().Count == expected.Count);
+
+            Matrix<double>[] weightGradient =
+                new Matrix<double>[Layers.Count];
+            Vector<double>[] biasGradient =
+                new Vector<double>[Layers.Count];
+
             Vector<double> delta = prop.Output() - expected;
 
             for (int i = Layers.Count; i > 0; i--)
@@ -50,16 +56,26 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
                 Vector<double> delz = layer.ActivationFunction.Derivative(z);
                 delta = delta.MapIndexed((i, d) => d * delz[i]);
 
-                Matrix<double> weightDelta = Matrix<double>.Build.Dense(
+                weightGradient[i - 1] = Matrix<double>.Build.Dense(
                     layer.Weight.RowCount,
                     layer.Weight.ColumnCount,
-                    (i, j) => -learningRate * delta[i] * a[j]);
-                Vector<double> biasDelta = delta.Map(d => -learningRate * d);
+                    (i, j) => delta[i] * a[j]);
+                biasGradient[i - 1] = delta;
+
+                delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
+            }
+
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                Layer layer = Layers[i];
+
+                Matrix<double> weightDelta =
+                    weightGradient[i].Map(g => -learningRate * g);
+                Vector<double> biasDelta =
+                    biasGradient[i].Map(g => -learningRate * g);
 
                 layer.Weight += weightDelta;
                 layer.Bias += biasDelta;
-
-                delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
             }
         }
 
