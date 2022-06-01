@@ -75,7 +75,9 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
                 new[] { 1.0, 1.0 });
 
             // Act
-            Vector<double> output = network.Propagate(input).Output();
+            network.Propagate(input);
+            Vector<double> output =
+                network.Layers[network.Layers.Count - 1].Activation;
 
             // Assert
             Assert.Multiple(() => {
@@ -119,11 +121,12 @@ namespace LinearRegressionBackend_uTest.NeuralNetworkPlayground
             // Act
             for (int i = 0; i < epochs; i++)
             {
-                Propagation prop = network.Propagate(input);
-                network.Backpropagate(prop, expectedOutput, learningRate);
+                network.Backpropagate(input, expectedOutput, learningRate);
             }
 
-            Vector<double> output = network.Propagate(input).Output();
+            network.Propagate(input);
+            Vector<double> output =
+                network.Layers[network.Layers.Count - 1].Activation;
 
             // Assert
             Assert.Multiple(() => {

@@ -9,6 +9,9 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
         public Vector<double> Bias;
         public IActivationFunction ActivationFunction;
 
+        public Vector<double> WeightedSum;
+        public Vector<double> Activation;
+
         public Layer(
             Matrix<double> weight,
             Vector<double> bias, 
@@ -19,12 +22,10 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             ActivationFunction = activationFunction;
         }
 
-        public (Vector<double> sum, Vector<double> activation)
-        Propagate(Vector<double> input)
+        public void Propagate(Vector<double> input)
         {
-            Vector<double> sum = Weight * input + Bias;
-            Vector<double> activation = ActivationFunction.Activation(sum);
-            return (sum, activation);
+            WeightedSum = Weight * input + Bias;
+            Activation = ActivationFunction.Activation(WeightedSum);
         }
 
     }

@@ -15,59 +15,72 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             Layers = layers;
         }
 
-        public Propagation Propagate(Vector<double> input)
+        public void Propagate(Vector<double> input)
         {
-            Propagation result = new();
-
-            result.WeightedSums.Add(null);
-            result.Activations.Add(input);
-
             foreach (Layer layer in Layers)
             {
-                (Vector<double> sum, Vector<double> activation) = layer.Propagate(input);
-                result.WeightedSums.Add(sum);
-                result.Activations.Add(activation);
-                input = activation;
+                layer.Propagate(input);
+                input = layer.Activation;
             }
-
-            return result;
         }
 
         public void Backpropagate(
-            Propagation prop,
+            Vector<double> input,
             Vector<double> expected,
             double learningRate)
         {
-            Debug.Assert(prop.Output().Count == expected.Count);
+            Propagate(input);
+            Vector<double> output = Layers[Layers.Count - 1].Activation;
+
+            Debug.Assert(output.Count == expected.Count);
 
             Matrix<double>[] weightGradient =
                 new Matrix<double>[Layers.Count];
             Vector<double>[] biasGradient =
                 new Vector<double>[Layers.Count];
 
-            Vector<double> delta = prop.Output() - expected;
+            Vector<double> delta = output - expected;
 
-            for (int i = Layers.Count; i > 0; i--)
+            Layer layer = null;
+            Vector<double> z = null;
+            Vector<double> a = null;
+            Vector<double> delz = null;
+
+            for (int i = Layers.Count - 1; i > 0; i--)
             {
-                Layer layer = Layers[i - 1];
-                Vector<double> z = prop.WeightedSums[i];
-                Vector<double> a = prop.Activations[i - 1];
+                layer = Layers[i];
+                Layer previousLayer = Layers[i - 1];
+                z = layer.WeightedSum;
+                a = previousLayer.Activation;
 
-                Vector<double> delz = layer.ActivationFunction.Derivative(z);
+                delz = layer.ActivationFunction.Derivative(z);
                 delta = delta.MapIndexed((i, d) => d * delz[i]);
 
-                weightGradient[i - 1] = Matrix<double>.Build.Dense(
+                weightGradient[i] = Matrix<double>.Build.Dense(
                     layer.Weight.RowCount,
                     layer.Weight.ColumnCount,
                     (i, j) => delta[i] * a[j]);
-                biasGradient[i - 1] = delta;
+                biasGradient[i] = delta;
 
                 delta = delta.MapIndexed((i, d) => layer.Weight.Row(i) * delta);
             }
 
+            layer = Layers[0];
+            z = layer.WeightedSum;
+            a = input;
+
+            delz = layer.ActivationFunction.Derivative(z);
+            delta = delta.MapIndexed((i, d) => d * delz[i]);
+
+            weightGradient[0] = Matrix<double>.Build.Dense(
+                layer.Weight.RowCount,
+                layer.Weight.ColumnCount,
+                (i, j) => delta[i] * a[j]);
+            biasGradient[0] = delta;
+
             for (int i = 0; i < Layers.Count; i++)
             {
-                Layer layer = Layers[i];
+                layer = Layers[i];
 
                 Matrix<double> weightDelta =
                     weightGradient[i].Map(g => -learningRate * g);

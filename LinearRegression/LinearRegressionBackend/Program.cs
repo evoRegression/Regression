@@ -60,7 +60,8 @@ namespace LinearRegressionBackend.OOPExercise
 
             Network network = new(layers);
 
-            return network.Propagate(input).Output();
+            network.Propagate(input);
+            return network.Layers[network.Layers.Count - 1].Activation;
         }
     }
 }
