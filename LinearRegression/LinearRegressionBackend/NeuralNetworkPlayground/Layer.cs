@@ -19,12 +19,12 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
             ActivationFunction = activationFunction;
         }
 
-        public (Vector<double> sum, Vector<double> activation)
-        Propagate(Vector<double> input)
+        public void Propagate(Propagation prop)
         {
-            Vector<double> sum = Weight * input + Bias;
+            Vector<double> sum = Weight * prop.Output() + Bias;
             Vector<double> activation = ActivationFunction.Activation(sum);
-            return (sum, activation);
+            prop.WeightedSums.Add(sum);
+            prop.Activations.Add(activation);
         }
 
     }

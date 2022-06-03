@@ -18,20 +18,17 @@ namespace LinearRegressionBackend.NeuralNetworkPlayground
 
         public Propagation Propagate(Vector<double> input)
         {
-            Propagation result = new();
+            Propagation prop = new();
 
-            result.WeightedSums.Add(null);
-            result.Activations.Add(input);
+            prop.WeightedSums.Add(null);
+            prop.Activations.Add(input);
 
             foreach (Layer layer in Layers)
             {
-                (Vector<double> sum, Vector<double> activation) = layer.Propagate(input);
-                result.WeightedSums.Add(sum);
-                result.Activations.Add(activation);
-                input = activation;
+                layer.Propagate(prop);
             }
 
-            return result;
+            return prop;
         }
 
         public (Matrix<double>[] weightGrad, Vector<double>[] biasGrad)
