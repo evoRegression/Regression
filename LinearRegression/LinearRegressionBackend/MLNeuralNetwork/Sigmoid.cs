@@ -11,7 +11,8 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
         public double Derivative(double weightedSum)
         {
-            throw new NotImplementedException();
+            double s = Activation(weightedSum);
+            return s * (1 - s);
         }
     }
 }
