@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Drawing;
+using System.Windows.Media;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend
@@ -16,14 +17,14 @@ namespace LinearRegressionBackend
         /// <param name="newWidth"></param>
         /// <param name="newHeight"></param>
         /// <returns></returns>
-        Vector<double> Scale(double[,] pixels, int newWidth, int newHeight);
+         Bitmap Scale(Bitmap bmp, int newWidth, int newHeight);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="pixels"></param>
         /// <returns></returns>
-        Vector<double> GrayScale(Vector<double> pixels);
+        Vector<double> GrayScale(Bitmap image);
 
         /// <summary>
         /// 
