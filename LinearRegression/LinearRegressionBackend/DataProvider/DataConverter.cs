@@ -6,7 +6,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
 {
-    public static class DataConverter
+    public static class DataConverter 
     {
         public static Vector<double> GetVector(double[,] imgPixelsMatrix)
         {
@@ -38,10 +38,10 @@ namespace LinearRegressionBackend.DataProvider
             {
                 using (var image = Image.FromFile(file.FullName))
                 {
-                    using (var newImage = ImageProcess.Scale((Bitmap)image, 4, 4)) //scale 4*4 
+                    using (var newImage = converter.Scale((Bitmap)image, 4, 4)) //scale 4*4 
                     {
-                       pixelVector = ImageProcess.GrayScale(newImage);
-                       labelVector = ImageProcess.CreateLabel(file.Name);
+                       pixelVector = converter.GrayScale(newImage);
+                       labelVector = converter.CreateLabel(file.Name);
 
                         // Matrix of pixel vectors 
                         matrixOfPixels.SetRow(i, pixelVector);

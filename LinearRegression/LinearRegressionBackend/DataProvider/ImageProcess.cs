@@ -12,9 +12,9 @@ using System.Windows.Media.Imaging;
 
 namespace LinearRegressionBackend.DataProvider
 {
-   public class ImageProcess
+    public class ImageProcess : IImageConverter
     {
-        public static Vector<double> CreateLabel(string filename)
+        public  Vector<double> CreateLabel(string filename)
         {
             double[] labelArray = new double[3]; //in the case we have 3 shapes 
 
@@ -35,7 +35,7 @@ namespace LinearRegressionBackend.DataProvider
             return labelVector;
         }
 
-        public static Vector<double> GrayScale(Bitmap image)
+        public  Vector<double> GrayScale(Bitmap image)
         {
             double[,] pixels = new double[image.Width, image.Height];
             for (int i = 0; i < image.Width; i++)
@@ -69,7 +69,7 @@ namespace LinearRegressionBackend.DataProvider
             return pixelVector;
         }
 
-        public static Bitmap Scale(Bitmap bmp, int newWidth, int newHeight)
+        public  Bitmap Scale(Bitmap bmp, int newWidth, int newHeight)
         {
             return new Bitmap(bmp, new System.Drawing.Size(newWidth, newHeight));
         }
