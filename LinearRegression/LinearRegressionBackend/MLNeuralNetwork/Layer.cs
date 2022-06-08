@@ -1,59 +1,31 @@
-﻿using System.Diagnostics;
-
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Layer
     {
-        public Matrix<double> Weights { get; set; }
-        public Matrix<double> WeightsGradient { get; set; }
 
-        public Vector<double> Biases { get; set; }
-        public Vector<double> BiasesGradient { get; set; }
+        public Matrix<double> Weight;
+        public Vector<double> Bias;
+        public IActivationFunction ActivationFunction;
 
-        public Vector<double> WeightedSums { get; set; }
-        public Vector<double> Activations { get; set; }
-
-        public IActivationFunction ActivationFunction { get; set; }
-
-        public int NeuronCount
+        public Layer(
+            Matrix<double> weight,
+            Vector<double> bias,
+            IActivationFunction activationFunction)
         {
-            get { return Biases.Count; }
-        }
-
-        public Layer(Matrix<double> weights, Vector<double> biases, IActivationFunction activationFunction)
-        {
-            Debug.Assert(weights.RowCount == biases.Count);
-            Weights = weights;
-            Biases = biases;
+            Weight = weight;
+            Bias = bias;
             ActivationFunction = activationFunction;
         }
 
-        public void PropagateForward(Vector<double> inputData)
+        public void Propagate(Propagation prop)
         {
-            WeightedSums = CalculateWeightedSums(inputData);
-            Activations = CalculateActivations(WeightedSums);
+            Vector<double> sum = Weight * prop.Output() + Bias;
+            Vector<double> activation = ActivationFunction.Activation(sum);
+            prop.WeightedSums.Add(sum);
+            prop.Activations.Add(activation);
         }
 
-        private Vector<double> CalculateWeightedSums(Vector<double> inputData)
-        {
-            Debug.Assert(inputData.Count == Weights.ColumnCount);
-            return Weights * inputData + Biases;
-        }
-
-        private Vector<double> CalculateActivations(Vector<double> weightedSums)
-        {
-            return Vector<double>.Build.Dense(
-                weightedSums.Count,
-                i => ActivationFunction.Activation(weightedSums[i])
-            );
-        }
-
-        public void Update(double rateOfChange, double learningRate)
-        {
-            Weights -= learningRate * rateOfChange * WeightsGradient;
-            Biases -= learningRate * rateOfChange * BiasesGradient;
-        }
     }
 }
