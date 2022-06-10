@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -8,70 +8,129 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class NeuralNetwork
     {
-        private List<Layer> _Layers;
+
+        public List<Layer> Layers;
 
         public NeuralNetwork(List<Layer> layers)
         {
-            _Layers = layers;
+            Layers = layers;
         }
 
-        public Vector<double> PropagateForward(Vector<double> inputData)
+        public Propagation Propagate(Vector<double> input)
         {
-            Vector<double> activations = inputData;
+            Propagation prop = new();
 
-            foreach (Layer layer in _Layers)
+            prop.WeightedSums.Add(null);
+            prop.Activations.Add(input);
+
+            foreach (Layer layer in Layers)
             {
-                layer.PropagateForward(activations);
-                activations = layer.Activations;
+                layer.Propagate(prop);
             }
 
-            return activations;
+            return prop;
         }
 
-        public void PropagateBackward(
-            List<Matrix<double>> weightedSums,
-            List<Matrix<double>> activations,
-            Matrix<double> actualValues,
-            Matrix<double> expectedValues,
-            double learningRate
-        )
+        public Gradient Backpropagate(
+            Propagation prop,
+            Vector<double> expected)
         {
-            Layer lastLayer = _Layers[_Layers.Count - 1];
+            Debug.Assert(prop.Output().Count == expected.Count);
 
-            Debug.Assert(actualValues.RowCount == lastLayer.NeuronCount);
-            Debug.Assert(actualValues.RowCount == expectedValues.RowCount);
-            Debug.Assert(actualValues.ColumnCount == expectedValues.ColumnCount);
+            Gradient grad = new(Layers.Count);
 
-            Vector<double> cumulativeDerivatives = CostDerivatives(actualValues, expectedValues);
+            Layer layer = Layers[Layers.Count - 1];
+            Vector<double> z = prop.WeightedSums[Layers.Count];
+            Vector<double> a = prop.Activations[Layers.Count - 1];
 
-            throw new NotImplementedException();
+            Vector<double> dg = layer.ActivationFunction.Derivative(z);
+            Vector<double> delta =
+                (prop.Output() - expected).MapIndexed((i, d) => d * dg[i]);
+
+            grad.WeightGradient[Layers.Count - 1] = Matrix<double>.Build.Dense(
+                    layer.Weight.RowCount,
+                    layer.Weight.ColumnCount,
+                    (i, j) => delta[i] * a[j]);
+            grad.BiasGradient[Layers.Count - 1] = delta;
+
+            for (int i = Layers.Count - 1; i > 0; i--)
+            {
+                layer = Layers[i - 1];
+                z = prop.WeightedSums[i];
+                a = prop.Activations[i - 1];
+
+                dg = layer.ActivationFunction.Derivative(z);
+                delta = delta.MapIndexed(
+                    (i, d) => delta * layer.Weight.Row(i) * dg[i]);
+
+                grad.WeightGradient[i - 1] = Matrix<double>.Build.Dense(
+                    layer.Weight.RowCount,
+                    layer.Weight.ColumnCount,
+                    (i, j) => delta[i] * a[j]);
+                grad.BiasGradient[i - 1] = delta;
+            }
+
+            return grad;
         }
 
-        private Vector<double> CostDerivatives(Matrix<double> actualValues, Matrix<double> expectedValues)
+        public Gradient Backpropagate(
+            Matrix<double> input,
+            Matrix<double> expected)
         {
-            Vector<double> derivatives = Vector<double>.Build.Dense(actualValues.RowCount, 1);
-            derivatives = (actualValues - expectedValues) * derivatives;
-            return derivatives;
+            Debug.Assert(input.RowCount == expected.RowCount);
+
+            int exampleCount = input.RowCount;
+
+            Propagation prop = Propagate(input.Row(0));
+            Gradient grad = Backpropagate(prop, expected.Row(0));
+            grad.WeightGradient =
+                grad.WeightGradient.Select(m => m / exampleCount).ToArray();
+            grad.BiasGradient =
+                grad.BiasGradient.Select(m => m / exampleCount).ToArray();
+
+            for (int i = 1; i < exampleCount; i++)
+            {
+                prop = Propagate(input.Row(i));
+                Gradient currentGrad = Backpropagate(prop, expected.Row(i));
+                grad.WeightGradient = grad.WeightGradient.Select(
+                    (m, i) => m + currentGrad.WeightGradient[i] / exampleCount)
+                    .ToArray();
+                grad.BiasGradient = grad.BiasGradient.Select(
+                    (m, i) => m + currentGrad.BiasGradient[i] / exampleCount)
+                    .ToArray();
+            }
+
+            return grad;
         }
 
-        private Vector<double> ActivationDerivatives(Layer layer, List<Matrix<double>> layerWeightedSums)
+        public void Update(Gradient gradient, double learningRate)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Layers.Count; i++)
+            {
+                Layer layer = Layers[i];
+
+                Matrix<double> weightDelta =
+                    gradient.WeightGradient[i].Map(g => -learningRate * g);
+                Vector<double> biasDelta =
+                    gradient.BiasGradient[i].Map(g => -learningRate * g);
+
+                layer.Weight += weightDelta;
+                layer.Bias += biasDelta;
+            }
         }
 
-        private Vector<double> WeightDerivatives(Vector<double> actualValue, Vector<double> expectedValue)
+        public void Train(
+            Matrix<double> input,
+            Matrix<double> expected,
+            int epochs,
+            double learningRate)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < epochs; i++)
+            {
+                Gradient gradient = Backpropagate(input, expected);
+                Update(gradient, learningRate);
+            }
         }
 
-        private Vector<double> BiasDerivatives(Vector<double> actualValue, Vector<double> expectedValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Vector<double> InputDerivatives(Vector<double> actualValue, Vector<double> expectedValue)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

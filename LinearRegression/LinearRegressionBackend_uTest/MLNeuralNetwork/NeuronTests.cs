@@ -264,7 +264,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             Matrix<double> inputs = Matrix<double>.Build.DenseOfArray(
                 new double[,] { { 1, 1 }, { 0, 1 }, { -1, 0 }, { -1, -1 }, { 0, 0 } });
             Vector<double> expectedOutputs = Vector<double>.Build.Dense(
-                new double[] { 6, 3, -2, -4, 1 });
+                new double[] { 6, 4, -1, -4, 1 });
             Vector<double> weights = Vector<double>.Build.Random(2);
 
             Mock<IActivationFunction> linearActivationMock = new();
