@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using System.Text.RegularExpressions;
 using LinearRegressionWPF.ViewModels;
 
 using Brushes = System.Windows.Media.Brushes;
@@ -54,6 +54,31 @@ namespace LinearRegressionWPF.Views
         private void FourByFourBtnClick(object sender, RoutedEventArgs e)
         {
             GetMatrix(4, 4);
+        }
+
+        private void RandomizeBtnClick(object sender, RoutedEventArgs e)
+        {
+            
+            Random rnd = new Random();
+            weight1.Value = rnd.Next(0,100);
+            weight2.Value = rnd.Next(0, 100);
+            weight3.Value = rnd.Next(0, 100);
+            weight4.Value = rnd.Next(0, 100);
+
+            weight5.Value = rnd.Next(0, 100);
+            weight6.Value = rnd.Next(0, 100);
+            weight7.Value = rnd.Next(0, 100);
+            weight8.Value = rnd.Next(0, 100);
+
+            weight9.Value = rnd.Next(0, 100);
+            weight10.Value = rnd.Next(0, 100);
+            weight11.Value = rnd.Next(0, 100);
+            weight12.Value = rnd.Next(0, 100);
+
+            weight13.Value = rnd.Next(0, 100);
+            weight14.Value = rnd.Next(0, 100);
+            weight15.Value = rnd.Next(0, 100);
+            weight16.Value = rnd.Next(0, 100);
         }
 
         public void DrawMatrix(ImageSource src)
@@ -112,6 +137,11 @@ namespace LinearRegressionWPF.Views
         {
             MyCanvas.DefaultDrawingAttributes.Width = sizeSlide.Value;
             MyCanvas.DefaultDrawingAttributes.Height = sizeSlide.Value;
+        }
+
+        private void txtMatrix_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
 
         /*public void updateWeight(ImageSource src)

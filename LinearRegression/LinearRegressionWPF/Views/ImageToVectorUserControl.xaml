@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="950" d:DesignWidth="800">
+             mc:Ignorable="d" Height="1000" Width="920">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -13,7 +12,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto"  />
             <RowDefinition Height="auto"  />
-            
+
             <RowDefinition Height="20" />
             <RowDefinition Height="20" />
 
@@ -44,7 +43,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="50" />
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="150" />
@@ -55,10 +54,10 @@
         <Border BorderThickness="3" BorderBrush="Gray"
                 CornerRadius="5"
                 Grid.Row="0" Grid.Column="0" 
-                Grid.RowSpan="8">
+                Grid.RowSpan="99">
             <DockPanel Background="#348EF6" />
         </Border>
-        
+
         <Label Content="Brush Size" Height="25" Grid.Row="3" Grid.Column="0" Width="82" Foreground="#FFF2FAFF" FontSize="14"/>
         <Border x:Name="brushbrd"
                 BorderThickness="3" BorderBrush="Gray"
@@ -75,35 +74,38 @@
         <Border BorderThickness="5" BorderBrush="Black"
                 Grid.Row="1" Grid.Column="1"
                 Grid.ColumnSpan="2" Grid.RowSpan="5"
-                Margin="10">
-            <InkCanvas x:Name="MyCanvas" Background="White" ></InkCanvas>
+                Margin="10"
+                >
+            <InkCanvas x:Name="MyCanvas" Background="White" Height="Auto" Margin="0,0,5,0"  />
         </Border>
 
         <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" Grid.Row="4" VerticalAlignment="Top" Margin="10,0,20,0" ValueChanged="SlideVlaueChange"/>
 
         <Label Content="Draw The shape Below :" Grid.Column="1" Height="29" Width="163" FontSize="14" Grid.ColumnSpan="2" Grid.Row="0"/>
-        
+
         <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="ClearBtnClick"  Grid.Column="4" Grid.Row="1" />
 
         <Button x:Name="_4by4_btn" Content="Get 4X4 Image"  Width="120" Height="42" FontSize="16" Click="FourByFourBtnClick"  Grid.Column="4" Grid.Row="2" />
 
+        <Button x:Name="_random_weight_btn" Content="Randomize"  Width="120" Height="42" FontSize="16" Click="RandomizeBtnClick"  Grid.Column="4" Grid.Row="3" />
+        
         <Border BorderThickness="5" BorderBrush="Black"
-                Grid.Row="3" Grid.RowSpan="3"
-                Grid.ColumnSpan="1" Grid.Column="5"
-                Margin="10">
-            <Image x:Name="imgCanvas"   RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" />
+                Grid.Row="1" Grid.RowSpan="5"
+                Grid.ColumnSpan="2" Grid.Column="5"
+                Margin="10,10,-50,10">
+            <Image x:Name="imgCanvas"   RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Margin="-1,-1,-7,0" />
         </Border>
 
-        <TextBox x:Name="txtMatrix"  TextWrapping="Wrap" Background="#FFC7CBDE" FontSize="10" IsEnabled="False" Grid.Column="5" Grid.ColumnSpan="6" Grid.Row="1" Grid.RowSpan="2" />
+        <TextBox x:Name="txtMatrix"  TextWrapping="Wrap" Background="#FFC7CBDE" FontSize="10" IsEnabled="False" Grid.Column="5" Grid.ColumnSpan="2" Grid.Row="1" Grid.RowSpan="5" Margin="10,10,-50,11" TextChanged="txtMatrix_TextChanged" />
 
         <TextBlock x:Name="value1" Grid.Column="1" Grid.Row="8" TextAlignment="Right" >
             ?
         </TextBlock>
 
         <TextBlock Grid.Column="2" Grid.Row="8" >
-                
+                <!--ValueChanged="updateWeight"-->
                     <TextBox Text="{Binding ElementName=weight1, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="40" />
-            <Slider Maximum="100" ValueChanged="updateWeight" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight1" Width="100"/>
+            <Slider Maximum="100"  TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight1" Width="100"/>
 
 
         </TextBlock>
@@ -214,7 +216,7 @@
             <Slider Maximum="100" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" Name="weight16" Width="100"  />
         </TextBlock>
 
-        <Border Grid.Row="13" Grid.Column="4" Padding="20,10,0,0" Grid.ColumnSpan="6" Margin="0,10,108,0" Grid.RowSpan="4" >
+        <Border Grid.Row="13" Grid.Column="4" Padding="20,10,0,0" Grid.ColumnSpan="3" Margin="0,10,-63,0" Grid.RowSpan="4" >
             <DockPanel LastChildFill="False" VerticalAlignment="Center" Height="60">
                 <DockPanel LastChildFill="False" DockPanel.Dock="Left"
                            Margin="0 0 20 0">
@@ -270,7 +272,7 @@
                 </DockPanel>
             </DockPanel>
         </Border>
-        
+
 
     </Grid>
 </UserControl>
