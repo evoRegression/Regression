@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
@@ -131,6 +132,69 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
                 Assert.That(
                     output[1],
                     Is.EqualTo(expectedOutput[1]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+            });
+        }
+
+        [Test]
+        public void Network_Backpropagation_MultipleExamples()
+        {
+            // Arrange
+            List<Layer> layers = new()
+            {
+                new Layer(
+                    weight: Matrix<double>.Build.Random(2, 2, 1),
+                    bias: Vector<double>.Build.Random(2, 2),
+                    activationFunction: Sigmoid),
+                new Layer(
+                    weight: Matrix<double>.Build.Random(2, 2, 3),
+                    bias: Vector<double>.Build.Random(2, 4),
+                    activationFunction: Sigmoid),
+            };
+
+            NeuralNetwork network = new(layers);
+
+            int epochs = 30000;
+            double learningRate = 1.0;
+
+            Matrix<double> input =
+                Matrix<double>.Build.DenseOfRowArrays(
+                    new[] { 0.2, 0.4 },
+                    new[] { 0.6, 0.8 }
+                );
+            Matrix<double> expectedOutput =
+                Matrix<double>.Build.DenseOfRowArrays(
+                    new[] { 0.6610395753, 0.7069956986 },
+                    new[] { 0.6660482481, 0.7130073216 }
+                );
+
+            // Act
+            network.Train(
+                input,
+                expectedOutput,
+                epochs,
+                learningRate);
+
+            Matrix<double> output = Matrix<double>.Build.DenseOfRows(
+                input.EnumerateRows().Select(ex => network.Propagate(ex).Output()).ToArray());
+
+            // Assert
+            Assert.Multiple(() => {
+                Assert.That(
+                    output[0, 0],
+                    Is.EqualTo(expectedOutput[0, 0]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[0, 1],
+                    Is.EqualTo(expectedOutput[0, 1]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[1, 0],
+                    Is.EqualTo(expectedOutput[1, 0]).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[1, 1],
+                    Is.EqualTo(expectedOutput[1, 1]).Within(ACCURACY_DELTA),
                     "Incorrect output");
             });
         }
