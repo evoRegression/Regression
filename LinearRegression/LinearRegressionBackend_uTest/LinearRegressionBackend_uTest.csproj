@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <Platforms>AnyCPU;x64</Platforms>
+
+    <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LinearRegressionBackend\LinearRegressionBackend.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestCaseGenerator\" />
   </ItemGroup>
 
 </Project>
