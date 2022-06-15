@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -158,6 +160,12 @@ namespace LinearRegressionBackend.MLNeuralNetwork
                     Update(gradient, learningRate);
                 }
             }
+        }
+
+        public void Export(Stream outputStream)
+        {
+            using Utf8JsonWriter writer = new(outputStream);
+            JsonSerializer.Serialize(writer, this);
         }
 
     }
