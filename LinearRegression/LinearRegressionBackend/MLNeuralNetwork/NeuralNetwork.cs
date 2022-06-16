@@ -12,7 +12,7 @@ namespace LinearRegressionBackend.MLNeuralNetwork
     public class NeuralNetwork
     {
 
-        public List<Layer> Layers;
+        public List<Layer> Layers { get; set; }
 
         public NeuralNetwork(List<Layer> layers)
         {

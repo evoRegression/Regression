@@ -5,8 +5,21 @@ namespace LinearRegressionBackend.MLNeuralNetwork
     public class Layer
     {
 
-        public Matrix<double> Weight;
-        public Vector<double> Bias;
+        public Matrix<double> Weight { get; set; }
+        public double[][] WeightValues
+        {
+            get
+            {
+                double[][] weightValues = new double[Weight.RowCount][];
+                foreach ((int index, Vector<double> row)
+                    in Weight.EnumerateRowsIndexed())
+                {
+                    weightValues[index] = row.ToArray();
+                }
+                return weightValues;
+            }
+        }
+        public Vector<double> Bias { get; set; }
         public IActivationFunction ActivationFunction;
 
         public Layer(
