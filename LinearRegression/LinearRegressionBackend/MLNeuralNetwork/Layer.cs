@@ -45,7 +45,11 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         public Layer(
             double[][] weightArray,
             double[] biasArray)
-        { }
+        {
+            Weight = Matrix<double>.Build.DenseOfRowArrays(weightArray);
+            Bias = Vector<double>.Build.Dense(biasArray);
+            ActivationFunction = new ReLU();
+        }
 
         public void Propagate(Propagation prop)
         {
