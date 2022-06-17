@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -129,6 +130,33 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             {
                 Gradient gradient = Backpropagate(input, expected);
                 Update(gradient, learningRate);
+            }
+        }
+
+        public void BatchTrain(
+            Matrix<double> input,
+            Matrix<double> expected,
+            int batchSize,
+            int epochs,
+            double learningRate)
+        {
+            int exampleCount = input.RowCount;
+
+            for (int i = 0; i < epochs; i++)
+            {
+                for (int j = 0; j < exampleCount; j += batchSize)
+                {
+                    int currentBatchSize =
+                        Math.Min(batchSize, exampleCount - j);
+
+                    Matrix<double> inputBatch = input.SubMatrix(
+                        j, currentBatchSize, 0, input.ColumnCount);
+                    Matrix<double> expectedBatch = expected.SubMatrix(
+                        j, currentBatchSize, 0, expected.ColumnCount);
+                    Gradient gradient =
+                        Backpropagate(inputBatch, expectedBatch);
+                    Update(gradient, learningRate);
+                }
             }
         }
 
