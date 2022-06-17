@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -257,6 +258,82 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             using (Stream inputStream = File.OpenRead(FILENAME))
             {
                 importedNetwork = await NeuralNetwork.Import(inputStream);
+            }
+
+            Vector<double> output = importedNetwork.Propagate(input).Output();
+
+            // Assert
+            Assert.Multiple(() => {
+                Assert.That(
+                    output[0],
+                    Is.EqualTo(7).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+                Assert.That(
+                    output[1],
+                    Is.EqualTo(7).Within(ACCURACY_DELTA),
+                    "Incorrect output");
+            });
+        }
+
+        [Test]
+        public async Task Network_ImportExport_Compressed()
+        {
+            // Arrange
+            Matrix<double> weight1 = Matrix<double>.Build.DenseOfRowArrays(
+                new[] { 1.0, 1.0 },
+                new[] { 1.0, 1.0 }
+            );
+
+            Vector<double> bias1 = Vector<double>.Build.Dense(new[] {
+                1.0,
+                1.0,
+            });
+
+            Matrix<double> weight2 = Matrix<double>.Build.DenseOfRowArrays(
+                new[] { 1.0, 1.0 },
+                new[] { 1.0, 1.0 }
+            );
+
+            Vector<double> bias2 = Vector<double>.Build.Dense(new[] {
+                1.0,
+                1.0,
+            });
+
+            List<Layer> layers = new()
+            {
+                new Layer(
+                    weight: weight1,
+                    bias: bias1,
+                    activationFunction: ReLU),
+                new Layer(
+                    weight: weight2,
+                    bias: bias2,
+                    activationFunction: ReLU),
+            };
+
+            NeuralNetwork network = new(layers);
+
+            Vector<double> input = Vector<double>.Build.Dense(
+                new[] { 1.0, 1.0 });
+
+            string FILENAME = Environment.ExpandEnvironmentVariables(
+                @"%USERPROFILE%\Desktop\network.json.gz");
+
+            // Act
+            using (Stream outputStream = File.OpenWrite(FILENAME))
+            using (GZipStream compressor =
+                new(outputStream, CompressionMode.Compress))
+            {
+                network.Export(compressor);
+            }
+
+            NeuralNetwork importedNetwork = null;
+
+            using (Stream inputStream = File.OpenRead(FILENAME))
+            using (GZipStream decompressor =
+                new(inputStream, CompressionMode.Decompress))
+            {
+                importedNetwork = await NeuralNetwork.Import(decompressor);
             }
 
             Vector<double> output = importedNetwork.Propagate(input).Output();
