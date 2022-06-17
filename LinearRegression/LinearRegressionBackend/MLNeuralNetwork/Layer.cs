@@ -1,12 +1,14 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Text.Json.Serialization;
+
+using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Layer
     {
 
-        public Matrix<double> Weight { get; set; }
-        public double[][] WeightValues
+        public Matrix<double> Weight;
+        public double[][] WeightArray
         {
             get
             {
@@ -19,7 +21,14 @@ namespace LinearRegressionBackend.MLNeuralNetwork
                 return weightValues;
             }
         }
-        public Vector<double> Bias { get; set; }
+        public Vector<double> Bias;
+        public double[] BiasArray
+        {
+            get
+            {
+                return Bias.ToArray();
+            }
+        }
         public IActivationFunction ActivationFunction;
 
         public Layer(
@@ -31,6 +40,12 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             Bias = bias;
             ActivationFunction = activationFunction;
         }
+
+        [JsonConstructor]
+        public Layer(
+            double[][] weightArray,
+            double[] biasArray)
+        { }
 
         public void Propagate(Propagation prop)
         {
