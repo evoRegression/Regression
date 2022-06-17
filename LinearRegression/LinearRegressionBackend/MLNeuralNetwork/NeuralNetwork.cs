@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 
@@ -10,7 +13,7 @@ namespace LinearRegressionBackend.MLNeuralNetwork
     public class NeuralNetwork
     {
 
-        public List<Layer> Layers;
+        public List<Layer> Layers { get; set; }
 
         public NeuralNetwork(List<Layer> layers)
         {
@@ -158,6 +161,23 @@ namespace LinearRegressionBackend.MLNeuralNetwork
                     Update(gradient, learningRate);
                 }
             }
+        }
+
+        public void Export(Stream outputStream)
+        {
+            using Utf8JsonWriter writer = new(outputStream);
+            JsonSerializer.Serialize(writer, this);
+        }
+
+        public static async Task<NeuralNetwork> Import(Stream inputStream)
+        {
+            JsonSerializerOptions options = new() 
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return await JsonSerializer.DeserializeAsync<NeuralNetwork>(
+                inputStream, options);
         }
 
     }
