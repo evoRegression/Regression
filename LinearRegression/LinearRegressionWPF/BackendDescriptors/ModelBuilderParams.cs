@@ -1,4 +1,4 @@
-﻿namespace LinearRegressionWPF.BackendFeatures
+﻿namespace LinearRegressionWPF.BackendDescriptors
 {
     class ModelBuilderParams
     {
