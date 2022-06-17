@@ -4,6 +4,11 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Tanh : IActivationFunction
     {
+        public string GetSerializedName()
+        {
+            return "Tanh";
+        }
+
         public double Activation(double weightedSum)
         {
             return Math.Tanh(weightedSum);

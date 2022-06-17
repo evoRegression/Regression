@@ -30,6 +30,13 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             }
         }
         public IActivationFunction ActivationFunction;
+        public string ActivationFunctionName
+        {
+            get
+            {
+                return ActivationFunction.GetSerializedName();
+            }
+        }
 
         public Layer(
             Matrix<double> weight,

@@ -8,6 +8,12 @@ namespace LinearRegressionBackend
     public interface IActivationFunction
     {
         /// <summary>
+        /// Returns a unique name for serialization.
+        /// </summary>
+        /// <returns>Returns a unique name as a string.</returns>
+        string GetSerializedName();
+
+        /// <summary>
         /// Calculates the activation of a neuron.
         /// </summary>
         /// <param name="weightedSum">The weighted sum of the neuron inputs.</param>
