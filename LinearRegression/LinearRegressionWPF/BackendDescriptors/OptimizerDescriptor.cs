@@ -1,19 +1,14 @@
 ﻿using System;
 
-using LinearRegressionBackend;
+using LinearRegressionBackend.MLModel;
 
-namespace LinearRegressionWPF.BackendFeatures
+namespace LinearRegressionWPF.BackendDescriptors
 {
-    internal class OptimizerDescriptor
+    class OptimizerDescriptor
     {
         public string Name { get; set; }
-
         public bool IsIterative { get; set; }
-
         public OptimizerBuilderParams.Parameter[] SupportedParameters { get; set; }
-
         public Func<OptimizerBuilderParams, IOptimizer> BuildOptimizer { get; set; }
-
-        public Func<IEstimator> BuildEstimator { get; set; }
     }
 }

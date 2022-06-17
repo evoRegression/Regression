@@ -1,17 +1,14 @@
 ﻿using System;
 
-using LinearRegressionBackend;
+using LinearRegressionBackend.MLModel;
 
-namespace LinearRegressionWPF.BackendFeatures
+namespace LinearRegressionWPF.BackendDescriptors
 {
-    internal class ModelDescriptor
+    class ModelDescriptor
     {
         public string Name { get; set; }
-
         public LossFunctionDescriptor[] SupportedLossFunctions { get; set; }
-
         public OptimizerDescriptor[] SupportedOptimizers { get; set; }
-
         public Func<ModelBuilderParams, IMLModel> BuildModel { get; set; }
     }
 }

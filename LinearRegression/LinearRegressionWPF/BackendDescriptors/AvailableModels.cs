@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-using LinearRegressionBackend;
 using LinearRegressionBackend.MLModel;
 
-namespace LinearRegressionWPF.BackendFeatures
+namespace LinearRegressionWPF.BackendDescriptors
 {
-    internal static class AvailableModels
+    static class AvailableModels
     {
         public static ModelDescriptor[] AvailableModelsArray;
         private static Dictionary<string, LossFunctionDescriptor> AvailableLossFunctions;
@@ -37,7 +36,7 @@ namespace LinearRegressionWPF.BackendFeatures
                         Name = "Simple Ordinary Least Square",
                         IsIterative = false,
                         SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildEstimator = () => new SimpleOrdinaryLeastSquare()
+                        BuildOptimizer = (parameters) => new SimpleOrdinaryLeastSquare()
                     }
                 },
                 {
@@ -46,7 +45,7 @@ namespace LinearRegressionWPF.BackendFeatures
                         Name = "Quadratic Ordinary Least Square",
                         IsIterative = false,
                         SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildEstimator = () => new QuadraticOrdinaryLeastSquare()
+                        BuildOptimizer = (parameters) => new QuadraticOrdinaryLeastSquare()
                     }
                 },
                 {
@@ -70,7 +69,7 @@ namespace LinearRegressionWPF.BackendFeatures
                         Name = "Normal Equation",
                         IsIterative = false,
                         SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildEstimator = () => new NormalEquation()
+                        BuildOptimizer = (parameters) => new NormalEquation()
                     }
                 }
             };
@@ -94,14 +93,12 @@ namespace LinearRegressionWPF.BackendFeatures
                     BuildModel = (parameters) => {
                         double slope = parameters.Slope;
                         double yIntercept = parameters.YIntercept;
-                        IOptimizer optimizer = parameters.OptimizerDesc.BuildOptimizer?.Invoke(
+                        IOptimizer optimizer = parameters.OptimizerDesc.BuildOptimizer(
                             new OptimizerBuilderParams { LearningRate = parameters.LearningRate });
-                        IEstimator estimator = parameters.OptimizerDesc.BuildEstimator?.Invoke();
                         ILossFunction lossFunction = parameters.LossFunctionDesc.BuildLossFunction();
 
-                        return optimizer != null
-                            ? new LinearRegressionModel(slope, yIntercept, optimizer, lossFunction)
-                            : new LinearRegressionModel(slope, yIntercept, estimator, lossFunction); }
+                        return new LinearRegressionModel(slope, yIntercept, optimizer, lossFunction);
+                    }
                 }
             };
         }
