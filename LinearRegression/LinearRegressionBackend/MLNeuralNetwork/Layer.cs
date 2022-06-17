@@ -51,11 +51,14 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         [JsonConstructor]
         public Layer(
             double[][] weightArray,
-            double[] biasArray)
+            double[] biasArray,
+            string activationFunctionName)
         {
             Weight = Matrix<double>.Build.DenseOfRowArrays(weightArray);
             Bias = Vector<double>.Build.Dense(biasArray);
-            ActivationFunction = new ReLU();
+            ActivationFunction =
+                AvailableActivationFunctions
+                    .Builders[activationFunctionName]();
         }
 
         public void Propagate(Propagation prop)
