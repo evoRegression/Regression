@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
@@ -202,7 +203,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
         }
 
         [Test]
-        public void Network_Export()
+        public async Task Network_ImportExport()
         {
             // Arrange
             Matrix<double> weight1 = Matrix<double>.Build.DenseOfRowArrays(
@@ -246,12 +247,19 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
                 @"%USERPROFILE%\Desktop\network.json");
 
             // Act
-            Vector<double> output = network.Propagate(input).Output();
-
             using (Stream outputStream = File.OpenWrite(FILENAME))
             {
                 network.Export(outputStream);
             }
+
+            NeuralNetwork importedNetwork = null;
+
+            using (Stream inputStream = File.OpenRead(FILENAME))
+            {
+                importedNetwork = await NeuralNetwork.Import(inputStream);
+            }
+
+            Vector<double> output = importedNetwork.Propagate(input).Output();
 
             // Assert
             Assert.Multiple(() => {
