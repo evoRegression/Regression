@@ -4,7 +4,7 @@ using LinearRegressionBackend.MLCommmons;
 
 namespace LinearRegressionBackend.MLModel
 {
-    public class GradientDescent : IOptimizer, IIterable
+    public class GradientDescent : IOptimizer, IIterable, IEstimator
     {
         public double LearningRate { get; set; }
 
@@ -28,6 +28,11 @@ namespace LinearRegressionBackend.MLModel
             double updatedBias = bias - LearningRate * dBias;
 
             return (updatedWeights, updatedBias);
+        }
+
+        public (Matrix<double>, double) Estimate(Matrix<double> inputData, Vector<double> outputData)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

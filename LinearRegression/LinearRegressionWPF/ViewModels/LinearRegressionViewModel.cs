@@ -7,7 +7,7 @@ using System.Windows.Input;
 using LinearRegressionBackend;
 using LinearRegressionBackend.MLCommmons;
 
-using LinearRegressionWPF.BackendFeatures;
+using LinearRegressionWPF.BackendDescriptors;
 using LinearRegressionWPF.Commands;
 using LinearRegressionWPF.Models;
 
@@ -82,9 +82,9 @@ namespace LinearRegressionWPF.ViewModels
 
         public LossFunctionDescriptor[] AvailableLossFunctionsArray { get; set; }
         public LossFunctionDescriptor SelectedLossFunction { get; set; }
-        public OptimizerDescriptor[] AvailableOptimizersArray { get; set; }
+        public EstimatorDescriptor[] AvailableOptimizersArray { get; set; }
 
-        public OptimizerDescriptor SelectedOptimizer
+        public EstimatorDescriptor SelectedOptimizer
         {
             get => _selectedOptimizer;
 
@@ -104,7 +104,7 @@ namespace LinearRegressionWPF.ViewModels
             }
         }
 
-        private OptimizerDescriptor _selectedOptimizer;
+        private EstimatorDescriptor _selectedOptimizer;
 
         public double LearningRate { get; set; }
         public bool LearningRateEnabled { get; set; }
