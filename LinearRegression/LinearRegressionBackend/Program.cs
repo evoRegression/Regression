@@ -1,36 +1,37 @@
 ﻿using System;
-
-using LinearRegressionBackend.DataProvider;
+using System.CommandLine;
+using System.Threading.Tasks;
 
 namespace LinearRegressionBackend.OOPExercise
 {
     class Program
     {
-        static void Main(string[] args)
+
+        static async Task<int> Main(string[] args)
         {
-            double[] arrayUnsorted = { 1, 5, 3, 9, 5, 6 };
+            var rootCommand =
+                new RootCommand("Machine Learning CLI Tool");
 
-            Array.Sort(arrayUnsorted);
+            var nameOption = new Option<string>(
+                name: "--name",
+                description: "The name of the user.")
+                { 
+                    IsRequired = true,
+                };
 
-            double[][] myArray4 = new double[5][];
-            myArray4[0] = new double[2];
-            myArray4[1] = new double[2];
-            myArray4[2] = new double[2];
-            myArray4[3] = new double[2];
-            myArray4[4] = new double[2];
+            rootCommand.AddOption(nameOption);
 
-            myArray4[0][0] = 1; myArray4[0][1] = 82;
-            myArray4[1][0] = 3; myArray4[1][1] = 93;
-            myArray4[2][0] = 5; myArray4[2][1] = 98;
-            myArray4[3][0] = 7; myArray4[3][1] = 89;
-            myArray4[4][0] = 9; myArray4[4][1] = 88;
+            rootCommand.SetHandler(
+                (name) => PrintUserName(name),
+                nameOption);
 
-            double testDongle = Numerical.StandardDeviation(myArray4, 1);
-            Console.WriteLine(testDongle);
-
-            Numerical.SaveText("C:/Users/cnsor/Desktop/test/test.txt", myArray4);
-
-            Console.ReadLine();
+            return await rootCommand.InvokeAsync(args);
         }
+
+        static void PrintUserName(string userName)
+        {
+            Console.WriteLine($"Hello, {userName}!");
+        }
+
     }
 }
