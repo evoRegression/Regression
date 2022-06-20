@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using LinearRegressionBackend;
 using LinearRegressionBackend.MLModel;
 
 namespace LinearRegressionWPF.BackendDescriptors
@@ -30,24 +31,24 @@ namespace LinearRegressionWPF.BackendDescriptors
             };
 
             AvailableOptimizers = new Dictionary<string, OptimizerDescriptor> {
-                {
-                    "SimpleOrdinaryLeastSquare",
-                    new OptimizerDescriptor {
-                        Name = "Simple Ordinary Least Square",
-                        IsIterative = false,
-                        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildOptimizer = (parameters) => new SimpleOrdinaryLeastSquare()
-                    }
-                },
-                {
-                    "QuadraticOrdinaryLeastSquare",
-                    new OptimizerDescriptor {
-                        Name = "Quadratic Ordinary Least Square",
-                        IsIterative = false,
-                        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildOptimizer = (parameters) => new QuadraticOrdinaryLeastSquare()
-                    }
-                },
+                //{
+                //    "SimpleOrdinaryLeastSquare",
+                //    new OptimizerDescriptor {
+                //        Name = "Simple Ordinary Least Square",
+                //        IsIterative = false,
+                //        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
+                //        BuildOptimizer = (parameters) => new SimpleOrdinaryLeastSquare()
+                //    }
+                //},
+                //{
+                //    "QuadraticOrdinaryLeastSquare",
+                //    new OptimizerDescriptor {
+                //        Name = "Quadratic Ordinary Least Square",
+                //        IsIterative = false,
+                //        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
+                //        BuildOptimizer = (parameters) => new QuadraticOrdinaryLeastSquare()
+                //    }
+                //},
                 {
                     "GradientDescent",
                     new OptimizerDescriptor {
@@ -63,15 +64,15 @@ namespace LinearRegressionWPF.BackendDescriptors
                         }
                     }
                 },
-                {
-                    "NormalEquation",
-                    new OptimizerDescriptor {
-                        Name = "Normal Equation",
-                        IsIterative = false,
-                        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
-                        BuildOptimizer = (parameters) => new NormalEquation()
-                    }
-                }
+                //{
+                //    "NormalEquation",
+                //    new OptimizerDescriptor {
+                //        Name = "Normal Equation",
+                //        IsIterative = false,
+                //        SupportedParameters = new OptimizerBuilderParams.Parameter[] { },
+                //        BuildOptimizer = (parameters) => new NormalEquation()
+                //    }
+                //}
             };
 
             AvailableModelsArray = new ModelDescriptor[] {
@@ -84,10 +85,10 @@ namespace LinearRegressionWPF.BackendDescriptors
                     },
 
                     SupportedOptimizers = new OptimizerDescriptor[] {
-                        AvailableOptimizers["SimpleOrdinaryLeastSquare"],
-                        AvailableOptimizers["QuadraticOrdinaryLeastSquare"],
                         AvailableOptimizers["GradientDescent"],
-                        AvailableOptimizers["NormalEquation"]
+                        //AvailableOptimizers["SimpleOrdinaryLeastSquare"],
+                        //AvailableOptimizers["QuadraticOrdinaryLeastSquare"],
+                        //AvailableOptimizers["NormalEquation"]
                     },
 
                     BuildModel = (parameters) => {
