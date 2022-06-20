@@ -36,7 +36,9 @@ namespace LinearRegressionBackend.DataProvider
             int i = 0;
             foreach (var file in directory.GetFiles()) 
             {
+#pragma warning disable CA1416 // Validate platform compatibility
                 using (var image = Image.FromFile(file.FullName))
+#pragma warning restore CA1416 // Validate platform compatibility
                 {
                     using (var newImage = converter.Scale((Bitmap)image, 4, 4)) //scale 4*4 
                     {
