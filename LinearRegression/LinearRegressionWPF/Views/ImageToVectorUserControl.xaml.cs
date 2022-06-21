@@ -26,24 +26,14 @@ namespace LinearRegressionWPF.Views
             DataContext = new ImageToVectorViewModel();
             MyCanvas.DefaultDrawingAttributes.Color = Colors.Black;
             MyCanvas.UseCustomCursor = true;
-            brushbrd.BorderBrush = Brushes.Blue;
             MyCanvas.Cursor = Cursors.Pen;
         }
 
         private void BrushBtnClick(object sender, MouseButtonEventArgs e)
         {
-            brushbrd.BorderBrush = Brushes.Blue;
+            
             MyCanvas.EditingMode = InkCanvasEditingMode.Ink;
             MyCanvas.Cursor = Cursors.Pen;
-            erasebrd.BorderBrush = Brushes.Gray;
-        }
-
-        private void EreaseBtnClick(object sender, MouseButtonEventArgs e)
-        {
-            erasebrd.BorderBrush = Brushes.Blue;
-            MyCanvas.EditingMode = InkCanvasEditingMode.EraseByPoint;
-            MyCanvas.Cursor = Cursors.Cross;
-            brushbrd.BorderBrush = Brushes.Gray;
         }
 
         private void ClearBtnClick(object sender, RoutedEventArgs e)
@@ -51,36 +41,14 @@ namespace LinearRegressionWPF.Views
             MyCanvas.Strokes.Clear();
         }
 
-        private void FourByFourBtnClick(object sender, RoutedEventArgs e)
+        private void EreaseBtnClick(object sender, MouseButtonEventArgs e)
         {
-            GetMatrix(4, 4);
+            MyCanvas.EditingMode = InkCanvasEditingMode.EraseByPoint;
+            MyCanvas.Cursor = Cursors.Cross;
         }
 
-        private void RandomizeBtnClick(object sender, RoutedEventArgs e)
-        {
-            
-            Random rnd = new Random();
-            weight1.Value = rnd.Next(0,100);
-            weight2.Value = rnd.Next(0, 100);
-            weight3.Value = rnd.Next(0, 100);
-            weight4.Value = rnd.Next(0, 100);
 
-            weight5.Value = rnd.Next(0, 100);
-            weight6.Value = rnd.Next(0, 100);
-            weight7.Value = rnd.Next(0, 100);
-            weight8.Value = rnd.Next(0, 100);
-
-            weight9.Value = rnd.Next(0, 100);
-            weight10.Value = rnd.Next(0, 100);
-            weight11.Value = rnd.Next(0, 100);
-            weight12.Value = rnd.Next(0, 100);
-
-            weight13.Value = rnd.Next(0, 100);
-            weight14.Value = rnd.Next(0, 100);
-            weight15.Value = rnd.Next(0, 100);
-            weight16.Value = rnd.Next(0, 100);
-        }
-
+        /*
         public void DrawMatrix(ImageSource src)
         {
             try
@@ -123,7 +91,9 @@ namespace LinearRegressionWPF.Views
                 txtMatrix.Text = ex.ToString();
             }
         }
+        */
 
+        /*
         public void GetMatrix(int width, int heigh)
         {
             txtMatrix.Text = "";
@@ -131,23 +101,13 @@ namespace LinearRegressionWPF.Views
             ImageSource img_src = imageToVectorViewModel.ConvertToImageSource((imageToVectorViewModel.ConvertToBitmap(img)), width, heigh);
             imgCanvas.Source = img_src;
             DrawMatrix(img_src);
-        }
+        }*/
 
         private void SlideVlaueChange(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MyCanvas.DefaultDrawingAttributes.Width = sizeSlide.Value;
-            MyCanvas.DefaultDrawingAttributes.Height = sizeSlide.Value;
+           MyCanvas.DefaultDrawingAttributes.Width = sizeSlide.Value;
+           MyCanvas.DefaultDrawingAttributes.Height = sizeSlide.Value;
         }
-
-        private void txtMatrix_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        /*public void updateWeight(ImageSource src)
-        {
-            weighted
-        }*/
 
     }
 }
