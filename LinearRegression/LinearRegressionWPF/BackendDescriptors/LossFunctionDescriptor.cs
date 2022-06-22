@@ -1,6 +1,6 @@
 ﻿using System;
 
-using LinearRegressionBackend.MLModel;
+using LinearRegressionBackend;
 
 namespace LinearRegressionWPF.BackendDescriptors
 {
