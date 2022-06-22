@@ -24,7 +24,19 @@ namespace LinearRegressionBackend.OOPExercise
 
             rootCommand.AddCommand(trainCommand);
 
-            var layersOption = 
+            var trainDataCommand = new Command(
+                name: "data",
+                description: "Train the neural network with data from json");
+
+            trainCommand.AddCommand(trainDataCommand);
+
+            var trainImagesCommand = new Command(
+                name: "images",
+                description: "Train the neural network with data from images");
+
+            trainCommand.AddCommand(trainImagesCommand);
+
+            var layersOption =
                 new Option<int[]>(
                     name: "--layers",
                     description: "The number of neurons in each layer.")
@@ -34,9 +46,9 @@ namespace LinearRegressionBackend.OOPExercise
                     AllowMultipleArgumentsPerToken = true,
                 };
 
-            trainCommand.AddOption(layersOption);
+            trainCommand.AddGlobalOption(layersOption);
 
-            var activationFuncOption = 
+            var activationFuncOption =
                 new Option<string>(
                     name: "--activationfunc",
                     description:
@@ -47,18 +59,32 @@ namespace LinearRegressionBackend.OOPExercise
                     .FromAmong(
                         AvailableActivationFunctions.Builders.Keys.ToArray());
 
-            trainCommand.AddOption(activationFuncOption);
+            trainCommand.AddGlobalOption(activationFuncOption);
 
-            trainCommand.SetHandler(
-                (layerCounts, activationFuncName)
-                    => Train(layerCounts, activationFuncName),
+            trainDataCommand.SetHandler(
+                (layerCounts, activationFuncName) =>
+                {
+                    NeuralNetwork network =
+                        BuildNetwork(layerCounts, activationFuncName);
+                },
+                layersOption,
+                activationFuncOption);
+
+            trainImagesCommand.SetHandler(
+                (layerCounts, activationFuncName) =>
+                {
+                    NeuralNetwork network =
+                        BuildNetwork(layerCounts, activationFuncName);
+                },
                 layersOption,
                 activationFuncOption);
 
             return await rootCommand.InvokeAsync(args);
         }
 
-        static void Train(int[] layerCounts, string activationFuncName)
+        static NeuralNetwork BuildNetwork(
+            int[] layerCounts,
+            string activationFuncName)
         {
             Console.WriteLine(
                 $"Network architecture: {string.Join(", ", layerCounts)}");
@@ -82,7 +108,7 @@ namespace LinearRegressionBackend.OOPExercise
                     activationFunction: activationFunction));
             }
 
-            NeuralNetwork network = new(layers);
+            return new NeuralNetwork(layers);
         }
 
     }
