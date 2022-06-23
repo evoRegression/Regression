@@ -250,7 +250,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             // Act
             using (Stream outputStream = File.OpenWrite(FILENAME))
             {
-                network.Export(outputStream);
+                await network.Export(outputStream);
             }
 
             NeuralNetwork importedNetwork = null;
@@ -324,7 +324,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             using (GZipStream compressor =
                 new(outputStream, CompressionMode.Compress))
             {
-                network.Export(compressor);
+                await network.Export(compressor);
             }
 
             NeuralNetwork importedNetwork = null;

@@ -2,6 +2,8 @@
 
 using MathNet.Numerics.LinearAlgebra;
 
+using LinearRegressionBackend.DataProvider;
+
 namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Layer
@@ -10,32 +12,17 @@ namespace LinearRegressionBackend.MLNeuralNetwork
         public Matrix<double> Weight;
         public double[][] WeightArray
         {
-            get
-            {
-                double[][] weightValues = new double[Weight.RowCount][];
-                foreach ((int index, Vector<double> row)
-                    in Weight.EnumerateRowsIndexed())
-                {
-                    weightValues[index] = row.ToArray();
-                }
-                return weightValues;
-            }
+            get => Numerical.MatrixToJaggedArray(Weight);
         }
         public Vector<double> Bias;
         public double[] BiasArray
         {
-            get
-            {
-                return Bias.ToArray();
-            }
+            get => Bias.ToArray();
         }
         public IActivationFunction ActivationFunction;
         public string ActivationFunctionName
         {
-            get
-            {
-                return ActivationFunction.GetSerializedName();
-            }
+            get => ActivationFunction.GetSerializedName();
         }
 
         public Layer(
