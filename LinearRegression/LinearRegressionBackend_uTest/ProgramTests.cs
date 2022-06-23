@@ -43,7 +43,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             };
 
             string FILENAME = Environment.ExpandEnvironmentVariables(
-                @"%USERPROFILE%\Desktop\dataset.json");
+                @"%TESTTMP%\dataset.json");
 
             // Act
             using (Stream outputStream = File.OpenWrite(FILENAME))
@@ -95,7 +95,7 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
             };
 
             string FILENAME = Environment.ExpandEnvironmentVariables(
-                @"%USERPROFILE%\Desktop\dataset.json.gz");
+                @"%TESTTMP%\dataset.json.gz");
 
             // Act
             using (Stream outputStream = File.OpenWrite(FILENAME))
