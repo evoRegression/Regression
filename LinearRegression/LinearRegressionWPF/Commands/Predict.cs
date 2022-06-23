@@ -7,6 +7,8 @@ namespace LinearRegressionWPF.Commands
 {
     internal class Predict : ICommand
     {
+
+
         private LinearRegressionViewModel _viewModel;
 
         public Predict(LinearRegressionViewModel viewModel)

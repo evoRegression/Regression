@@ -40,7 +40,7 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             Vector<double> expected)
         {
             Debug.Assert(prop.Output().Count == expected.Count);
-
+            
             Gradient grad = new(Layers.Count);
 
             Layer layer = Layers[Layers.Count - 1];
