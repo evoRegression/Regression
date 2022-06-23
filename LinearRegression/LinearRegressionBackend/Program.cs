@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +14,10 @@ namespace LinearRegressionBackend.OOPExercise
 {
     class Program
     {
+
+        const double DEFAULT_LEARNING_RATE = 0.1;
+        const int DEFAULT_EPOCHS = 1000;
+        const int DEFAULT_BATCH_SIZE = 100;
 
         static async Task<int> Main(string[] args)
         {
@@ -61,23 +67,147 @@ namespace LinearRegressionBackend.OOPExercise
 
             trainCommand.AddGlobalOption(activationFuncOption);
 
+            var learningRateOption =
+                new Option<double>(
+                    name: "--learningrate",
+                    description:
+                        "The learning rate used during training.",
+                    getDefaultValue: () => DEFAULT_LEARNING_RATE);
+
+            trainCommand.AddGlobalOption(learningRateOption);
+
+            var epochsOption =
+                new Option<int>(
+                    name: "--epochs",
+                    description:
+                        "The number of epochs used for training.",
+                    getDefaultValue: () => DEFAULT_EPOCHS);
+
+            trainCommand.AddGlobalOption(epochsOption);
+
+            var batchSizeOption =
+                new Option<int>(
+                    name: "--batchsize",
+                    description:
+                        "The batch size used during training.",
+                    getDefaultValue: () => DEFAULT_BATCH_SIZE);
+
+            trainCommand.AddGlobalOption(batchSizeOption);
+
+            var trainDataInputArgument =
+                new Argument<FileInfo>(
+                    name: "input",
+                    description: "A json or gzipped json file that contains the training dataset.");
+
+            trainDataCommand.AddArgument(trainDataInputArgument);
+
+            var trainImagesInputArgument =
+                new Argument<DirectoryInfo>(
+                    name: "input",
+                    description: "A folder that contains the training dataset of images.");
+
+            trainImagesCommand.AddArgument(trainImagesInputArgument);
+
+            var outputArgument =
+                new Argument<FileInfo>(
+                    name: "output",
+                    description: "The name of the exported gzipped json file.");
+
+            trainDataCommand.AddArgument(outputArgument);
+            trainImagesCommand.AddArgument(outputArgument);
+
             trainDataCommand.SetHandler(
-                (layerCounts, activationFuncName) =>
+                async (
+                    layerCounts, 
+                    activationFuncName,
+                    learningRate,
+                    epochs,
+                    batchSize,
+                    input,
+                    output
+                ) =>
                 {
                     NeuralNetwork network =
                         BuildNetwork(layerCounts, activationFuncName);
+
+                    TrainParams trainParams = new()
+                    {
+                        LearningRate = learningRate,
+                        Epochs = epochs,
+                        BatchSize = batchSize,
+                    };
+
+                    trainParams.Log();
+
+                    using Stream inputStream =
+                        File.OpenRead(input.FullName);
+                    using GZipStream decompressor = 
+                        new(inputStream, CompressionMode.Decompress);
+                    using Stream outputStream =
+                        File.OpenWrite(output.FullName);
+                    using GZipStream compressor =
+                        new(outputStream, CompressionMode.Compress);
+
+                    DataSet dataSet = null;
+
+                    if (input.Extension.Equals(".json"))
+                    {
+                        dataSet = await DataSet.Import(inputStream);
+                    }
+                    else if (input.Extension.Equals(".gz"))
+                    {
+                        dataSet = await DataSet.Import(decompressor);
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine("Invalid file type.");
+                        return;
+                    }
+
+                    TrainData(network, dataSet, trainParams);
+
+                    await network.Export(compressor);
                 },
                 layersOption,
-                activationFuncOption);
+                activationFuncOption,
+                learningRateOption,
+                epochsOption,
+                batchSizeOption,
+                trainDataInputArgument,
+                outputArgument);
 
             trainImagesCommand.SetHandler(
-                (layerCounts, activationFuncName) =>
+                (
+                    layerCounts,
+                    activationFuncName,
+                    learningRate,
+                    epochs,
+                    batchSize,
+                    input,
+                    output
+                ) =>
                 {
                     NeuralNetwork network =
                         BuildNetwork(layerCounts, activationFuncName);
+
+                    TrainParams trainParams = new()
+                    {
+                        LearningRate = learningRate,
+                        Epochs = epochs,
+                        BatchSize = batchSize,
+                    };
+
+                    trainParams.Log();
+
+                    // TODO: Implement image training
                 },
                 layersOption,
-                activationFuncOption);
+                activationFuncOption,
+                learningRateOption,
+                epochsOption,
+                batchSizeOption,
+                trainImagesInputArgument,
+                outputArgument);
 
             return await rootCommand.InvokeAsync(args);
         }
@@ -109,6 +239,33 @@ namespace LinearRegressionBackend.OOPExercise
             }
 
             return new NeuralNetwork(layers);
+        }
+
+        class TrainParams
+        {
+            public int BatchSize;
+            public int Epochs;
+            public double LearningRate;
+
+            public void Log()
+            {
+                Console.WriteLine($"Batch size: {BatchSize}");
+                Console.WriteLine($"Epochs: {Epochs}");
+                Console.WriteLine($"Learning rate: {LearningRate}");
+            }
+        }
+
+        static void TrainData(
+            NeuralNetwork network,
+            DataSet dataSet,
+            TrainParams trainParams)
+        {
+            network.BatchTrain(
+                dataSet.TrainingInput,
+                dataSet.TrainingOutput,
+                trainParams.BatchSize,
+                trainParams.Epochs,
+                trainParams.LearningRate);
         }
 
     }
