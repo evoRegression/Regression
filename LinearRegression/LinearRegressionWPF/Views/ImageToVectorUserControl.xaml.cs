@@ -19,16 +19,51 @@ namespace LinearRegressionWPF.Views
     {
         ImageToVectorViewModel imageToVectorViewModel = new ImageToVectorViewModel();
 
+        
         public ImageToVectorUserControl()
         {
-            InitializeComponent();
-
+            InitializeComponent();            
             DataContext = new ImageToVectorViewModel();
             MyCanvas.DefaultDrawingAttributes.Color = Colors.Black;
             MyCanvas.UseCustomCursor = true;
             MyCanvas.Cursor = Cursors.Pen;
         }
+        
 
+        /// <summary>
+        /// 
+        /// </summary>
+
+        /*
+        public UsingCommandsSample()
+        {
+            InitializeComponent();
+        }*/
+        
+        /*
+        private void PredictButtonPress_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void PredictButtonPress_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("The PredictButtonPress command was invoked");
+        }
+
+        private void ClearButtonPress_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ClearButtonPress_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("The ClearButtonPress command was invoked");
+        }*/
+        //////////////////
+
+
+            
         private void BrushBtnClick(object sender, MouseButtonEventArgs e)
         {
             

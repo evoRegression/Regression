@@ -1,7 +1,13 @@
-﻿using System;
+﻿using LinearRegressionBackend.MLNeuralNetwork;
+using LinearRegressionWPF.Commands;
+using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Windows;
+using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -17,12 +23,68 @@ namespace LinearRegressionWPF.ViewModels
     /// </summary>
     internal class ImageToVectorViewModel
     {
+
+        public ICommand PredictCommand { get; set; }
+
+        public NeuralNetwork NeuralNetwork { get; set; }
+
+        public  Vector<double> Result{ get; set;}
+
         /// <summary>
         /// 
         /// </summary>
         public ImageToVectorViewModel()
         {
+            PredictCommand = new PredictCommand(this);
 
+            InitNeuralNetwork();
+
+            _strokes = new StrokeCollection();
+            /*(_strokes as INotifyCollectionChanged).CollectionChanged += delegate
+            {
+                //the strokes have changed
+            };*/
+        }
+
+        /// <summary>
+        /// _viewModel.Result = _viewModel.NeuralNetwork.Propagate(vectorFromDrawing).Output();
+
+        /// </summary>
+
+        
+
+        /*
+         *  using (Stream inputStream = File.OpenRead(FILENAME))
+            {
+                importedNetwork = await NeuralNetwork.Import(inputStream);
+            }
+
+        public static async Task<NeuralNetwork> Import(Stream inputStream)
+        {
+            JsonSerializerOptions options = new() 
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            return await JsonSerializer.DeserializeAsync<NeuralNetwork>(
+                inputStream, options);
+        }
+
+        */
+        private void InitNeuralNetwork()
+        {
+            //NeuralNetwork = NeuralNetwork.Import(File.OpenRead("placeholder")).Result;
+        
+        }
+
+        private readonly StrokeCollection _strokes;
+
+        public StrokeCollection Drawing
+        {
+            get
+            {
+                return _strokes;
+            }
         }
 
         /// <summary>
