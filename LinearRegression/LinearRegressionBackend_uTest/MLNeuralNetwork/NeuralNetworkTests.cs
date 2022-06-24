@@ -245,12 +245,12 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
                 new[] { 1.0, 1.0 });
 
             string FILENAME = Environment.ExpandEnvironmentVariables(
-                @"%USERPROFILE%\Desktop\network.json");
+                @"%TESTTMP%\network.json");
 
             // Act
             using (Stream outputStream = File.OpenWrite(FILENAME))
             {
-                network.Export(outputStream);
+                await network.Export(outputStream);
             }
 
             NeuralNetwork importedNetwork = null;
@@ -317,14 +317,14 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
                 new[] { 1.0, 1.0 });
 
             string FILENAME = Environment.ExpandEnvironmentVariables(
-                @"%USERPROFILE%\Desktop\network.json.gz");
+                @"%TESTTMP%\network.json.gz");
 
             // Act
             using (Stream outputStream = File.OpenWrite(FILENAME))
             using (GZipStream compressor =
                 new(outputStream, CompressionMode.Compress))
             {
-                network.Export(compressor);
+                await network.Export(compressor);
             }
 
             NeuralNetwork importedNetwork = null;
