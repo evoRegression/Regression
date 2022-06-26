@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 
 using MathNet.Numerics.LinearAlgebra;
@@ -33,7 +34,7 @@ namespace LinearRegressionBackend.DataProvider
             Matrix<double> matrixOfLabels = null;
        
             int i = 0;
-            foreach (var file in directory.GetFiles()) 
+            foreach (var file in directory.GetFiles("*.png")) 
             {
                 using (var image = Image.FromFile(file.FullName))
                 {
