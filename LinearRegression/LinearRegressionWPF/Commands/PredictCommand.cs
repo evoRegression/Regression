@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -60,8 +61,8 @@ namespace LinearRegressionWPF.Commands
             encoder.Save(stream);
             System.Drawing.Bitmap resultBitmap = new System.Drawing.Bitmap(stream);
             // for debugging purposes
-            //resultBitmap.Save(@"c:\temp2\b.bmp", ImageFormat.Bmp);
-            //stream.Close();
+            resultBitmap.Save(@"c:\temp2\b.bmp", ImageFormat.Bmp);
+            stream.Close();
             //stream.Dispose();
 
             return resultBitmap;
