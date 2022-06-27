@@ -114,11 +114,10 @@ namespace LinearRegressionWPF.Views
             MyCanvas.DefaultDrawingAttributes.Height = sizeSlide.Value;
         }
 
-        public void updateWeight(ImageSource src)
+        /*public void updateWeight(ImageSource src)
         {
-            //do something
-          
-        }
+            weighted
+        }*/
 
     }
 }
