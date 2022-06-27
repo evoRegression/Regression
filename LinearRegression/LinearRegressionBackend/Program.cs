@@ -55,12 +55,14 @@ namespace LinearRegressionBackend.OOPExercise
             trainCommand.AddGlobalOption(layersOption);
 
             var activationFuncOption =
-                new Option<string>(
+                new Option<string[]>(
                     name: "--activationfunc",
                     description:
-                        "The activation function used by the neural network")
+                        "The activation functions used by each layer.")
                 {
                     IsRequired = true,
+                    Arity = ArgumentArity.OneOrMore,
+                    AllowMultipleArgumentsPerToken = true,
                 }
                     .FromAmong(
                         AvailableActivationFunctions.Builders.Keys.ToArray());
@@ -119,7 +121,7 @@ namespace LinearRegressionBackend.OOPExercise
             trainDataCommand.SetHandler(
                 async (
                     layerCounts, 
-                    activationFuncName,
+                    activationFuncNames,
                     learningRate,
                     epochs,
                     batchSize,
@@ -128,7 +130,7 @@ namespace LinearRegressionBackend.OOPExercise
                 ) =>
                 {
                     NeuralNetwork network =
-                        BuildNetwork(layerCounts, activationFuncName);
+                        BuildNetwork(layerCounts, activationFuncNames);
 
                     TrainParams trainParams = new()
                     {
@@ -179,7 +181,7 @@ namespace LinearRegressionBackend.OOPExercise
             trainImagesCommand.SetHandler(
                 (
                     layerCounts,
-                    activationFuncName,
+                    activationFuncNames,
                     learningRate,
                     epochs,
                     batchSize,
@@ -188,7 +190,7 @@ namespace LinearRegressionBackend.OOPExercise
                 ) =>
                 {
                     NeuralNetwork network =
-                        BuildNetwork(layerCounts, activationFuncName);
+                        BuildNetwork(layerCounts, activationFuncNames);
 
                     TrainParams trainParams = new()
                     {
@@ -214,14 +216,16 @@ namespace LinearRegressionBackend.OOPExercise
 
         static NeuralNetwork BuildNetwork(
             int[] layerCounts,
-            string activationFuncName)
+            string[] activationFuncNames)
         {
             Console.WriteLine(
                 $"Network architecture: {string.Join(", ", layerCounts)}");
-            Console.WriteLine($"Activation function: {activationFuncName}");
+            Console.WriteLine(
+                $"Activation functions: {string.Join(", ", activationFuncNames)}");
 
-            IActivationFunction activationFunction =
-                AvailableActivationFunctions.Builders[activationFuncName]();
+            IActivationFunction[] activationFunctions =
+                activationFuncNames.Select(name =>
+                    AvailableActivationFunctions.Builders[name]()).ToArray();
 
             List<Layer> layers = new();
 
@@ -235,7 +239,7 @@ namespace LinearRegressionBackend.OOPExercise
                         n, m, Environment.TickCount),
                     bias: Vector<double>.Build.Random(
                         n, Environment.TickCount),
-                    activationFunction: activationFunction));
+                    activationFunction: activationFunctions[i - 1]));
             }
 
             return new NeuralNetwork(layers);
