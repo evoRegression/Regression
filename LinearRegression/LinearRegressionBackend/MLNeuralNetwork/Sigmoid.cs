@@ -4,6 +4,11 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Sigmoid : IActivationFunction
     {
+        public string GetSerializedName()
+        {
+            return "Sigmoid";
+        }
+
         public double Activation(double weightedSum)
         {
             return 1.0 / (1.0 + Math.Pow(Math.E, -weightedSum));
@@ -11,7 +16,8 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
         public double Derivative(double weightedSum)
         {
-            throw new NotImplementedException();
+            double s = Activation(weightedSum);
+            return s * (1 - s);
         }
     }
 }

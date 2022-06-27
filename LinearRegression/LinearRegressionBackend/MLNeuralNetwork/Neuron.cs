@@ -43,20 +43,16 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
         public double Loss(double actualValue, double expectedValue)
         {
-            // Mean Squared Error: 1/2 * (a - y)^2
-            throw new NotImplementedException();
+            return 0.5 * Math.Pow(actualValue - expectedValue, 2);
         }
 
         public void BackwardPropagation(double actualValue, double expectedValue, double weightedSum, Vector<double> inputs)
         {
-            // dE/da = a - y; da/dz = g'(z); dz/dw = x; dz/db = 1
-            // dE/dw = dE/da * da/dz * dz/dw
-            // dE/db = dE/da * da/dz * dz/db
+            double dg = ActivationFunction.Derivative(weightedSum);
+            double delta = (actualValue - expectedValue) * dg;
 
-            // w = w - lr * dE/dw
-            // b = b - lr * dE/db
-
-            throw new NotImplementedException();
+            Weights = Weights.MapIndexed((i, w) => w - 0.2 * delta * inputs[i]);
+            Bias = Bias - 0.2 * delta;
         }
     }
 }

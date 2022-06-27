@@ -7,7 +7,7 @@ using System.Windows.Input;
 using LinearRegressionBackend;
 using LinearRegressionBackend.MLCommmons;
 
-using LinearRegressionWPF.BackendFeatures;
+using LinearRegressionWPF.BackendDescriptors;
 using LinearRegressionWPF.Commands;
 using LinearRegressionWPF.Models;
 

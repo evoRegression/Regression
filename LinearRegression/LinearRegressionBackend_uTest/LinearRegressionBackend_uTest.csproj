@@ -6,6 +6,8 @@
     <IsPackable>false</IsPackable>
 
     <Platforms>AnyCPU;x64</Platforms>
+
+    <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -54,6 +56,7 @@
     <None Update="Images\triangle3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Folder Include="TestCaseGenerator\" />
   </ItemGroup>
 
 </Project>

@@ -1,59 +1,60 @@
-﻿using System.Diagnostics;
+﻿using System.Text.Json.Serialization;
 
 using MathNet.Numerics.LinearAlgebra;
+
+using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionBackend.MLNeuralNetwork
 {
     public class Layer
     {
-        public Matrix<double> Weights { get; set; }
-        public Matrix<double> WeightsGradient { get; set; }
 
-        public Vector<double> Biases { get; set; }
-        public Vector<double> BiasesGradient { get; set; }
-
-        public Vector<double> WeightedSums { get; set; }
-        public Vector<double> Activations { get; set; }
-
-        public IActivationFunction ActivationFunction { get; set; }
-
-        public int NeuronCount
+        public Matrix<double> Weight;
+        public double[][] WeightArray
         {
-            get { return Biases.Count; }
+            get => Numerical.MatrixToJaggedArray(Weight);
+        }
+        public Vector<double> Bias;
+        public double[] BiasArray
+        {
+            get => Bias.ToArray();
+        }
+        public IActivationFunction ActivationFunction;
+        public string ActivationFunctionName
+        {
+            get => ActivationFunction.GetSerializedName();
         }
 
-        public Layer(Matrix<double> weights, Vector<double> biases, IActivationFunction activationFunction)
+        public Layer(
+            Matrix<double> weight,
+            Vector<double> bias,
+            IActivationFunction activationFunction)
         {
-            Debug.Assert(weights.RowCount == biases.Count);
-            Weights = weights;
-            Biases = biases;
+            Weight = weight;
+            Bias = bias;
             ActivationFunction = activationFunction;
         }
 
-        public void PropagateForward(Vector<double> inputData)
+        [JsonConstructor]
+        public Layer(
+            double[][] weightArray,
+            double[] biasArray,
+            string activationFunctionName)
         {
-            WeightedSums = CalculateWeightedSums(inputData);
-            Activations = CalculateActivations(WeightedSums);
+            Weight = Matrix<double>.Build.DenseOfRowArrays(weightArray);
+            Bias = Vector<double>.Build.Dense(biasArray);
+            ActivationFunction =
+                AvailableActivationFunctions
+                    .Builders[activationFunctionName]();
         }
 
-        private Vector<double> CalculateWeightedSums(Vector<double> inputData)
+        public void Propagate(Propagation prop)
         {
-            Debug.Assert(inputData.Count == Weights.ColumnCount);
-            return Weights * inputData + Biases;
+            Vector<double> sum = Weight * prop.Output() + Bias;
+            Vector<double> activation = ActivationFunction.Activation(sum);
+            prop.WeightedSums.Add(sum);
+            prop.Activations.Add(activation);
         }
 
-        private Vector<double> CalculateActivations(Vector<double> weightedSums)
-        {
-            return Vector<double>.Build.Dense(
-                weightedSums.Count,
-                i => ActivationFunction.Activation(weightedSums[i])
-            );
-        }
-
-        public void Update(double rateOfChange, double learningRate)
-        {
-            Weights -= learningRate * rateOfChange * WeightsGradient;
-            Biases -= learningRate * rateOfChange * BiasesGradient;
-        }
     }
 }
