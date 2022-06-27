@@ -24,12 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="PresentationCore">
-      <HintPath>..\..\..\..\..\..\OneDrive\Documents\PresentationCore.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Resources\LinearRegressionInputData\data.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

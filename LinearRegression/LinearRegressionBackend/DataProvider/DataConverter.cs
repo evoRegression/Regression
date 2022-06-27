@@ -6,7 +6,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
 {
-    public static class DataConverter 
+    public static class DataConverter
     {
         public static Vector<double> GetVector(double[,] imgPixelsMatrix)
         {
@@ -28,17 +28,18 @@ namespace LinearRegressionBackend.DataProvider
 
         public static Tuple<Matrix<double>, Matrix<double>> ProcessInputImages(DirectoryInfo directory, IImageConverter converter)
         {
+            int numberOfImages = directory.GetFiles("*.png").Length;
             Vector<double> pixelVector;
             Vector<double> labelVector;
-            Matrix<double> matrixOfPixels = null;
-            Matrix<double> matrixOfLabels = null;
-       
+            Matrix<double> matrixOfPixels = Matrix<double>.Build.Dense(numberOfImages, 28 * 28);
+            Matrix<double> matrixOfLabels = Matrix<double>.Build.Dense(numberOfImages, 3);
+
             int i = 0;
-            foreach (var file in directory.GetFiles()) 
+            foreach (var file in directory.GetFiles("*.png"))
             {
                 using (var image = Image.FromFile(file.FullName))
                 {
-                    using (var newImage = converter.Scale((Bitmap)image, 4, 4)) //scale 4*4 
+                    using (var newImage = converter.Scale((Bitmap)image, 28, 28))
                     {
                         try
                         {
@@ -60,6 +61,7 @@ namespace LinearRegressionBackend.DataProvider
 
                 }
             }
+
             return Tuple.Create(matrixOfPixels, matrixOfLabels);
         }
     }
