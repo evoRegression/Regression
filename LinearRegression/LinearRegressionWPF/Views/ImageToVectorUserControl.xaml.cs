@@ -30,6 +30,24 @@ namespace LinearRegressionWPF.Views
         }
         
             
+        private void PredictButtonPress_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("The PredictButtonPress command was invoked");
+        }
+
+        private void ClearButtonPress_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ClearButtonPress_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("The ClearButtonPress command was invoked");
+        }*/
+        //////////////////
+
+
+            
         private void BrushBtnClick(object sender, MouseButtonEventArgs e)
         {
             
