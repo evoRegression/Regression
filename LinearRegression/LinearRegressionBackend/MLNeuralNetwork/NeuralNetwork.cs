@@ -163,10 +163,11 @@ namespace LinearRegressionBackend.MLNeuralNetwork
             }
         }
 
-        public void Export(Stream outputStream)
+        public async Task Export(
+            Stream outputStream,
+            JsonSerializerOptions options = null)
         {
-            using Utf8JsonWriter writer = new(outputStream);
-            JsonSerializer.Serialize(writer, this);
+            await JsonSerializer.SerializeAsync(outputStream, this, options);
         }
 
         public static async Task<NeuralNetwork> Import(Stream inputStream)
