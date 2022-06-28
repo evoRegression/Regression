@@ -248,5 +248,26 @@ namespace LinearRegressionBackend.DataProvider
         {
             return (a.ToRowMatrix() * b.ToColumnMatrix()).Row(0)[0];
         }
+
+        /// <summary>
+        /// Convert Matrix to jagged array.
+        /// </summary>
+        /// <param name="matrix">The matrix to convert.</param>
+        /// <returns>Returns the jagged array of the matrix.</returns>
+        public static double[][] MatrixToJaggedArray(Matrix<double> matrix)
+        {
+            if (matrix is null)
+            {
+                return null;
+            }
+
+            double[][] array = new double[matrix.RowCount][];
+            foreach ((int index, Vector<double> row)
+                in matrix.EnumerateRowsIndexed())
+            {
+                array[index] = row.ToArray();
+            }
+            return array;
+        }
     }
 }

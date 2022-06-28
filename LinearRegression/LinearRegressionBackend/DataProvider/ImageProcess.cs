@@ -15,16 +15,18 @@ namespace LinearRegressionBackend.DataProvider
 
                 labelArray = new double[3] { 1, 0, 0 };
             }
-            else if (filename.ToLower().Contains("square")) {
+            else if (filename.ToLower().Contains("square"))
+            {
 
                 labelArray = new double[3] { 0, 1, 0 };
             }
-            else if (filename.ToLower().Contains("triangle")) {
-                
-                    labelArray = new double[3] { 0, 0, 1 };
+            else if (filename.ToLower().Contains("triangle"))
+            {
+
+                labelArray = new double[3] { 0, 0, 1 };
             }
-        
-             Vector<double> labelVector = Vector<double>.Build.DenseOfArray(labelArray);
+
+            Vector<double> labelVector = Vector<double>.Build.DenseOfArray(labelArray);
 
             return labelVector;
         }
