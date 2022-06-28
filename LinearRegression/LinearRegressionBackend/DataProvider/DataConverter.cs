@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 
 using MathNet.Numerics.LinearAlgebra;
@@ -25,9 +26,41 @@ namespace LinearRegressionBackend.DataProvider
             return pixelVector;
         }
 
-        public static Matrix<double> ProcessInputImages(DirectoryInfo directory, IImageConverter converter)
+        public static Tuple<Matrix<double>, Matrix<double>> ProcessInputImages(DirectoryInfo directory, IImageConverter converter)
         {
-            throw new NotImplementedException();
+            Vector<double> pixelVector;
+            Vector<double> labelVector;
+            Matrix<double> matrixOfPixels = null;
+            Matrix<double> matrixOfLabels = null;
+       
+            int i = 0;
+            foreach (var file in directory.GetFiles("*.png")) 
+            {
+                using (var image = Image.FromFile(file.FullName))
+                {
+                    using (var newImage = converter.Scale((Bitmap)image, 4, 4)) //scale 4*4 
+                    {
+                        try
+                        {
+                            pixelVector = converter.GrayScale(newImage);
+                            labelVector = converter.CreateLabel(file.Name);
+
+                            // Matrix of pixel vectors 
+                            matrixOfPixels.SetRow(i, pixelVector);
+                            // Matrix of label vectors 
+                            matrixOfLabels.SetRow(i, labelVector);
+
+                            i++;
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+
+                }
+            }
+            return Tuple.Create(matrixOfPixels, matrixOfLabels);
         }
     }
 }

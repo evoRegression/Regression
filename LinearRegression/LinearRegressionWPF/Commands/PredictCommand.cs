@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+
 using LinearRegressionBackend.DataProvider;
 using LinearRegressionWPF.ViewModels;
 
@@ -29,29 +32,22 @@ namespace LinearRegressionWPF.Commands
         public void Execute(object parameter)
         {
             //TODO - create image from strokes
-            System.Drawing.Bitmap image = CreateImageFromStrokes(_viewModel.Drawing);
-            var matrix = _viewModel.ConvertToMatrix(image);
+            var imageProcessor = new ImageProcess();
+
+            Bitmap image = CreateImageFromStrokes(_viewModel.Drawing);
+            var scaledImage = imageProcessor.Scale(image, 4, 4);
 
             // for debugging
-            /*
-            for (int m = 0; m < matrix.GetLength(0); ++m)
-            {
-                for (int n = 0; n < matrix.GetLength(1); ++n)
-                {
-                    File.AppendAllText(@"c:\temp2\i.txt", Math.Round(matrix[m, n], 0, MidpointRounding.ToEven) + " ");
-                }
-                File.AppendAllText(@"c:\temp2\i.txt", Environment.NewLine);
-            }*/
-
-            //TODO - create vector from image
-            var vectorFromDrawing = DataConverter.GetVector(matrix);
+            scaledImage.Save(@"c:\temp2\scaled.bmp", ImageFormat.Bmp);
+            
+            var inputVectorFromImage = imageProcessor.GrayScale(scaledImage);
 
             //TODO - predict with neural network
-            //_viewModel.Result = _viewModel.NeuralNetwork.Propagate(vectorFromDrawing).Output();
+            //_viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
             //NotifyPropertyChanged
         }
 
-        private System.Drawing.Bitmap CreateImageFromStrokes(StrokeCollection drawing)
+        private static Bitmap CreateImageFromStrokes(StrokeCollection drawing)
         {
             RenderTargetBitmap bmp = CreateRenderTargetBitmapFromStrokeCollection(drawing);
 
@@ -59,10 +55,10 @@ namespace LinearRegressionWPF.Commands
             BitmapEncoder encoder = new BmpBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(bmp));
             encoder.Save(stream);
-            System.Drawing.Bitmap resultBitmap = new System.Drawing.Bitmap(stream);
+            Bitmap resultBitmap = new Bitmap(stream);
             // for debugging purposes
-            //resultBitmap.Save(@"c:\temp2\b.bmp", ImageFormat.Bmp);
-            //stream.Close();
+            resultBitmap.Save(@"c:\temp2\b.bmp", ImageFormat.Bmp);
+            stream.Close();
             //stream.Dispose();
 
             return resultBitmap;
@@ -93,11 +89,10 @@ namespace LinearRegressionWPF.Commands
             using (DrawingContext dc = visual.RenderOpen())
             {
                 dc.DrawRectangle(
-                    Brushes.White, new Pen(),
+                    System.Windows.Media.Brushes.White, new System.Windows.Media.Pen(),
                     new System.Windows.Rect(0, 0, 200, 200));
             }
             bmp.Render(visual);
         }
-
     }
 }
