@@ -14,11 +14,21 @@ namespace LinearRegressionWPF.ViewModels
 
         public  Vector<double> Result{ get; set;}
 
+        private string myStringResult;
+
+        public string StringResult
+        {
+            get { return myStringResult; }
+            set { myStringResult = value; }
+        }
+
         public ImageToVectorViewModel()
         {
             PredictCommand = new PredictCommand(this);
 
             InitNeuralNetwork();
+
+            myStringResult = "No result yet";
 
             _strokes = new StrokeCollection();
             /*(_strokes as INotifyCollectionChanged).CollectionChanged += delegate

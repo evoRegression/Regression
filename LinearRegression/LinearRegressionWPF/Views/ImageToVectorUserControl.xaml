@@ -16,15 +16,16 @@
             </StackPanel>
             <StackPanel Background="#348EF6">
                 <Label Content="Brush Size" Foreground="#FFF2FAFF" FontSize="14"/>
-                    <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" Grid.Row="4"  ValueChanged="SlideVlaueChange"/>
-                    <Image x:Name="brushtbn" Width="50" Height="50"  Source="../Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="BrushBtnClick"/>
-                    <Image x:Name="erasebtn" Width="50" Height="50"  Source="../Resources/pen.png" MouseDown="EreaseBtnClick"/>
+                <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" ValueChanged="SlideVlaueChange"/>
+                <Image x:Name="brushtbn" Width="50" Height="50"  Source="../Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="BrushBtnClick"/>
+                <Image x:Name="erasebtn" Width="50" Height="50"  Source="../Resources/eraser.png" MouseDown="EreaseBtnClick"/>
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="ClearBtnClick"  />
             <Button x:Name="_predict_btn"  Content="Predict"  Width="120" Height="42" FontSize="16"  Command="{Binding PredictCommand}" />
             <Label Content="prediction:" Height="29" Width="163" FontSize="14" />
+            <TextBox Text="{Binding StringResult, Mode=TwoWay}"/>            
         </StackPanel>
     </StackPanel>
 </UserControl>

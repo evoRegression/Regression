@@ -16,7 +16,7 @@ namespace LinearRegressionBackend
         /// <param name="newWidth"></param>
         /// <param name="newHeight"></param>
         /// <returns></returns>
-        Bitmap Scale(Bitmap bmp, int newWidth, int newHeight);
+         Bitmap Scale(Bitmap bmp, int newWidth, int newHeight);
 
         /// <summary>
         /// 

@@ -43,6 +43,7 @@ namespace LinearRegressionWPF.Commands
             var inputVectorFromImage = imageProcessor.GrayScale(scaledImage);
 
             //TODO - predict with neural network
+            _viewModel.StringResult = "New String";
             //_viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
             //NotifyPropertyChanged
         }
