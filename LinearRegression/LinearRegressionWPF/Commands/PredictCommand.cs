@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 
 using LinearRegressionBackend.DataProvider;
 using LinearRegressionWPF.ViewModels;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionWPF.Commands
 {
@@ -26,26 +27,26 @@ namespace LinearRegressionWPF.Commands
 
         public bool CanExecute(object parameter)
         {
-            return true;
+           //It should only be set to true, if a neural network has been succesfully loaded.
+            return _viewModel.IsNeuralNetworkLoaded;
         }
 
         public void Execute(object parameter)
         {
-            //TODO - create image from strokes
             var imageProcessor = new ImageProcess();
 
             Bitmap image = CreateImageFromStrokes(_viewModel.Drawing);
             var scaledImage = imageProcessor.Scale(image, 4, 4);
 
-            // for debugging
-            scaledImage.Save(@"c:\temp2\scaled.bmp", ImageFormat.Bmp);
-            
             var inputVectorFromImage = imageProcessor.GrayScale(scaledImage);
 
+            //testing
+            double[] testingArray = new double[] { 2.0 , 3.0, 4.0};
+
+            _viewModel.Result = Vector<double>.Build.DenseOfArray(testingArray);
             //TODO - predict with neural network
-            _viewModel.StringResult = "New String";
+            _viewModel.StringResult = _viewModel.Result.ToString();
             //_viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
-            //NotifyPropertyChanged
         }
 
         private static Bitmap CreateImageFromStrokes(StrokeCollection drawing)
@@ -57,8 +58,6 @@ namespace LinearRegressionWPF.Commands
             encoder.Frames.Add(BitmapFrame.Create(bmp));
             encoder.Save(stream);
             Bitmap resultBitmap = new Bitmap(stream);
-            // for debugging purposes
-            resultBitmap.Save(@"c:\temp2\b.bmp", ImageFormat.Bmp);
             stream.Close();
             //stream.Dispose();
 
