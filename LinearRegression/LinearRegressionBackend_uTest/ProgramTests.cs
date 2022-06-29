@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
 
 using LinearRegressionBackend.MLNeuralNetwork;
-using System.IO.Compression;
 
 namespace LinearRegressionBackend_uTest.MLNeuralNetwork
 {

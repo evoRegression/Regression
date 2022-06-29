@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 
+using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLNeuralNetwork;
 
 namespace LinearRegressionBackend.OOPExercise
@@ -55,12 +56,14 @@ namespace LinearRegressionBackend.OOPExercise
             trainCommand.AddGlobalOption(layersOption);
 
             var activationFuncOption =
-                new Option<string>(
+                new Option<string[]>(
                     name: "--activationfunc",
                     description:
-                        "The activation function used by the neural network")
+                        "The activation functions used by each layer.")
                 {
                     IsRequired = true,
+                    Arity = ArgumentArity.OneOrMore,
+                    AllowMultipleArgumentsPerToken = true,
                 }
                     .FromAmong(
                         AvailableActivationFunctions.Builders.Keys.ToArray());
@@ -119,7 +122,7 @@ namespace LinearRegressionBackend.OOPExercise
             trainDataCommand.SetHandler(
                 async (
                     layerCounts, 
-                    activationFuncName,
+                    activationFuncNames,
                     learningRate,
                     epochs,
                     batchSize,
@@ -127,8 +130,11 @@ namespace LinearRegressionBackend.OOPExercise
                     output
                 ) =>
                 {
+                    Console.WriteLine($"Input: {input.FullName}");
+                    Console.WriteLine($"Output: {output.FullName}");
+
                     NeuralNetwork network =
-                        BuildNetwork(layerCounts, activationFuncName);
+                        BuildNetwork(layerCounts, activationFuncNames);
 
                     TrainParams trainParams = new()
                     {
@@ -177,9 +183,9 @@ namespace LinearRegressionBackend.OOPExercise
                 outputArgument);
 
             trainImagesCommand.SetHandler(
-                (
+                async (
                     layerCounts,
-                    activationFuncName,
+                    activationFuncNames,
                     learningRate,
                     epochs,
                     batchSize,
@@ -187,8 +193,11 @@ namespace LinearRegressionBackend.OOPExercise
                     output
                 ) =>
                 {
+                    Console.WriteLine($"Input: {input.FullName}");
+                    Console.WriteLine($"Output: {output.FullName}");
+
                     NeuralNetwork network =
-                        BuildNetwork(layerCounts, activationFuncName);
+                        BuildNetwork(layerCounts, activationFuncNames);
 
                     TrainParams trainParams = new()
                     {
@@ -199,7 +208,19 @@ namespace LinearRegressionBackend.OOPExercise
 
                     trainParams.Log();
 
-                    // TODO: Implement image training
+                    using Stream outputStream =
+                        File.OpenWrite(output.FullName);
+                    using GZipStream compressor =
+                        new(outputStream, CompressionMode.Compress);
+
+                    IImageConverter converter = new ImageProcess();
+
+                    (Matrix<double> inputs, Matrix<double> labels) =
+                        DataConverter.ProcessInputImages(input, converter);
+
+                    TrainImages(network, inputs, labels, trainParams);
+
+                    await network.Export(compressor);
                 },
                 layersOption,
                 activationFuncOption,
@@ -214,14 +235,16 @@ namespace LinearRegressionBackend.OOPExercise
 
         static NeuralNetwork BuildNetwork(
             int[] layerCounts,
-            string activationFuncName)
+            string[] activationFuncNames)
         {
             Console.WriteLine(
                 $"Network architecture: {string.Join(", ", layerCounts)}");
-            Console.WriteLine($"Activation function: {activationFuncName}");
+            Console.WriteLine(
+                $"Activation functions: {string.Join(", ", activationFuncNames)}");
 
-            IActivationFunction activationFunction =
-                AvailableActivationFunctions.Builders[activationFuncName]();
+            IActivationFunction[] activationFunctions =
+                activationFuncNames.Select(name =>
+                    AvailableActivationFunctions.Builders[name]()).ToArray();
 
             List<Layer> layers = new();
 
@@ -235,7 +258,7 @@ namespace LinearRegressionBackend.OOPExercise
                         n, m, Environment.TickCount),
                     bias: Vector<double>.Build.Random(
                         n, Environment.TickCount),
-                    activationFunction: activationFunction));
+                    activationFunction: activationFunctions[i - 1]));
             }
 
             return new NeuralNetwork(layers);
@@ -263,6 +286,20 @@ namespace LinearRegressionBackend.OOPExercise
             network.BatchTrain(
                 dataSet.TrainingInput,
                 dataSet.TrainingOutput,
+                trainParams.BatchSize,
+                trainParams.Epochs,
+                trainParams.LearningRate);
+        }
+
+        static void TrainImages(
+            NeuralNetwork network,
+            Matrix<double> inputs,
+            Matrix<double> labels,
+            TrainParams trainParams)
+        {
+            network.BatchTrain(
+                inputs,
+                labels,
                 trainParams.BatchSize,
                 trainParams.Epochs,
                 trainParams.LearningRate);

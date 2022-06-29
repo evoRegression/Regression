@@ -16,7 +16,14 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
         public double Derivative(double weightedSum)
         {
-            throw new NotImplementedException();
+            if (weightedSum <= 0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
         }
     }
 }
