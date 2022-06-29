@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using MathNet.Numerics.LinearAlgebra;
 
+using LinearRegressionBackend.DataProvider;
 using LinearRegressionBackend.MLNeuralNetwork;
 
 namespace LinearRegressionBackend.OOPExercise
@@ -129,6 +130,9 @@ namespace LinearRegressionBackend.OOPExercise
                     output
                 ) =>
                 {
+                    Console.WriteLine($"Input: {input.FullName}");
+                    Console.WriteLine($"Output: {output.FullName}");
+
                     NeuralNetwork network =
                         BuildNetwork(layerCounts, activationFuncNames);
 
@@ -179,7 +183,7 @@ namespace LinearRegressionBackend.OOPExercise
                 outputArgument);
 
             trainImagesCommand.SetHandler(
-                (
+                async (
                     layerCounts,
                     activationFuncNames,
                     learningRate,
@@ -189,6 +193,9 @@ namespace LinearRegressionBackend.OOPExercise
                     output
                 ) =>
                 {
+                    Console.WriteLine($"Input: {input.FullName}");
+                    Console.WriteLine($"Output: {output.FullName}");
+
                     NeuralNetwork network =
                         BuildNetwork(layerCounts, activationFuncNames);
 
@@ -201,7 +208,19 @@ namespace LinearRegressionBackend.OOPExercise
 
                     trainParams.Log();
 
-                    // TODO: Implement image training
+                    using Stream outputStream =
+                        File.OpenWrite(output.FullName);
+                    using GZipStream compressor =
+                        new(outputStream, CompressionMode.Compress);
+
+                    IImageConverter converter = new ImageProcess();
+
+                    (Matrix<double> inputs, Matrix<double> labels) =
+                        DataConverter.ProcessInputImages(input, converter);
+
+                    TrainImages(network, inputs, labels, trainParams);
+
+                    await network.Export(compressor);
                 },
                 layersOption,
                 activationFuncOption,
@@ -267,6 +286,20 @@ namespace LinearRegressionBackend.OOPExercise
             network.BatchTrain(
                 dataSet.TrainingInput,
                 dataSet.TrainingOutput,
+                trainParams.BatchSize,
+                trainParams.Epochs,
+                trainParams.LearningRate);
+        }
+
+        static void TrainImages(
+            NeuralNetwork network,
+            Matrix<double> inputs,
+            Matrix<double> labels,
+            TrainParams trainParams)
+        {
+            network.BatchTrain(
+                inputs,
+                labels,
                 trainParams.BatchSize,
                 trainParams.Epochs,
                 trainParams.LearningRate);
