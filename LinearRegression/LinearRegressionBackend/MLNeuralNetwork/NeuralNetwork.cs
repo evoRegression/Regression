@@ -49,28 +49,30 @@ namespace LinearRegressionBackend.MLNeuralNetwork
 
             Vector<double> dg = layer.ActivationFunction.Derivative(z);
             Vector<double> delta =
-                (prop.Output() - expected).MapIndexed((i, d) => d * dg[i]);
+                (prop.Output() - expected).MapIndexed((x, d) => d * dg[x]);
 
             grad.WeightGradient[Layers.Count - 1] = Matrix<double>.Build.Dense(
                     layer.Weight.RowCount,
                     layer.Weight.ColumnCount,
-                    (i, j) => delta[i] * a[j]);
+                    (x, y) => delta[x] * a[y]);
             grad.BiasGradient[Layers.Count - 1] = delta;
 
             for (int i = Layers.Count - 1; i > 0; i--)
             {
+                Layer previousLayer = layer;
                 layer = Layers[i - 1];
                 z = prop.WeightedSums[i];
                 a = prop.Activations[i - 1];
 
                 dg = layer.ActivationFunction.Derivative(z);
-                delta = delta.MapIndexed(
-                    (i, d) => delta * layer.Weight.Row(i) * dg[i]);
+                delta = Vector<double>.Build.Dense(
+                    layer.Weight.RowCount,
+                    x => delta * previousLayer.Weight.Column(x) * dg[x]);
 
                 grad.WeightGradient[i - 1] = Matrix<double>.Build.Dense(
                     layer.Weight.RowCount,
                     layer.Weight.ColumnCount,
-                    (i, j) => delta[i] * a[j]);
+                    (x, y) => delta[x] * a[y]);
                 grad.BiasGradient[i - 1] = delta;
             }
 
