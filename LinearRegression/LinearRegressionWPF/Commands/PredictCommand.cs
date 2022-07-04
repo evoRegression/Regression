@@ -36,17 +36,12 @@ namespace LinearRegressionWPF.Commands
             var imageProcessor = new ImageProcess();
 
             Bitmap image = CreateImageFromStrokes(_viewModel.Drawing);
-            var scaledImage = imageProcessor.Scale(image, 4, 4);
+            var scaledImage = imageProcessor.Scale(image, 28, 28);
 
             var inputVectorFromImage = imageProcessor.GrayScale(scaledImage);
 
-            //testing
-            double[] testingArray = new double[] { 2.0 , 3.0, 4.0};
-
-            _viewModel.Result = Vector<double>.Build.DenseOfArray(testingArray);
-            //TODO - predict with neural network
+            _viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
             _viewModel.StringResult = _viewModel.Result.ToString();
-            //_viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
         }
 
         private static Bitmap CreateImageFromStrokes(StrokeCollection drawing)
