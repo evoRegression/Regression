@@ -11,7 +11,7 @@ namespace RandomShuffle
         {
             string resourcePath = Path.GetFullPath(@"..\..\..\..\Resources");
 
-            string extractionPath = Path.Combine(resourcePath, "Random");
+            string extractionPath = Path.Combine(resourcePath, "Output");
             string trainFolder = Path.Combine(resourcePath, "Train");
             string testFolder = Path.Combine(resourcePath, "Test");
 
@@ -27,11 +27,11 @@ namespace RandomShuffle
 
                 if(i <= numberOfSample * 0.8)
                 {
-                    File.Copy(file.FullName, Path.Combine(trainFolder, $"{i}.png"));
+                    File.Copy(file.FullName, Path.Combine(trainFolder, $"{i}_{file.Name}.png"));
                 }
                 else
                 {
-                    File.Copy(file.FullName, Path.Combine(testFolder, $"{i}.png"));
+                    File.Copy(file.FullName, Path.Combine(testFolder, $"{i}_{file.Name}.png"));
                 }
             }
         }
