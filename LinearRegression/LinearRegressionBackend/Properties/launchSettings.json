@@ -2,7 +2,7 @@
   "profiles": {
     "LinearRegressionBackend": {
       "commandName": "Project",
-      "commandLineArgs": "train images \"c:\\Users\\z0042fkb.AD005\\Documents\\Github\\Regression\\LinearRegression\\Resources\\Train\" \"c:\\trained_network.json.gz\" --layers 784 128 32 2 --activationfunc ReLU ReLU Sigmoid --batchsize 128 --learningrate 0.01 --epochs 1000"
+      "commandLineArgs": "train images \"c:\\Resources\\Train\" \"c:\\trained_network.json.gz\" --layers 784 128 32 2 --activationfunc ReLU ReLU Sigmoid --batchsize 128 --learningrate 0.01 --epochs 1000"
     }
   }
 }

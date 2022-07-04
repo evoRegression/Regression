@@ -9,7 +9,7 @@ namespace RandomShuffle
     {
         internal static void Main(string[] args)
         {
-            string resourcePath = Path.GetFullPath(@"..\..\..\..\Resources");
+            string resourcePath = Path.GetFullPath(@"c:\Resources");
 
             string extractionPath = Path.Combine(resourcePath, "Output");
             string trainFolder = Path.Combine(resourcePath, "Train");
