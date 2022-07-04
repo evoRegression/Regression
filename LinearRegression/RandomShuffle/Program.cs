@@ -11,10 +11,11 @@ namespace RandomShuffle
         {
             string resourcePath = Path.GetFullPath(@"..\..\..\..\Resources");
 
-            string extractionPath = Path.Combine(resourcePath, "Output");
-            string randomSampleFolder = Path.Combine(resourcePath, "Random");
+            string extractionPath = Path.Combine(resourcePath, "Random");
+            string trainFolder = Path.Combine(resourcePath, "Train");
+            string testFolder = Path.Combine(resourcePath, "Test");
 
-            CreateRandomSampleFolder(randomSampleFolder);
+            CreateTrainTestFolder(trainFolder, testFolder);
 
             List<string> listOfFiles = Directory.GetFiles(extractionPath).ToList();
 
@@ -24,18 +25,28 @@ namespace RandomShuffle
                 string randomFile = listOfFiles.PopRandom();
                 FileInfo file = new FileInfo(randomFile);
 
-                File.Copy(file.FullName, Path.Combine(randomSampleFolder, $"{i}.png"));
+                if(i <= numberOfSample * 0.8)
+                {
+                    File.Copy(file.FullName, Path.Combine(trainFolder, $"{i}.png"));
+                }
+                else
+                {
+                    File.Copy(file.FullName, Path.Combine(testFolder, $"{i}.png"));
+                }
             }
         }
 
-        private static void CreateRandomSampleFolder(string extractPath)
+        private static void CreateTrainTestFolder(params string[] extractPaths)
         {
-            if (Directory.Exists(extractPath))
+            foreach (string path in extractPaths)
             {
-                Directory.Delete(extractPath, true);
-            }
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, true);
+                }
 
-            Directory.CreateDirectory(extractPath);
+                Directory.CreateDirectory(path);
+            }
         }
     }
 }
