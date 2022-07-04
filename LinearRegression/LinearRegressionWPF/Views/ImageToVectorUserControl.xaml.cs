@@ -17,7 +17,6 @@ namespace LinearRegressionWPF.Views
             
         private void BrushBtnClick(object sender, MouseButtonEventArgs e)
         {
-            
             MyCanvas.EditingMode = InkCanvasEditingMode.Ink;
             MyCanvas.Cursor = Cursors.Pen;
         }

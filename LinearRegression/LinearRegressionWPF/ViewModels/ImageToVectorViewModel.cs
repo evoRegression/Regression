@@ -1,10 +1,13 @@
-﻿using LinearRegressionBackend.MLNeuralNetwork;
-using LinearRegressionWPF.Commands;
-using MathNet.Numerics.LinearAlgebra;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Ink;
 using System.Windows.Input;
+
+using MathNet.Numerics.LinearAlgebra;
+
+using LinearRegressionBackend.MLNeuralNetwork;
+using LinearRegressionWPF.Commands;
 
 namespace LinearRegressionWPF.ViewModels
 {
@@ -14,7 +17,7 @@ namespace LinearRegressionWPF.ViewModels
 
         public NeuralNetwork NeuralNetwork { get; set; }
 
-        public  Vector<double> Result{ get; set;}
+        public Vector<double> Result { get; set; }
 
         public bool IsNeuralNetworkLoaded { get; set; }
 
@@ -23,8 +26,8 @@ namespace LinearRegressionWPF.ViewModels
         public string StringResult
         {
             get { return myStringResult; }
-            set 
-            { 
+            set
+            {
                 myStringResult = value;
                 NotifyPropertyChanged(nameof(StringResult));
             }
@@ -42,10 +45,11 @@ namespace LinearRegressionWPF.ViewModels
             _strokes = new StrokeCollection();
         }
 
-        private void InitNeuralNetwork()
+        private async void InitNeuralNetwork()
         {
             IsNeuralNetworkLoaded = true;
-            //NeuralNetwork = NeuralNetwork.Import(File.OpenRead("placeholder")).Result;
+            using FileStream stream = File.OpenRead(@"c:\trained_network.json");
+            NeuralNetwork = await NeuralNetwork.Import(stream);
         }
 
         private readonly StrokeCollection _strokes;
