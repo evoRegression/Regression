@@ -162,6 +162,8 @@ namespace LinearRegressionBackend.MLNeuralNetwork
                         Backpropagate(inputBatch, expectedBatch);
                     Update(gradient, learningRate);
                 }
+
+                Console.WriteLine($"epoch {i+1}/{epochs}");
             }
         }
 

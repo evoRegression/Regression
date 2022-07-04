@@ -32,7 +32,7 @@ namespace LinearRegressionBackend.DataProvider
             Vector<double> pixelVector;
             Vector<double> labelVector;
             Matrix<double> matrixOfPixels = Matrix<double>.Build.Dense(numberOfImages, 28 * 28);
-            Matrix<double> matrixOfLabels = Matrix<double>.Build.Dense(numberOfImages, 3);
+            Matrix<double> matrixOfLabels = Matrix<double>.Build.Dense(numberOfImages, 2);
 
             int i = 0;
             foreach (var file in directory.GetFiles("*.png"))

@@ -8,22 +8,17 @@ namespace LinearRegressionBackend.DataProvider
     {
         public Vector<double> CreateLabel(string filename)
         {
-            double[] labelArray = new double[3]; //in the case we have 3 shapes 
+            double[] labelArray = new double[2]; //in the case we have 2 shapes 
 
             if (filename.ToLower().Contains("circle"))
             {
 
-                labelArray = new double[3] { 1, 0, 0 };
-            }
-            else if (filename.ToLower().Contains("square"))
-            {
-
-                labelArray = new double[3] { 0, 1, 0 };
+                labelArray = new double[2] { 1, 0 };
             }
             else if (filename.ToLower().Contains("triangle"))
             {
 
-                labelArray = new double[3] { 0, 0, 1 };
+                labelArray = new double[2] { 0, 1 };
             }
 
             Vector<double> labelVector = Vector<double>.Build.DenseOfArray(labelArray);
