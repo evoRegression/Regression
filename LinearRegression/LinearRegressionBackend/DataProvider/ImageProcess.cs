@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-
+using System.Drawing.Imaging;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace LinearRegressionBackend.DataProvider
@@ -28,6 +28,7 @@ namespace LinearRegressionBackend.DataProvider
 
         public Vector<double> GrayScale(Bitmap image)
         {
+            var grayscaledBitmap = new Bitmap(image.Width, image.Height);
             double[,] pixels = new double[image.Width, image.Height];
             for (int i = 0; i < image.Width; i++)
             {
@@ -41,9 +42,11 @@ namespace LinearRegressionBackend.DataProvider
                     float gray = (float)(.299 * redColor + .587 * greenColor + .114 * blueColor);
 
                     pixels[i, j] = (gray == 255) ? 0 : 1 - (gray / 256);
+                    grayscaledBitmap.SetPixel(i, j, Color.FromArgb((int)gray, (int)gray, (int)gray));
                 }
             }
-
+            //just for debugging
+            //grayscaledBitmap.Save(@"c:\Resources\grayscaled.bmp", ImageFormat.Bmp);
             int index = 0;
             double[] arrayOfPixels = new double[pixels.Length];
             for (int i = 0; i < pixels.GetLength(0); i++)

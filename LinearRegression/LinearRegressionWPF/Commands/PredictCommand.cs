@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Text;
 using System.Windows.Controls;
 using System.Windows.Ink;
 using System.Windows.Input;
@@ -37,11 +38,28 @@ namespace LinearRegressionWPF.Commands
 
             Bitmap image = CreateImageFromStrokes(_viewModel.Drawing);
             var scaledImage = imageProcessor.Scale(image, 28, 28);
-
+            //just for debugging
+            //scaledImage.Save(@"c:\Resources\scled.bmp", ImageFormat.Bmp);
             var inputVectorFromImage = imageProcessor.GrayScale(scaledImage);
 
             _viewModel.Result = _viewModel.NeuralNetwork.Propagate(inputVectorFromImage).Output();
-            _viewModel.StringResult = _viewModel.Result.ToString();
+            StringBuilder resultText = new StringBuilder();
+            if (IsCircle(_viewModel.Result))
+            {
+                resultText.AppendLine("Circle");
+            }
+            else
+            {
+                resultText.AppendLine("Triangle");
+            }
+            resultText.AppendLine(String.Format("{0:0.000000000}", _viewModel.Result[0]) + " " +
+                String.Format("{0:0.000000000}", _viewModel.Result[1]));
+            _viewModel.StringResult =resultText.ToString();
+        }
+
+        private bool IsCircle(Vector<double> input)
+        {
+            return input[0] > input[1];
         }
 
         private static Bitmap CreateImageFromStrokes(StrokeCollection drawing)

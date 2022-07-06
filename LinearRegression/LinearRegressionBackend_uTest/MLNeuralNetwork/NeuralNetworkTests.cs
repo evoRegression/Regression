@@ -9,6 +9,8 @@ using MathNet.Numerics.LinearAlgebra;
 using NUnit.Framework;
 
 using LinearRegressionBackend.MLNeuralNetwork;
+using System.Drawing;
+using LinearRegressionBackend.DataProvider;
 
 namespace LinearRegressionBackend_uTest.MLNeuralNetwork
 {
@@ -349,6 +351,58 @@ namespace LinearRegressionBackend_uTest.MLNeuralNetwork
                     Is.EqualTo(7).Within(ACCURACY_DELTA),
                     "Incorrect output");
             });
+        }
+
+        [Test]
+        public async Task Network_Test_TrainedNetwork()
+        {
+            // Arrange
+            NeuralNetwork importedNetwork = null;
+
+            using (Stream inputStream = File.OpenRead(@"c:\trained_network.json"))
+            //using (GZipStream decompressor =
+            //    new(inputStream, CompressionMode.Decompress))
+            {
+                importedNetwork = await NeuralNetwork.Import(inputStream);
+            }
+
+            Vector<double> pixelVector;
+            Vector<double> labelVector;
+            var converter = new ImageProcess();
+            var counter = 0;
+            var goodPredictionNUmber = 0;
+            foreach (var file in new DirectoryInfo(@"c:\Resources\Test\").GetFiles("*.png"))
+            {
+                counter++;
+                using (var image = Image.FromFile(file.FullName))
+                {
+                    using (var newImage = converter.Scale((Bitmap)image, 28, 28))
+                    {
+                        try
+                        {
+                            pixelVector = converter.GrayScale(newImage);
+                            labelVector = converter.CreateLabel(file.Name);
+                            Vector<double> output = importedNetwork.Propagate(pixelVector).Output();
+
+                            if (IsGoodPrediction(IsCircle(labelVector), IsCircle(output)))
+                            {
+                                goodPredictionNUmber++;
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+            Console.WriteLine($"Prediction goodness: {(double)goodPredictionNUmber / (double)counter * 100} %");
+        }
+        private bool IsCircle(Vector<double> input)
+        {
+            return input[0] > input[1];
+        }
+
+        private bool IsGoodPrediction(bool expected, bool prediction)
+        {
+            return expected == prediction;
         }
 
     }
