@@ -54,7 +54,7 @@ namespace LinearRegressionWPF.Commands
             }
             resultText.AppendLine(String.Format("{0:0.000000000}", _viewModel.Result[0]) + " " +
                 String.Format("{0:0.000000000}", _viewModel.Result[1]));
-            _viewModel.StringResult =resultText.ToString();
+            _viewModel.FormateStringResult(resultText.ToString());
         }
 
         private bool IsCircle(Vector<double> input)
