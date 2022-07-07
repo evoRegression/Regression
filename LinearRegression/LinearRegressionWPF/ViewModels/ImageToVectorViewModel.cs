@@ -8,6 +8,8 @@ using MathNet.Numerics.LinearAlgebra;
 
 using LinearRegressionBackend.MLNeuralNetwork;
 using LinearRegressionWPF.Commands;
+using System;
+using System.Text.RegularExpressions;
 
 namespace LinearRegressionWPF.ViewModels
 {
@@ -31,6 +33,19 @@ namespace LinearRegressionWPF.ViewModels
                 myStringResult = value;
                 NotifyPropertyChanged(nameof(StringResult));
             }
+        }
+
+        public void FormateStringResult(string resultText)
+        {
+            //data comes in like this:
+            //"Triangle\r\n0,999999999 1,000000000\r\n"//
+            string[] shape;
+            string[] values;
+            shape = Regex.Split(resultText,"\r\n");
+            values = Regex.Split(shape[1], " ");
+            double value1 = 100 * Convert.ToDouble(values[0].Substring(0, 4));
+            double value2 = 100 * Convert.ToDouble(values[1].Substring(0, 4));
+            StringResult = shape[0] + "\r\n" + "Circle: " + Convert.ToString(value1) + "%"                                    + "\r\n" + "Triangle: " +   Convert.ToString(value2) + "%"; 
         }
 
         public ImageToVectorViewModel()

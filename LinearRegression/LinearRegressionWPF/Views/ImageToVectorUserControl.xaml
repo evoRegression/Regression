@@ -8,7 +8,7 @@
     <UserControl.DataContext>
         <view_models:ImageToVectorViewModel />
     </UserControl.DataContext>
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <Label Content="Draw The shape Below :" Height="29" Width="163" FontSize="14" />
