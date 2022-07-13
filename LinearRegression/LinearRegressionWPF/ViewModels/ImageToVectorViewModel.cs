@@ -45,7 +45,8 @@ namespace LinearRegressionWPF.ViewModels
             values = Regex.Split(shape[1], " ");
             double value1 = 100 * Convert.ToDouble(values[0].Substring(0, 4));
             double value2 = 100 * Convert.ToDouble(values[1].Substring(0, 4));
-            StringResult = shape[0] + "\r\n" + "Circle: " + Convert.ToString(value1) + "%"                                    + "\r\n" + "Triangle: " +   Convert.ToString(value2) + "%"; 
+            StringResult = shape[0] + "\r\n" + "Circle: " + Convert.ToString(value1) + "%" 
+                + "\r\n" + "Triangle: " +   Convert.ToString(value2) + "%"; 
         }
 
         public ImageToVectorViewModel()
@@ -63,7 +64,7 @@ namespace LinearRegressionWPF.ViewModels
         private async void InitNeuralNetwork()
         {
             IsNeuralNetworkLoaded = true;
-            using FileStream stream = File.OpenRead(@"c:\trained_network.json");
+            using FileStream stream = File.OpenRead(@"c:\trained_network_88_percent.json");
             NeuralNetwork = await NeuralNetwork.Import(stream);
         }
 

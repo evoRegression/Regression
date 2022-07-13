@@ -54,6 +54,7 @@ namespace LinearRegressionWPF.Commands
             }
             resultText.AppendLine(String.Format("{0:0.000000000}", _viewModel.Result[0]) + " " +
                 String.Format("{0:0.000000000}", _viewModel.Result[1]));
+            //_viewModel.StringResult = resultText.ToString();
             _viewModel.FormateStringResult(resultText.ToString());
         }
 
@@ -81,7 +82,7 @@ namespace LinearRegressionWPF.Commands
         {
             InkCanvas InkyStinky = AddStrokesToCanvas(drawing);
 
-            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(200, 200, 96, 96, PixelFormats.Default);
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap(400, 400, 96, 96, PixelFormats.Default);
             CreateWhiteBackgroud(renderTargetBitmap);
 
             renderTargetBitmap.Render(InkyStinky);
@@ -91,7 +92,7 @@ namespace LinearRegressionWPF.Commands
         private static InkCanvas AddStrokesToCanvas(StrokeCollection drawing)
         {
             InkCanvas InkyStinky = new InkCanvas();
-            InkyStinky.RenderSize = new System.Windows.Size(200, 200);
+            InkyStinky.RenderSize = new System.Windows.Size(400, 400);
             InkyStinky.Strokes.Add(drawing);
             return InkyStinky;
         }
@@ -103,7 +104,7 @@ namespace LinearRegressionWPF.Commands
             {
                 dc.DrawRectangle(
                     System.Windows.Media.Brushes.White, new System.Windows.Media.Pen(),
-                    new System.Windows.Rect(0, 0, 200, 200));
+                    new System.Windows.Rect(0, 0, 400, 400));
             }
             bmp.Render(visual);
         }

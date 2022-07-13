@@ -8,13 +8,15 @@
     <UserControl.DataContext>
         <view_models:ImageToVectorViewModel />
     </UserControl.DataContext>
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Center">
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <Label Content="Draw The shape Below :" Height="29" Width="163" FontSize="14" />
-                <InkCanvas x:Name="MyCanvas" Background="White" Margin="0,0,5,0" Height="200" Width="200" Strokes="{Binding Drawing}"/>
+                <Border CornerRadius="2" BorderBrush="Gray" BorderThickness="2" >
+                    <InkCanvas x:Name="MyCanvas" Background="White" Margin="5,5,5,5" Height="400" Width="400" Strokes="{Binding Drawing}"/>
+                </Border>
             </StackPanel>
-            <StackPanel Background="#348EF6">
+            <StackPanel Background="#348EF6" Margin="5,25,5,5" VerticalAlignment="Center" Height="400">
                 <Label Content="Brush Size" Foreground="#FFF2FAFF" FontSize="14"/>
                 <Slider x:Name="sizeSlide"  Height="22" Width="70" Minimum="10" FontSize="14" SmallChange="1" Value="20" Maximum="30" LargeChange="0" ValueChanged="SlideVlaueChange"/>
                 <Image x:Name="brushtbn" Width="50" Height="50"  Source="../Resources/pen.png" Stretch="UniformToFill" OpacityMask="Black" MouseDown="BrushBtnClick"/>
@@ -22,10 +24,10 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Button x:Name="clearbtn" Content="Clear"  Width="110" Height="42" FontSize="16" Click="ClearBtnClick"  />
-            <Button x:Name="_predict_btn"  Content="Predict"  Width="120" Height="42" FontSize="16"  Command="{Binding PredictCommand}" />
-            <Label Content="prediction:" Height="29" Width="163" FontSize="14" />
-            <TextBox Text="{Binding StringResult, Mode=TwoWay}"/>            
+            <Button x:Name="clearbtn" Content="Clear" Width="120" Height="80" FontSize="16" Click="ClearBtnClick" Margin="5,5,5,5" />
+            <Button x:Name="_predict_btn"  Content="Predict"  Width="120" Height="80" FontSize="16"  Command="{Binding PredictCommand}" Margin="5,5,5,5" />
+            <!--<Label Content="Prediction:" Height="29" Width="163" FontSize="14" />-->
+            <TextBox Text="{Binding StringResult, Mode=TwoWay}" VerticalAlignment="Center" Width="120" Height="80" Margin="5,5,5,5"/>            
         </StackPanel>
     </StackPanel>
 </UserControl>
