@@ -63,7 +63,7 @@ namespace LinearRegressionWPF.ViewModels
         private async void InitNeuralNetwork()
         {
             IsNeuralNetworkLoaded = true;
-            using FileStream stream = File.OpenRead(@"c:\trained_network.json");
+            using FileStream stream = File.OpenRead(@"c:\trained_network_88_percent.json");
             NeuralNetwork = await NeuralNetwork.Import(stream);
         }
 
