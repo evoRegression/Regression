@@ -43,9 +43,10 @@ namespace LinearRegressionWPF.ViewModels
             string[] values;
             shape = Regex.Split(resultText,"\r\n");
             values = Regex.Split(shape[1], " ");
-            double value1 = 100 * Convert.ToDouble(values[0].Substring(0, 4));
-            double value2 = 100 * Convert.ToDouble(values[1].Substring(0, 4));
-            StringResult = shape[0] + "\r\n" + "Circle: " + Convert.ToString(value1) + "%"                                    + "\r\n" + "Triangle: " +   Convert.ToString(value2) + "%"; 
+            double value1 = Convert.ToDouble(values[0].Substring(0, 10));
+            double value2 = Convert.ToDouble(values[1].Substring(0, 10));
+            StringResult = shape[0] + "\r\n" + "Circle: " + Convert.ToString(value1)  
+                                    + "\r\n" + "Triangle: " +   Convert.ToString(value2); 
         }
 
         public ImageToVectorViewModel()
